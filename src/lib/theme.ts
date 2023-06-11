@@ -1,8 +1,10 @@
-import { extendBaseTheme } from "@chakra-ui/react";
+import { extendBaseTheme, ChakraTheme, theme } from "@chakra-ui/react";
 
-export default extendBaseTheme({
+const themeConfig: Partial<ChakraTheme> = {
   fonts: {
     heading: "var(--font-tw)",
     body: "var(--font-mulish)",
   },
-});
+};
+
+export default extendBaseTheme(themeConfig);

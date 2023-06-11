@@ -2,6 +2,8 @@ import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import { Titillium_Web, Mulish } from "next/font/google";
 import theme from "../lib/theme";
+import { DefaultSeo } from "next-seo";
+import seo from "../../next-seo.config";
 
 const titilliumWeb = Titillium_Web({
   weight: "700",
@@ -23,6 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
           }
         `}
       </style>
+      <DefaultSeo {...seo} />
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
