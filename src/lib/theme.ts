@@ -1,6 +1,15 @@
 import { extendBaseTheme } from "@chakra-ui/react";
 
 export default extendBaseTheme({
+  styles: {
+    global: {
+      body: {
+        bg: "background",
+        color: "body",
+        lineHeight: "none",
+      },
+    },
+  },
   semanticTokens: {
     colors: {
       primary: {
@@ -12,7 +21,7 @@ export default extendBaseTheme({
         light: "#FFD15C",
         dark: "#FFB700",
       },
-      background: "#0F242A",
+      background: "#182326",
       body: "white",
     },
   },
