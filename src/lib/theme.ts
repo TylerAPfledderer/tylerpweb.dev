@@ -66,6 +66,8 @@ export default extendBaseTheme({
       baseStyle: {
         fontFamily: "heading",
         letterSpacing: "wide",
+        // Chrome only (In Canary v117.0.5847.0)
+        textWrap: "balance",
       },
       sizes: {
         "4xl": {
