@@ -1,0 +1,1 @@
+export { CurvedDownArrow } from "./CurvedDownArrow";
