@@ -11,24 +11,27 @@ import { MainSection } from "./MainSection";
 
 export const AboutMeSection = () => {
   const size28 = useToken("sizes", 28);
+  const skewBackgroundStyles = {
+    _before: {
+      content: { lg: `""` },
+      bg: "inherit",
+      display: "block",
+      position: "absolute",
+      zIndex: -1,
+      top: -14,
+      h: calc("100%").add(size28).toString(),
+      w: "100vw",
+      transform: "skewY(1deg)",
+      boxShadow: `inset 0px -30px 20px -18px rgba(0, 0, 0, 0.2) , 
+        0px -30px 20px -18px rgba(0, 0, 0, 0.2)`,
+    },
+  };
   return (
     <MainSection
       bg="primary.base"
       spacing={{ base: 16, lg: 36 }}
       position="relative"
-      _before={{
-        content: { lg: `""` },
-        bg: "inherit",
-        display: "block",
-        position: "absolute",
-        zIndex: -1,
-        top: -14,
-        h: calc("100%").add(size28).toString(),
-        w: "100vw",
-        transform: "skewY(1deg)",
-        boxShadow: `inset 0px -30px 20px -18px rgba(0, 0, 0, 0.2) , 
-          0px -30px 20px -18px rgba(0, 0, 0, 0.2)`,
-      }}
+      {...skewBackgroundStyles}
     >
       <VStack spacing="text.base" maxWidth="prose">
         <Heading>
