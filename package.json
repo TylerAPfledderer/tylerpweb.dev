@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "next lint",
     "theme": "chakra-cli tokens src/lib/theme.ts",
-    "theme:watch": "chakra-cli tokens src/lib/theme.ts --watch"
+    "theme:watch": "chakra-cli tokens src/lib/theme.ts --watch",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@chakra-ui/next-js": "^2.1.4",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@chakra-ui/cli": "^2.4.1",
-    "@chakra-ui/styled-system": "^2.9.1"
+    "@chakra-ui/styled-system": "^2.9.1",
+    "husky": "^8.0.0"
   }
 }
