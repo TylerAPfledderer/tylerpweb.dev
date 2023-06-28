@@ -1,1 +1,12 @@
 export { CurvedDownArrow } from "./CurvedDownArrow";
+export { HTML5Icon } from "./HTML5Icon";
+export { CSS3Icon } from "./CSS3Icon";
+export { JavaScriptIcon } from "./JavaScriptIcon";
+export { SassIcon } from "./SassIcon";
+export { BootstrapIcon } from "./BootstrapIcon";
+export { VueIcon } from "./VueIcon";
+export { ReactIcon } from "./ReactIcon";
+export { GatsbyIcon } from "./GatsbyIcon";
+export { TailwindIcon } from "./TailwindIcon";
+export { ChakraIcon } from "./ChakraIcon";
+export { NextIcon } from "./NextIcon";

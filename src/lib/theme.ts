@@ -101,5 +101,6 @@ export default extendBaseTheme({
         },
       },
     },
+    Tooltip: theme.components.Tooltip,
   },
 });

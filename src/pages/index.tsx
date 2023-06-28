@@ -2,7 +2,7 @@ import { AboutMeSection } from "@/components/AboutMeSection";
 import { HeroSection } from "@/components/HeroSection";
 import { MainSection } from "@/components/MainSection";
 import { SkillsSection } from "@/components/SkillsSection";
-import { Box, Center, Text } from "@chakra-ui/react";
+import { Box, Center, Divider, Text } from "@chakra-ui/react";
 
 export default function Home() {
   return (
@@ -17,6 +17,17 @@ export default function Home() {
       <Box as="main" textAlign="center">
         <HeroSection />
         <AboutMeSection />
+        <MainSection
+          py={{ base: "12", lg: "36" }}
+          spacing={{ base: "20", lg: "36" }}
+        >
+          <SkillsSection />
+          <Divider
+            borderStyle="solid"
+            borderColor="primary.dark"
+            maxW="container.xl"
+          />
+        </MainSection>
       </Box>
     </>
   );
