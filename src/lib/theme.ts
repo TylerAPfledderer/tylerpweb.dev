@@ -46,6 +46,7 @@ export default extendBaseTheme({
   },
   lineHeights: {
     "1": "2.375rem",
+    "1.5": "3.56rem",
     "2": "4.75rem",
     "3": "7.125rem",
   },
@@ -76,7 +77,7 @@ export default extendBaseTheme({
         },
         "3xl": {
           fontSize: ["xl", "2xl", "3xl"],
-          lineHeight: ["1", "2", null],
+          lineHeight: ["1.5", "2", null],
         },
         "2xl": {
           fontSize: ["lg", "xl", "2xl"],
