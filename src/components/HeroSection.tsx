@@ -61,7 +61,7 @@ export const HeroSection = () => (
             difficult!
           </Text>
         </Box>
-        <Button as={Link} href="#projects-contributions" fontSize="sm">
+        <Button as={Link} href="#projects-contributions">
           Projects &amp; Contributions
         </Button>
       </VStack>

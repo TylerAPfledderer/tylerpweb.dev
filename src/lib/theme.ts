@@ -92,16 +92,36 @@ export default extendBaseTheme({
       baseStyle: {
         ...theme.components.Button.baseStyle,
         ...theme.components.Button.sizes?.lg,
-        color: "background",
-        bg: "secondary.base",
-        _hover: {
-          bg: "secondary.light",
+        fontSize: "sm",
+      },
+      variants: {
+        solid: {
+          color: "background",
+          bg: "secondary.base",
+          _hover: {
+            bg: "secondary.light",
+          },
+          _active: {
+            bg: "secondary.dark",
+          },
         },
-        _active: {
-          bg: "secondary.dark",
+        outline: {
+          border: "2px",
+          borderColor: "body",
+          _hover: {
+            bg: "body",
+            color: "background",
+          },
+          _active: {
+            opacity: 0.6,
+          },
         },
+      },
+      defaultProps: {
+        variant: "solid",
       },
     },
     Tooltip: theme.components.Tooltip,
+    Tabs: theme.components.Tabs,
   },
 });

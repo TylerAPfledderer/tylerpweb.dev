@@ -10,3 +10,4 @@ export { GatsbyIcon } from "./GatsbyIcon";
 export { TailwindIcon } from "./TailwindIcon";
 export { ChakraIcon } from "./ChakraIcon";
 export { NextIcon } from "./NextIcon";
+export { EthIcon } from "./EthIcon";
