@@ -2,6 +2,7 @@ import { AboutMeSection } from "@/components/AboutMeSection";
 import { HeroSection } from "@/components/HeroSection";
 import { MainSection } from "@/components/MainSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
+import { ReachOutSection } from "@/components/ReachOutSection";
 import { SkillsSection } from "@/components/SkillsSection";
 import { Box, Center, Divider, Text } from "@chakra-ui/react";
 
@@ -31,6 +32,7 @@ export default function Home() {
           />
           <ProjectsSection />
         </MainSection>
+        <ReachOutSection />
       </Box>
     </>
   );
