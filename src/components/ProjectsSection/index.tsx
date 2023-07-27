@@ -20,6 +20,7 @@ import { Children } from "react";
 import { OpenSourceItemCard } from "./OpenSourceItemCard";
 import { openSourceData, projectsData } from "./utils";
 import { ProjectItemCard, ProjectItemCardProps } from "./ProjectItemCard";
+import { Trans, useTranslation } from "next-i18next";
 
 const CustomTab = forwardRef((props, ref) => {
   const { children, ...tabProps } = useTab({ ...props, ref });
@@ -66,23 +67,25 @@ const CustomPanel = forwardRef<TabPanelProps & { listLabel: string }, "div">(
 );
 
 export const ProjectsSection = () => {
+  const { t } = useTranslation();
   return (
     <VStack spacing={{ base: "16", lg: "24" }} w="full">
-      <Heading id="projects-contributions">
-        Projects &amp; Contributions
-      </Heading>
+      <Heading id="projects-contributions">{t("projects-title")}</Heading>
       <Tabs
         variant="enclosed-colored"
         w="full"
         fontSize="sm"
-        maxW="container.lg"
+        maxW="container.xl"
         isLazy
       >
         <TabList>
           <CustomTab>
-            Open Source <chakra.span hideBelow="sm">Contributions</chakra.span>
+            <Trans
+              i18nKey="projects-tab-open-source"
+              components={[<chakra.span key="0" hideBelow="sm" />]}
+            />
           </CustomTab>
-          <CustomTab>Projects</CustomTab>
+          <CustomTab>{t("projects-tab-projects")}</CustomTab>
         </TabList>
         <TabPanels>
           <CustomPanel listLabel="Open Source Contributions">

@@ -13,16 +13,10 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { Key } from "react";
+import { useTranslation } from "next-i18next";
+import { ProjectDataItem } from "./utils";
 
-export interface ProjectItemCardProps {
-  image: string;
-  stackTags: Array<typeof Icon>;
-  projectName: string;
-  description: string;
-  githubSlug: string;
-  demoUrl: string;
-}
+export interface ProjectItemCardProps extends ProjectDataItem {}
 
 export const ProjectItemCard = (
   props: ProjectItemCardProps & { idx: number }
@@ -36,6 +30,8 @@ export const ProjectItemCard = (
     stackTags,
     idx,
   } = props;
+
+  const { t } = useTranslation("projects-item-data");
 
   const imgObjPosition = useBreakpointValue({
     base: "top center",
@@ -57,6 +53,7 @@ export const ProjectItemCard = (
       maxW={{ base: "md", md: "xl", lg: "full" }}
     >
       <Box
+        flex={{ lg: "2" }}
         width="full"
         height={{ base: "52", md: "64", lg: "auto" }}
         position="relative"
@@ -71,6 +68,7 @@ export const ProjectItemCard = (
         />
       </Box>
       <VStack
+        flex={{ lg: "3" }}
         py={{ base: "4", lg: "16" }}
         px={{ base: "4", lg: "12" }}
         spacing="5"
@@ -90,7 +88,6 @@ export const ProjectItemCard = (
             lg: "inherit",
           },
         }}
-        maxW="xl"
       >
         <HStack as={List} spacing="4">
           {stackTags.map((Tag, idx) => (
@@ -99,11 +96,11 @@ export const ProjectItemCard = (
             </ListItem>
           ))}
         </HStack>
-        <VStack spacing="text.sm">
+        <VStack spacing="text.sm" maxW="xl">
           <Heading as="h3" size="2xl">
-            {projectName}
+            {t(projectName)}
           </Heading>
-          <Text>{description}</Text>
+          <Text>{t(description)}</Text>
         </VStack>
         <HStack wrap="wrap" justify="center">
           <Button
@@ -111,10 +108,10 @@ export const ProjectItemCard = (
             href={`https://github.com/tylerapfledderer/${githubSlug}`}
             isExternal
           >
-            Github Source
+            {t("project-item-card-github")}
           </Button>
           <Button as={Link} variant="outline" href={demoUrl} isExternal>
-            Demo Site
+            {t("project-item-card-demo")}
           </Button>
         </HStack>
       </VStack>

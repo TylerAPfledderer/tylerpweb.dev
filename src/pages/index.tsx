@@ -1,3 +1,6 @@
+import type { GetStaticProps, InferGetStaticPropsType } from "next";
+import { Trans, useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Box, Center, Divider, Flex, Text } from "@chakra-ui/react";
 import { AboutMeSection } from "@/components/AboutMeSection";
 import { HeroSection } from "@/components/HeroSection";
@@ -6,7 +9,10 @@ import { ProjectsSection } from "@/components/ProjectsSection";
 import { ReachOutSection } from "@/components/ReachOutSection";
 import { SkillsSection } from "@/components/SkillsSection";
 
-export default function Home() {
+export default function Home(
+  _props: InferGetStaticPropsType<typeof getStaticProps>
+) {
+  const { t } = useTranslation();
   return (
     <>
       <Center as="header">
@@ -46,12 +52,27 @@ export default function Home() {
         gap="text.sm"
       >
         <Text as="span">
-          Copyright {new Date().getFullYear()} Tyler Pfledderer
+          <Trans
+            i18nKey="footer-copyright"
+            values={{ date: new Date().getFullYear() }}
+          />
         </Text>
-        <Text as="span">
-          This site is built with NextJS, TypeScript, and Chakra UI
-        </Text>
+        <Text as="span">{t("footer-desc")}</Text>
       </Flex>
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps<
+  Awaited<ReturnType<typeof serverSideTranslations>>
+> = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", [
+        "common",
+        "open-source-data",
+        "projects-item-data",
+      ])),
+    },
+  };
+};

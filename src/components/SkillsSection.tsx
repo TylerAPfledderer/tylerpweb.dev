@@ -24,8 +24,11 @@ import {
   ChakraIcon,
   NextIcon,
 } from "@/svg-icons";
+import { useTranslation } from "next-i18next";
 
 export const SkillsSection = () => {
+  const { t } = useTranslation();
+
   const skills: Array<
     Pick<PositionProps, "top" | "left" | "right" | "bottom"> & {
       Icon: typeof Icon;
@@ -103,7 +106,7 @@ export const SkillsSection = () => {
   return (
     <VStack spacing={{ base: "16", md: "20" }}>
       <Heading as="h3" size="2xl">
-        Skills Learned Along My Journey
+        {t("skills-title")}
       </Heading>
       <Box position="relative" w={{ base: "311px", md: "md" }}>
         <JourneyLine />

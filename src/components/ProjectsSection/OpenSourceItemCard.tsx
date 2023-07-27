@@ -8,15 +8,10 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useTranslation } from "next-i18next";
+import { OpenSourceDataItem } from "./utils";
 
-interface OpenSourceItemCardProps {
-  icon: typeof Icon;
-  title: string;
-  role: string;
-  description: string[];
-  contributionUrl: string;
-  projectGithub: string;
-}
+interface OpenSourceItemCardProps extends OpenSourceDataItem {}
 
 export const OpenSourceItemCard = (props: OpenSourceItemCardProps) => {
   const {
@@ -27,6 +22,8 @@ export const OpenSourceItemCard = (props: OpenSourceItemCardProps) => {
     contributionUrl,
     projectGithub,
   } = props;
+
+  const { t } = useTranslation("open-source-data");
 
   return (
     <VStack
@@ -46,12 +43,12 @@ export const OpenSourceItemCard = (props: OpenSourceItemCardProps) => {
             {title}
           </Heading>
           <Text as="span" fontSize="md">
-            {role}
+            {t(role)}
           </Text>
         </VStack>
         <Box maxW="prose">
           {description.map((paragraph, idx) => (
-            <Text key={idx}>{paragraph}</Text>
+            <Text key={idx}>{t(paragraph)}</Text>
           ))}
         </Box>
         <Stack
@@ -62,10 +59,10 @@ export const OpenSourceItemCard = (props: OpenSourceItemCardProps) => {
           shouldWrapChildren
         >
           <Button as={Link} href={contributionUrl} isExternal>
-            View My Contributions
+            {t("open-source-card-contributions")}
           </Button>
           <Button as={Link} href={projectGithub} variant="outline" isExternal>
-            View the Project
+            {t("open-source-card-project")}
           </Button>
         </Stack>
       </VStack>

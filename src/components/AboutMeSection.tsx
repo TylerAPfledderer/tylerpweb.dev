@@ -8,8 +8,11 @@ import {
   useToken,
 } from "@chakra-ui/react";
 import { MainSection } from "./MainSection";
+import { Trans, useTranslation } from "next-i18next";
 
 export const AboutMeSection = () => {
+  const { t } = useTranslation();
+
   const size28 = useToken("sizes", 28);
   const skewBackgroundStyles = {
     _before: {
@@ -36,20 +39,24 @@ export const AboutMeSection = () => {
       <VStack spacing="text.base" maxWidth="prose">
         <Heading>
           <Highlight
-            query={["beautiful", "useable"]}
+            query={[t("about-title-highlight-1"), t("about-title-highlight-2")]}
             styles={{ color: "secondary.base" }}
           >
-            I make sites beautiful and useable
+            {t("about-title")}
           </Highlight>
         </Heading>
         <Text>
-          I have focus in bringing designs to life in code, and finding ways to
-          further improve the user experience.{" "}
-          <Text as="span" color="secondary.base" fontWeight="bold">
-            I am currently a collaborator with Chakra UI
-          </Text>
-          , helping to improve a low-level design system component library that
-          focuses on A11y for React and Vue. Open source is my jam! 🤘
+          <Trans
+            i18nKey="about-main-description"
+            components={[
+              <Text
+                as="span"
+                key={0}
+                color="secondary.base"
+                fontWeight="bold"
+              />,
+            ]}
+          />
         </Text>
       </VStack>
       <Stack
@@ -59,14 +66,10 @@ export const AboutMeSection = () => {
         justify="space-between"
       >
         <Heading as="h3" size="2xl" flex={1} maxW={{ lg: 72 }}>
-          Where did I come from?
+          {t("about-background")}
         </Heading>
         <Text maxW="prose" flex={2}>
-          I am a classically-trained musician of over 15 years 🎺 striving for a
-          career change into web development. My skills in music involve
-          critically-thinking, problem solving, and adaptability which provide a
-          high-quality transposition into gaining speed on a project or a team,
-          in any stack that is required. Supply the tools and I will adapt!
+          {t("about-background-desc")}
         </Text>
       </Stack>
     </MainSection>

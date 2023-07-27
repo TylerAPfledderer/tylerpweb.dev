@@ -1,8 +1,9 @@
-import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";
-import { Titillium_Web, Mulish } from "next/font/google";
-import theme from "../lib/theme";
 import { DefaultSeo } from "next-seo";
+import { Titillium_Web, Mulish } from "next/font/google";
+import { appWithTranslation } from "next-i18next";
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "../lib/theme";
 import seo from "../../next-seo.config";
 
 const titilliumWeb = Titillium_Web({
@@ -14,7 +15,7 @@ const mulish = Mulish({
   subsets: ["latin"],
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <style jsx global>
@@ -32,3 +33,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </>
   );
 }
+
+export default appWithTranslation(App);
