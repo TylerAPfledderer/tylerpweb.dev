@@ -1,10 +1,10 @@
+import { Box, Center, Divider, Flex, Text } from "@chakra-ui/react";
 import { AboutMeSection } from "@/components/AboutMeSection";
 import { HeroSection } from "@/components/HeroSection";
 import { MainSection } from "@/components/MainSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ReachOutSection } from "@/components/ReachOutSection";
 import { SkillsSection } from "@/components/SkillsSection";
-import { Box, Center, Divider, Text } from "@chakra-ui/react";
 
 export default function Home() {
   return (
@@ -34,6 +34,24 @@ export default function Home() {
         </MainSection>
         <ReachOutSection />
       </Box>
+      <Flex
+        as="footer"
+        px={{ base: "4", md: "16" }}
+        py={{ base: "4", md: "8" }}
+        direction={{ base: "column", lg: "row" }}
+        fontSize="sm"
+        textAlign="center"
+        align="center"
+        justify={{ lg: "space-between" }}
+        gap="text.sm"
+      >
+        <Text as="span">
+          Copyright {new Date().getFullYear()} Tyler Pfledderer
+        </Text>
+        <Text as="span">
+          This site is built with NextJS, TypeScript, and Chakra UI
+        </Text>
+      </Flex>
     </>
   );
 }
