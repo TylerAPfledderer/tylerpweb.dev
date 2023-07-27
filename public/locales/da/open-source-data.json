@@ -3,8 +3,8 @@
   "open-source-power-contributor": "Power Contributor",
   "open-source-card-contributions": "View My Contributions",
   "open-source-card-project": "View the Project",
-  "open-source-chakra-desc-1": "Siden maj 2022 Jeg har fungeret som en ekstern samarbejdspartner for en organisation af samme navn, hvis primære pakke er en UI komponent bibliotek oprindelige bygget til React.",
-  "open-source-chakra-desc-2": "Bidrag bestod af forskellige opgaver for at forbedre Chakra docsite indhold og underliggende scripts, opbygning af en pakkeversion til Vue 3, bygge Vue komponenter til det nye Ark UI hovedløse komponent bibliotek, og tilføje komponenter til Chakra Pro site.",
-  "open-source-eth-desc-1": "Jeg blev en primær bidragyder til Ethereum.org i september 2022, hjælpe dem med at migrere deres UI fra Styled Components til Chakra UI. Jeg arbejdede som forbindelsesled mellem kerneholdene, migrerende komponenter, gennemgang af PR, revidere migrationer og tilgængelighed, og integrere StorybookJS i deres arbejdsgang til det nye designsystem.",
-  "open-source-eth-desc-2": "Jeg havde hyppig kommunikation med den ledende udvikler, designer og resten af holdet, som hjalp med at sikre, at webstedets æstetik og brugervenlighed levede op til forventningerne. Jeg var også beæret over at modtage en Impact Gave fra Ethereum Foundation som anerkendelse for mine bidrag."
+  "open-source-chakra-desc-1": "Since May of 2022, I have served as an external Collaborator for an organization of the same name whose primary package is a UI component library original built for React.",
+  "open-source-chakra-desc-2": "Contributions consisted of various tasks to improve the Chakra docsite content and underlying scripts, building of a package version for Vue 3, building Vue components for the new Ark UI headless component library, and adding components to the Chakra Pro site.",
+  "open-source-eth-desc-1": "I became a primary contributor to Ethereum.org in September 2022, helping them migrate their UI from Styled Components to Chakra UI. I worked as a liaison between the core teams, migrating components, reviewing PRs, auditing migrations and accessibility, and integrating StorybookJS into their workflow for the new Design System.",
+  "open-source-eth-desc-2": "I had frequent communication with the lead developer, designer, and the rest of the team, which helped ensure the site's aesthetics and usability met expectations. I was also honored to receive an Impact Gift from the Ethereum Foundation as recognition for my contributions."
 }
