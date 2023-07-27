@@ -1,14 +1,14 @@
 {
   "project-item-card-github": "Github Source",
-  "project-item-card-demo": "Demo Site",
-  "project-item-coffeeroaster-title": "Coffeeroaster Subscription Site",
-  "project-item-coffeeroaster-description": "A design-to-code 3-page subscription site, showcasing an interactive form to present subscription options. Chakra UI is used for reusable Styled components that are accessible first, and TypeScript for strict type-checking state and all static querying from GraphQL.",
-  "project-item-urlshortener-title": "URL Shortener",
-  "project-item-urlshortener-description": "A design-to-code project focusing on the use of the Shrtcode API to shorten URLs. Use of Vuex and Local Storage to persist the list of generated links and the ability to copy them easily.",
-  "project-item-collegeemail-title": "College Newsletter Email",
-  "project-item-collegeemail-description": "Based on a real newsletter from a local community college small business center. Uses vanilla HTML and inline CSS techniques with updated design and responsiveness. (All links do not work)",
-  "project-item-cloudflare-title": "Cloudflare Login Screen",
-  "project-item-cloudflare-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes.",
-  "project-item-weatherapp-title": "Desktop Weather App",
-  "project-item-weatherapp-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes."
+  "project-item-card-demo": "Demo webbplats",
+  "project-item-coffeeroaster-title": "Kaffeeroaster prenumeration webbplats",
+  "project-item-coffeeroaster-description": "En design-till-kod 3-sidig prenumerationssida, visa upp ett interaktivt formulär för att presentera prenumerationsalternativ. Chakra UI används för återanvändbara Styled komponenter som är tillgängliga först, och TypeScript för strikt typkontroll tillstånd och alla statiska frågor från GraphQL.",
+  "project-item-urlshortener-title": "URL-förkortning",
+  "project-item-urlshortener-description": "Ett design-till-kod-projekt med fokus på användningen av Shrtcode API för att förkorta webbadresser. Användning av Vuex och lokal lagring för att kvarstå listan över genererade länkar och möjligheten att kopiera dem lätt.",
+  "project-item-collegeemail-title": "E-post för högskolans nyhetsbrev",
+  "project-item-collegeemail-description": "Baserat på ett riktigt nyhetsbrev från en lokal gemenskap college småföretag centrum. Använder vanilj HTML och inline CSS-tekniker med uppdaterad design och lyhördhet. (Alla länkar fungerar inte)",
+  "project-item-cloudflare-title": "Cloudflare inloggningsskärm",
+  "project-item-cloudflare-description": "En responsiv inloggningsskärm inbyggd i HTML. Kraftig betoning med SASS inklusive robusta blandare som flexy för att applicera alla nödvändiga Flexbox-egenskaper med bakåtkompatibla prefix.",
+  "project-item-weatherapp-title": "Skrivbord väder-app",
+  "project-item-weatherapp-description": "En responsiv inloggningsskärm inbyggd i HTML. Kraftig betoning med SASS inklusive robusta blandare som flexy för att applicera alla nödvändiga Flexbox-egenskaper med bakåtkompatibla prefix."
 }
