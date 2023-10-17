@@ -1,14 +1,14 @@
 {
-  "project-item-card-github": "Fonte Github",
-  "project-item-card-demo": "Sito demo",
-  "project-item-coffeeroaster-title": "Sito Abbonamento Coffeeroaster",
-  "project-item-coffeeroaster-description": "Un sito di abbonamento a 3 pagine di progettazione, vetrina un modulo interattivo per presentare le opzioni di abbonamento. Chakra UI è utilizzato per i componenti Styled riutilizzabili che sono accessibili per primo, e TypeScript per lo stato di controllo di tipo rigido e tutte le query statiche da GraphQL.",
+  "project-item-card-github": "Github Source",
+  "project-item-card-demo": "Demo Site",
+  "project-item-coffeeroaster-title": "Coffeeroaster Subscription Site",
+  "project-item-coffeeroaster-description": "A design-to-code 3-page subscription site, showcasing an interactive form to present subscription options. Chakra UI is used for reusable Styled components that are accessible first, and TypeScript for strict type-checking state and all static querying from GraphQL.",
   "project-item-urlshortener-title": "URL Shortener",
-  "project-item-urlshortener-description": "Un progetto di progettazione a codice focalizzato sull'utilizzo dell'API di Shrtcode per abbreviare URL. Utilizzo di Vuex e Local Storage per persistere l'elenco dei link generati e la possibilità di copiarli facilmente.",
-  "project-item-collegeemail-title": "Email Newsletter Email",
-  "project-item-collegeemail-description": "Basato su una vera newsletter di un piccolo centro commerciale della comunità locale. Utilizza le tecniche di vaniglia HTML e inline CSS con design e rispondenza aggiornati. (Tutti i link non funzionano)",
+  "project-item-urlshortener-description": "A design-to-code project focusing on the use of the Shrtcode API to shorten URLs. Use of Vuex and Local Storage to persist the list of generated links and the ability to copy them easily.",
+  "project-item-collegeemail-title": "College Newsletter Email",
+  "project-item-collegeemail-description": "Based on a real newsletter from a local community college small business center. Uses vanilla HTML and inline CSS techniques with updated design and responsiveness. (All links do not work)",
   "project-item-cloudflare-title": "Cloudflare Login Screen",
-  "project-item-cloudflare-description": "Uno schermo di login responsive costruito in HTML. Pesante enfasi con SASS tra cui robuste mixine robuste come 'flexy' per applicare tutte le proprietà Flexbox necessarie con prefissi compatibili.",
+  "project-item-cloudflare-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes.",
   "project-item-weatherapp-title": "Desktop Weather App",
-  "project-item-weatherapp-description": "Uno schermo di login responsive costruito in HTML. Pesante enfasi con SASS tra cui robuste mixine robuste come 'flexy' per applicare tutte le proprietà Flexbox necessarie con prefissi compatibili."
+  "project-item-weatherapp-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes."
 }
