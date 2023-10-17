@@ -1,14 +1,14 @@
 {
-  "project-item-card-github": "Github Source",
-  "project-item-card-demo": "Demo Site",
-  "project-item-coffeeroaster-title": "Coffeeroaster Subscription Site",
-  "project-item-coffeeroaster-description": "A design-to-code 3-page subscription site, showcasing an interactive form to present subscription options. Chakra UI is used for reusable Styled components that are accessible first, and TypeScript for strict type-checking state and all static querying from GraphQL.",
-  "project-item-urlshortener-title": "URL Shortener",
-  "project-item-urlshortener-description": "A design-to-code project focusing on the use of the Shrtcode API to shorten URLs. Use of Vuex and Local Storage to persist the list of generated links and the ability to copy them easily.",
-  "project-item-collegeemail-title": "College Newsletter Email",
-  "project-item-collegeemail-description": "Based on a real newsletter from a local community college small business center. Uses vanilla HTML and inline CSS techniques with updated design and responsiveness. (All links do not work)",
-  "project-item-cloudflare-title": "Cloudflare Login Screen",
-  "project-item-cloudflare-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes.",
-  "project-item-weatherapp-title": "Desktop Weather App",
-  "project-item-weatherapp-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes."
+  "project-item-card-github": "Github ソース",
+  "project-item-card-demo": "デモ・サイト",
+  "project-item-coffeeroaster-title": "コーヒー・エバスター・サブスクリプション・サイト",
+  "project-item-coffeeroaster-description": "設計からコードへの 3 ページのサブスクリプション・サイトで、対話式フォームを表示して、サブスクリプション・オプションを表示します。 Chakra UI は、最初にアクセス可能な、再使用可能なスタイル・コンポーネントに使用され、厳密な型検査状態と、 GraphQLからのすべての静的照会に対して TypeScript を使用します。",
+  "project-item-urlshortener-title": "URL 不足",
+  "project-item-urlshortener-description": "URL を短縮するための Shrtcode API の使用に焦点を当る設計からコードへのプロジェクト。 生成されたリンクのリストと、それらを簡単にコピーする機能を保持するために、 Vuex および Local Storage を使用します。",
+  "project-item-collegeemail-title": "カレッジニュースレター E メール",
+  "project-item-collegeemail-description": "地元のコミュニティ・カレッジの小さなビジネスセンターからの本物のニュースレターに基づいています。 更新された設計と即応性により、バニラ HTML およびインライン CSS の技法を使用 ( すべてのリンクが機能しない )",
+  "project-item-cloudflare-title": "Cloudflare ログイン画面",
+  "project-item-cloudflare-description": "HTML で作成された応答性のあるログイン画面。 「 flexy」などの堅固な混合物を含む SASS に重きを置き、必要なすべての Flexbox プロパティーを、バックワード互換の接頭部で適用します。",
+  "project-item-weatherapp-title": "デスクトップ・ウェザー・アプリケーション",
+  "project-item-weatherapp-description": "HTML で作成された応答性のあるログイン画面。 「 flexy」などの堅固な混合物を含む SASS に重きを置き、必要なすべての Flexbox プロパティーを、バックワード互換の接頭部で適用します。"
 }
