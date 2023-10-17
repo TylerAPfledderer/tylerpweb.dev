@@ -1,0 +1,22 @@
+{
+  "hero-site-title": "-Hei, olen Tyler.",
+  "hero-site-subtitle": "UI/UX-kehittäjä",
+  "hero-desc-1": "Intohimo siitä, että kaikki asiat saatavuus, käyttäjien kokemus, ja UI suunnittelua koodia.",
+  "hero-desc-2": "Utelias noin typografia ja miksi rakennuksen sähköpostit on niin dang vaikeaa!",
+  "hero-cta": "Hankkeet ja osuudet",
+  "hero-page-scroll-notice": "Mitä minä teen?",
+  "about-title": "Teen sivustoja kaunis ja käyttökelpoinen",
+  "about-title-highlight-1": "Kaunis",
+  "about-title-highlight-2": "Käyttökelpoinen",
+  "about-main-description": "Olen keskittynyt tuomaan malleja elämään koodia, ja löytää tapoja parantaa edelleen käyttäjäkokemusta. <0> Olen tällä hetkellä yhteistyökumppani Chakra UI </0>, joka auttaa parantamaan alatason suunnittelujärjestelmän komponenttikirjastoa, joka keskittyy A11y for React and Vue -järjestelmään. Avoin lähde on 🤘 !",
+  "about-background": "Mistä minä tulin?",
+  "about-background-desc": "Olen klassisesti koulutettu muusikko, joka on yli 15 vuoden ajan 🎺 luomaan uraa verkossa. Musiikkitaidoistani liittyy kriittinen ajattelu, ongelmanratkaisu ja sopeutumiskyky, joka mahdollistaa sen, että hanke tai ryhmä saatetaan nopeasti osaksi kansallista lainsäädäntöä, mikä on välttämätöntä. Anna työkalut, niin minä sopeudun!",
+  "skills-title": "Taidot ansaitsivat Matkani varrella",
+  "projects-title": "Hankkeet ja osuudet",
+  "projects-tab-open-source": "Avaa lähde <0> Maksut <0>",
+  "projects-tab-projects": "Hankkeet",
+  "reach-out-title": "Kurota ulos!",
+  "reach-out-desc": "Etsin aktiivisesti työmahdollisuuksia ja keskustelen siitä mielelläni lisää. Voit vapaasti tavoittaa minut alla, ja olen iloinen voidessani osallistua taitojani tiimisi tai auttaa saattamaan hankkeesi fruition!",
+  "footer-copyright": "Tekijänoikeudet {{date}} Tyler Paloderer",
+  "footer-desc": "Tämä sivusto on rakennettu NextJS, TypeScript ja Chakra UI."
+}

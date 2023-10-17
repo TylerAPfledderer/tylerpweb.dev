@@ -1,0 +1,22 @@
+{
+  "hero-site-title": "¡Hola, soy Tyler!",
+  "hero-site-subtitle": "Desarrollador de UI / UX",
+  "hero-desc-1": "Apasionado de todas las cosas la accesibilidad, la experiencia del usuario, y el diseño de la interfaz de usuario para codificar.",
+  "hero-desc-2": "¡Curioso acerca de la tipografía y por qué la construcción de correos electrónicos es tan difícil!",
+  "hero-cta": "Proyectos y contribuciones",
+  "hero-page-scroll-notice": "¿Qué estoy haciendo?",
+  "about-title": "Hago sitios hermosos y utilizables",
+  "about-title-highlight-1": "hermosos",
+  "about-title-highlight-2": "utilizables",
+  "about-main-description": "Tengo un enfoque en traer diseños a la vida en código, y encontrar maneras de mejorar aún más la experiencia del usuario. <0> Soy actualmente colaborador de Chakra UI </0>, ayudando a mejorar una biblioteca de componentes de sistema de diseño de bajo nivel que se centra en A11y para React y Vue. ¡La fuente abierta es mi mermelada! 🤘",
+  "about-background": "¿De dónde vengo?",
+  "about-background-desc": "Soy un músico con formación clásica de más de 15 años 🎺 luchando por un cambio de carrera en el desarrollo web. Mis habilidades en la música implican pensamiento crítico, resolución de problemas, y adaptabilidad que proporcionan una transposición de alta calidad para ganar velocidad en un proyecto o un equipo, en cualquier pila que se requiera. ¡Suministro las herramientas y me adaptaré!",
+  "skills-title": "Habilidades Aprendidas A Lo Largo De Mi Viaje",
+  "projects-title": "Proyectos y contribuciones",
+  "projects-tab-open-source": "Código abierto <0> Contribuciones </0>",
+  "projects-tab-projects": "Proyectos",
+  "reach-out-title": "¡Aalcance!",
+  "reach-out-desc": "Estoy buscando activamente oportunidades de empleo y estaría encantado de seguir debatiendo. Siéntase libre de llegar a mí abajo, y estaría encantado de aportar mis habilidades a su equipo o ayudar a llevar su proyecto a buen término!",
+  "footer-copyright": "Copyright {{date}} Tyler Pederer",
+  "footer-desc": "Este sitio se crea con la interfaz de usuario de NextJS, TypeScript y Chakra"
+}

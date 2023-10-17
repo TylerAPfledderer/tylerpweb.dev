@@ -1,0 +1,22 @@
+{
+  "hero-site-title": "Oi, eu sou Tyler!",
+  "hero-site-subtitle": "Desenvolvedor UI / UX",
+  "hero-desc-1": "Apaixonado por todas as coisas acessibilidade, experiência do usuário e design de UI a código.",
+  "hero-desc-2": "Curiosos sobre tipografia e por que construir e-mails é tão danado difícil!",
+  "hero-cta": "Projetos & Contribuições",
+  "hero-page-scroll-notice": "O que eu estou apto?",
+  "about-title": "Eu faço sites bonitos e usáveis",
+  "about-title-highlight-1": "lindo",
+  "about-title-highlight-2": "usável",
+  "about-main-description": "Tenho um foco em trazer designs para a vida em código, e encontrar maneiras de melhorar ainda mais a experiência do usuário. <0> Atualmente sou um colaborador com o Chakra UI </0>, ajudando a melhorar uma biblioteca de componentes do sistema de design de baixo nível que foca em A11y para React e Vue. Open source é minha jam! 🤘",
+  "about-background": "De onde eu vim?",
+  "about-background-desc": "Sou um músico classicamente treinado de mais de 15 anos 🎺 esforçando-se para uma mudança de carreira no desenvolvimento web. Minhas habilidades na música envolvem criticamente-pensamento, solução de problemas e adaptabilidade que proporcionam uma transposição de alta qualidade para ganhar velocidade em um projeto ou em uma equipe, em qualquer pilha que seja necessária. Forneça as ferramentas e eu me adapto!",
+  "skills-title": "Habilidades Aprendidas Ao Longo Da Minha Jornada",
+  "projects-title": "Projetos & Contribuições",
+  "projects-tab-open-source": "Open Source <0> Contribuições </0>",
+  "projects-tab-projects": "Projetos",
+  "reach-out-title": "Alcance Para Fora!",
+  "reach-out-desc": "Estou buscando ativamente oportunidades de emprego e ficaria encantado em discutir mais adiante. Sinta-se à vontade para me alcançar abaixo, e eu ficaria emocionado em contribuir com minhas habilidades para a sua equipe ou auxiliar em levar seu projeto a fruição!",
+  "footer-copyright": "Copyright {{date}} Tyler Pfledderer",
+  "footer-desc": "Este site é construído com NextJS, TypeScript e Chakra UI"
+}

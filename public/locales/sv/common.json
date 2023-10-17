@@ -1,0 +1,22 @@
+{
+  "hero-site-title": "Hej, jag är Tyler!",
+  "hero-site-subtitle": "UI-/UX-utvecklare",
+  "hero-desc-1": "Passionera om alla hjälpmedel, användarupplevelser och användargränssnittsdesign till kod.",
+  "hero-desc-2": "Nyfiken på typografi och varför det är så svårt att bygga e-mejl.",
+  "hero-cta": "Projekt och bidrag",
+  "hero-page-scroll-notice": "Vad håller jag på med?",
+  "about-title": "Jag gör sajter vacker och användbar",
+  "about-title-highlight-1": "Vackra",
+  "about-title-highlight-2": "användbar",
+  "about-main-description": "Jag har en fokusering på att ta fram mönster till livet i kod och hitta sätt att ytterligare förbättra användarupplevelsen. <0> Jag är för närvarande en samarbetspartner med Chakra UI </0>, som hjälper till att förbättra ett komponentbibliotek på låg nivå som fokuserar på A11y för React och Vue. Öppen källkod är min jam! 🤘",
+  "about-background": "Var kom jag ifrån?",
+  "about-background-desc": "Jag är en klassiskt utbildad musiker på över 15 år, som strävar efter en karriärutveckling i webbutveckling. Mina färdigheter i musik inbegriper kritiskt tänkande, problemlösning och anpassningsförmåga som ger ett högkvalitativt införlivande i takt med ett projekt eller ett team, i vilken hög som helst som krävs. Försörj verktygen så anpassar jag mig!",
+  "skills-title": "Skills Learned My Journey",
+  "projects-title": "Projekt och bidrag",
+  "projects-tab-open-source": "Öppna källkod <0> Contritioner </0>",
+  "projects-tab-projects": "Projekt",
+  "reach-out-title": "Sträck ut!",
+  "reach-out-desc": "Jag söker aktivt sysselsättningsmöjligheter och skulle gärna vilja diskutera vidare. Känn dig fri att nå ut till mig där nere, och jag skulle vara glad att bidra med mina färdigheter till ditt team eller hjälpa till med att få ditt projekt till fruktträd!",
+  "footer-copyright": "Copyright {{date}} Tyler Pfledderer",
+  "footer-desc": "Den här platsen är byggd med NextJS, TypeScript och Chakra UI"
+}

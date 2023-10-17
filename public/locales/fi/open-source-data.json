@@ -1,0 +1,10 @@
+{
+  "open-source-collaborator": "Yhteistyökumppani",
+  "open-source-power-contributor": "Power lisääjä",
+  "open-source-card-contributions": "Näytä osuudet",
+  "open-source-card-project": "Näytä projekti",
+  "open-source-chakra-desc-1": "Toukokuusta 2022 lähtien olen toiminut ulkopuolisena yhteistyönä sellaisen organisaation ulkopuolisena toimintana, jonka ensisijainen paketti on Reaktin peruskirjasto.",
+  "open-source-chakra-desc-2": "Osallistujat muodostivat useita tehtäviä parantaakseen Chakran telakointialueen sisältöä ja niiden taustalla olevia komentosarjoja, rakentamalla Vue 3 -paketin version Vue UI UI UI UI -komponenttikirjastoon ja lisäämällä osia Chakra Pro -sivustoon.",
+  "open-source-eth-desc-1": "Minusta tuli ensisijainen rahoittaja Ethereum.org. Syyskuussa 2022, kun autoin heitä muuttamaan UI :n Styled Components to Chakra UI. Työskentelin yhteyshenkilöinä ydinryhmien välillä, siirryn komponentteihin, tarkastelemalla PRS-palvelua, tarkastamalla migreeniä ja saavutettavuutta ja integroimalla StorybookJS-järjestelmään uuden suunnittelujärjestelmän käsittelyreittiin.",
+  "open-source-eth-desc-2": "Olin usein yhteydessä pääsuunnittelija, suunnittelija, ja muu joukkue, joka auttoi varmistamaan sivuston estetiikka ja käytettävyys täyttää odotuksia. Minulle oli myös kunnia saada Ethereum Foundationin vaikutuslahja."
+}

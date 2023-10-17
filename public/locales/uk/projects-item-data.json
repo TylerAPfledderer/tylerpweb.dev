@@ -1,0 +1,14 @@
+{
+  "project-item-card-github": "Джерело github",
+  "project-item-card-demo": "Демонстраційний сайт",
+  "project-item-coffeeroaster-title": "Сайт компанії Coffeeraster",
+  "project-item-coffeeroaster-description": "3-сторінковий сайт передплати, що демонструє інтерактивну форму для того, щоб представити варіанти підписки. Chakra UI використовується для багаторазових стилістичних компонентів, які є доступними першими, і TypeScript для строгого перевірки типів і статичних запитів з GraphQL.",
+  "project-item-urlshortener-title": "Скорочення URL",
+  "project-item-urlshortener-description": "Проект дизайну до коду фокусується на використанні Shrtcode API для скорочення URL. Використання Vuex і Local Storage для збереження списку згенерованих посилань і можливість їх легко копіювати.",
+  "project-item-collegeemail-title": "Ел. пошта коледжів",
+  "project-item-collegeemail-description": "Заснований на реальній бюлетені від центру місцевого коледжу малого бізнесу. Використовує ванільне HTML і вбудовані методи CSS з оновленим дизайном і відповідністю. (Всі посилання не працюють)",
+  "project-item-cloudflare-title": "Вікно входу в систему Cloud",
+  "project-item-cloudflare-description": "Екранне вікно входу до системи, вбудоване у HTML. Важкий наголос з SASS, включаючи міцні мікси, такі як 'flexy', щоб застосувати всі необхідні властивості Flexbox з зворотніми сумісними префіксами.",
+  "project-item-weatherapp-title": "Додаток стільниці Weather",
+  "project-item-weatherapp-description": "Екранне вікно входу до системи, вбудоване у HTML. Важкий наголос з SASS, включаючи міцні мікси, такі як 'flexy', щоб застосувати всі необхідні властивості Flexbox з зворотніми сумісними префіксами."
+}

@@ -1,0 +1,14 @@
+{
+  "project-item-card-github": "Fuente Github",
+  "project-item-card-demo": "Sitio de demostración",
+  "project-item-coffeeroaster-title": "Sitio de suscripción de Coffeeroaster",
+  "project-item-coffeeroaster-description": "Un sitio de suscripción de 3 páginas de diseño a código, que muestra un formulario interactivo para presentar opciones de suscripción. La interfaz de usuario de Chakra se utiliza para los componentes de Styled reutilizables que son accesibles en primer lugar, y TypeScript para el estado de comprobación de tipo estricto y todas las consultas estáticas de GraphQL.",
+  "project-item-urlshortener-title": "Shortener de URL",
+  "project-item-urlshortener-description": "Proyecto de diseño a código que se centra en el uso de la API de Shrtcode para acortar los URL. Uso de Vuex y Almacenamiento local para persistir la lista de enlaces generados y la capacidad de copiarlos fácilmente.",
+  "project-item-collegeemail-title": "Boletín de la Universidad Email",
+  "project-item-collegeemail-description": "Basado en un boletín real de un centro de negocios de la comunidad universitaria local. Utiliza técnicas CSS en línea y HTML con diseño actualizado y capacidad de respuesta. (Todos los enlaces no funcionan)",
+  "project-item-cloudflare-title": "Pantalla de inicio de sesión de Cloudf",
+  "project-item-cloudflare-description": "Una pantalla de inicio de sesión de respuesta incorporada en HTML. Gran énfasis con SASS, incluyendo mezclas robustas como 'flexy' para aplicar todas las propiedades de Flexbox necesarias con prefijos compatibles con versiones anteriores.",
+  "project-item-weatherapp-title": "Aplicación meteorológica de escritorio",
+  "project-item-weatherapp-description": "Una pantalla de inicio de sesión de respuesta incorporada en HTML. Gran énfasis con SASS, incluyendo mezclas robustas como 'flexy' para aplicar todas las propiedades de Flexbox necesarias con prefijos compatibles con versiones anteriores."
+}

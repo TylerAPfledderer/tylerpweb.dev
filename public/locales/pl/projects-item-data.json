@@ -1,0 +1,14 @@
+{
+  "project-item-card-github": "Źródło Github",
+  "project-item-card-demo": "Serwis demonstracyjny",
+  "project-item-coffeeroaster-title": "Serwis subskrypcji trumien",
+  "project-item-coffeeroaster-description": "3-stronicowy serwis subskrypcji projektu, prezentując interaktywny formularz do prezentowania opcji subskrypcji. Interfejs użytkownika Chakra jest używany dla komponentów Styled wielokrotnego użytku, które są dostępne jako pierwsze, i TypeScript dla ścisłego stanu sprawdzania typu i wszystkich statycznych zapytań z GraphQL.",
+  "project-item-urlshortener-title": "Skracanie adresu URL",
+  "project-item-urlshortener-description": "Projekt projektowo-kodowy, skupiający się na wykorzystaniu interfejsu API Shrtcode do skrócenia adresów URL. Korzystanie z Vuex i Local Storage do utrwalenia listy generowanych linków i możliwości ich łatwego kopiowania.",
+  "project-item-collegeemail-title": "Biuletyn informacyjny kolegium e-mail",
+  "project-item-collegeemail-description": "Na podstawie prawdziwego newslettera z lokalnej społeczności studenckie małe centrum biznesowe. Wykorzystuje waniliowy HTML i wstawiane techniki CSS ze zaktualizowanym designem i odpowiedzialnością. (Wszystkie odsyłacze nie działają)",
+  "project-item-cloudflare-title": "Ekran logowania Cloudflare",
+  "project-item-cloudflare-description": "Responsywny ekran logowania zbudowany w języku HTML. Duży nacisk z SASS, w tym solidne miksery, takie jak \"flexy\", aby zastosować wszystkie potrzebne właściwości Flexbox z wstecznie kompatybilnych przedrostków.",
+  "project-item-weatherapp-title": "Aplikacja pogodowa na pulpicie",
+  "project-item-weatherapp-description": "Responsywny ekran logowania zbudowany w języku HTML. Duży nacisk z SASS, w tym solidne miksery, takie jak \"flexy\", aby zastosować wszystkie potrzebne właściwości Flexbox z wstecznie kompatybilnych przedrostków."
+}

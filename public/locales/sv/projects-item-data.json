@@ -1,0 +1,14 @@
+{
+  "project-item-card-github": "Github-källa",
+  "project-item-card-demo": "Demoanläggning",
+  "project-item-coffeeroaster-title": "Coffeeroaster Subscription Site",
+  "project-item-coffeeroaster-description": "Ett interaktivt formulär för att visa prenumerationsalternativ för en designertill-kod 3-sidans prenumerationsplats. Chakra UI används för återanvändbara staplade komponenter som är tillgängliga först och TypeScript för sträng typ-kontroll och all statisk fråga från GraphQL.",
+  "project-item-urlshortener-title": "URL-kortnamn",
+  "project-item-urlshortener-description": "Ett projektering-till-kodprojekt med fokus på användningen av Shrtcode API för att förkorta URL-adresser. Användning av Vuex och Lokalt lagringsutrymme för att spara listan över genererade länkar och möjlighet att kopiera dem enkelt.",
+  "project-item-collegeemail-title": "E-postadress till kollegiet",
+  "project-item-collegeemail-description": "Baserat på ett riktigt nyhetsbrev från ett lokalt college litet affärscenter. Använder vanilj HTML-och inline-CSS-teknik med uppdaterad design och lyhördhet. (Alla länkar fungerar inte)",
+  "project-item-cloudflare-title": "Cloudflare Login Screen",
+  "project-item-cloudflare-description": "En responsiv inloggningsskärm byggd i HTML. Tung betoning med SASS, inklusive robusta mixer, t.ex. \"flexy\" för att tillämpa alla nödvändiga Flexbox-egenskaper med bakåtkompatibla prefixer.",
+  "project-item-weatherapp-title": "Skrivbordsväderapp",
+  "project-item-weatherapp-description": "En responsiv inloggningsskärm byggd i HTML. Tung betoning med SASS, inklusive robusta mixer, t.ex. \"flexy\" för att tillämpa alla nödvändiga Flexbox-egenskaper med bakåtkompatibla prefixer."
+}

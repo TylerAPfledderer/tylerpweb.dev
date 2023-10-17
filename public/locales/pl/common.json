@@ -1,0 +1,22 @@
+{
+  "hero-site-title": "Cześć, jestem Tyler!",
+  "hero-site-subtitle": "Programista interfejsu użytkownika/UX",
+  "hero-desc-1": "Pasjonat wszystkich rzeczy związanych z dostępnością, doświadczeniami użytkowników i projektowaniem interfejsu użytkownika.",
+  "hero-desc-2": "Ciekawi typografii i dlaczego budowanie e-maili jest tak dang trudne!",
+  "hero-cta": "Projekty i elementy wnoszone",
+  "hero-page-scroll-notice": "Co ja mam do siebie?",
+  "about-title": "Ja składam strony piękne i usieciowane",
+  "about-title-highlight-1": "piękny",
+  "about-title-highlight-2": "możliwe do użycia",
+  "about-main-description": "Skupiam się na sprowadzanie wzorów do życia w kodzie i znalezienie sposobów na dalsze doskonalenie doświadczenia użytkowników. <0> Jestem obecnie współpracownikiem z Chakra UI </0>, pomagając usprawnić niskopoziomową bibliotekę komponentów systemu projektowego, która skupia się na A11y dla React i Vue. Open source to mój dżem! 🤘",
+  "about-background": "Skąd pochodzę?",
+  "about-background-desc": "Jestem klasycznie wyszkolonym muzykiem z ponad 15 lat 🎺 dążąc do zmiany kariery w rozwoju stron internetowych. Moje umiejętności w muzyce obejmują krytycznie myślenie, rozwiązywanie problemów i adaptacyjność, które zapewniają wysokiej jakości transpozycję w celu uzyskania prędkości na projekcie lub zespole, w każdym stosie, który jest wymagany. Zaopatrzenie się w narzędzia i ja się dostosuję!",
+  "skills-title": "Umiejętności Nauczyły Się W Mojej Podróży",
+  "projects-title": "Projekty i elementy wnoszone",
+  "projects-tab-open-source": "Otwarte źródło <0> Elementy wnoszone </0>",
+  "projects-tab-projects": "Projekty",
+  "reach-out-title": "Sięgaj!",
+  "reach-out-desc": "Aktywnie poszukuję możliwości zatrudnienia i z przyjemnością podyskutuję o dalszych dyskusach. Poczuj się swobodnie, aby dotrzeć do mnie poniżej, a ja byłbym zachwycony, aby przyczynić się moje umiejętności do zespołu lub pomóc w doprowadzanie projektu do owocowania!",
+  "footer-copyright": "Copyright {{date}} Tyler Pfledderer",
+  "footer-desc": "Ten serwis jest zbudowany za pomocą interfejsu użytkownika NextJS, TypeScript i Chakra."
+}

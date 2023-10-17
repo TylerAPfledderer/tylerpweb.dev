@@ -1,0 +1,10 @@
+{
+  "open-source-collaborator": "Współpracownik",
+  "open-source-power-contributor": "Kontrybutor mocy",
+  "open-source-card-contributions": "Wyświetl moje elementy wnoszone",
+  "open-source-card-project": "Wyświetl projekt",
+  "open-source-chakra-desc-1": "Od maja 2022 roku pełnię funkcję zewnętrznego współpracownika dla organizacji o tej samej nazwie, której podstawowym pakietem jest biblioteka komponentów interfejsu użytkownika, oryginalnie zbudowana na potrzeby React.",
+  "open-source-chakra-desc-2": "Składki składały się z różnych zadań w celu poprawy zawartości serwisu docsite Chakra i skryptów bazowych, budowania wersji pakietu dla Vue 3, budowania komponentów Vue dla nowej biblioteki komponentów bezobsługowej Ark UI oraz dodawania komponentów do serwisu Chakra Pro.",
+  "open-source-eth-desc-1": "We wrześniu 2022 roku zostałem głównym kontrybutorem Ethereum.org, pomagając im migrować interfejs użytkownika ze Stylowanych komponentów do interfejsu użytkownika Chakra. Pracowałem jako łącznik między podstawowymi zespołami, migrując komponenty, dokonałem przeglądu PR-ów, przeprowadzałem kontrolę migracji i dostępności, a także zintegrowałem StorybookJS z ich przepływem pracy dla nowego systemu projektowego.",
+  "open-source-eth-desc-2": "Bardzo często komunikowałem się z wiodonym deweloperem, projektantem i resztą zespołu, co pomogło zapewnić estetykę serwisu i użyteczność spełniała oczekiwania. Byłem również zaszczycony otrzymaniem upominku Impact z fundacji Ethereum jako uznania dla moich składek."
+}

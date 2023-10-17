@@ -1,0 +1,14 @@
+{
+  "project-item-card-github": "Jättiläislähde",
+  "project-item-card-demo": "Demon kohde",
+  "project-item-coffeeroaster-title": "Coffeeraster Tilaustoimipaikka",
+  "project-item-coffeeroaster-description": "Suunnittelukoodi 3-sivuinen tilaussivu, jossa voit esitellä tilausvalintoja vuorovaikutteisessa muodossa. Chakra UI on käytettävissä uudelleenkäytettäviä Styled-komponentteja, jotka ovat käytettävissä ensin, ja TypeScript-koodi tarkassa tyyppisessä tilassa ja kaikki GraphQL-kyselyssä esiintyviä staattisia kyselyjä varten.",
+  "project-item-urlshortener-title": "URL-osoite",
+  "project-item-urlshortener-description": "Suunnittelu-to-koodiprojekti, jossa keskitytään Shrtcode-ohjelmointirajapinnan käyttöön URL-osoitteiden lyhentämiseksi. Vuex-ja paikallistallennustilan avulla voit säilyttää luotujen linkkien luettelon ja kopioida ne helposti.",
+  "project-item-collegeemail-title": "College Newsletter Email",
+  "project-item-collegeemail-description": "Perustuu kunnon uutiskirjeeseen paikallisen yliopiston pienestä yrityskeskuksesta. Uses vanilla HTML-ja inline-CSS-tekniikoita päivitetyn suunnittelun ja reagointikyvyn avulla. (Kaikki linkit eivät toimi)",
+  "project-item-cloudflare-title": "Cloudflare Login -ruutu",
+  "project-item-cloudflare-description": "HTML-koodissa on otettu käyttöön vastaava sisäänkirjausnäyttö. Raskas paino SASS: n kanssa, mukaan lukien vankat sekoittimet, kuten \"flexy\", jotta kaikki tarvittavat Flexbox-ominaisuudet voidaan käyttää takaperin yhteensopivina etuliitteinä.",
+  "project-item-weatherapp-title": "Työpöydän säätila App",
+  "project-item-weatherapp-description": "HTML-koodissa on otettu käyttöön vastaava sisäänkirjausnäyttö. Raskas paino SASS: n kanssa, mukaan lukien vankat sekoittimet, kuten \"flexy\", jotta kaikki tarvittavat Flexbox-ominaisuudet voidaan käyttää takaperin yhteensopivina etuliitteinä."
+}

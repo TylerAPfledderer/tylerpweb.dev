@@ -1,0 +1,22 @@
+{
+  "hero-site-title": "Hej, jeg er Tyler!",
+  "hero-site-subtitle": "UI / UX Developer",
+  "hero-desc-1": "Passionér om alle ting handicapvenlighed, brugeroplevelse og UI-design til kode.",
+  "hero-desc-2": "Nysgerrig omkring typografi, og hvorfor det er så svært at bygge e-mails.",
+  "hero-cta": "Projekter og bidrag",
+  "hero-page-scroll-notice": "Hvad er jeg ude på?",
+  "about-title": "Jeg gør steder smukke og brugbare",
+  "about-title-highlight-1": "Smuk",
+  "about-title-highlight-2": "brugbar",
+  "about-main-description": "Jeg har et fokus på at skabe liv i kodesprog og finde måder at forbedre brugeroplevelsen på. <0> Jeg er i øjeblikket en samarbejdspartner med Chakra UI </0>, der hjælper med at forbedre et designsystemkomponentbibliotek på lavt niveau, som fokuserer på A11y for React og Vue. Den åbne kilde er min marmelade! 🤘",
+  "about-background": "Hvor kom jeg fra?",
+  "about-background-desc": "Jeg er en klassisk musiker musiker i over 15 år, som stræber efter en karriereændring i webudvikling. Mine kompetencer inden for musik omfatter kritisk tænkning, problemløsning og tilpasningsevne, som giver en høj kvalitet i omsætningen til at få fart på et projekt eller et team i en hvilken som helst stak, der er påkrævet. Leverer værktøjet, og jeg vil tilpasse mig!",
+  "skills-title": "Skills Learned Langs My Journey",
+  "projects-title": "Projekter og bidrag",
+  "projects-tab-open-source": "Åbn kilde <0> Contributions </0>",
+  "projects-tab-projects": "Projekter",
+  "reach-out-title": "Ræk ud!",
+  "reach-out-desc": "Jeg søger aktivt beskæftigelsesmuligheder, og jeg vil med glæde drøfte yderligere spørgsmål. Du er velkommen til at kontakte mig nedenfor, og jeg vil være glad for at bidrage med mine evner til dit team eller hjælpe med at få dit projekt til at gå i stå!",
+  "footer-copyright": "Copyright {{date}} Tyler Pfledderer",
+  "footer-desc": "Dette websted er bygget med NextJS, TypeScript og Chakra UI"
+}

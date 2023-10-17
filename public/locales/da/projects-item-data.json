@@ -1,0 +1,14 @@
+{
+  "project-item-card-github": "Github-kilde",
+  "project-item-card-demo": "Demo-site",
+  "project-item-coffeeroaster-title": "Abonnementswebsted for Coffeeroaster",
+  "project-item-coffeeroaster-description": "Et design-til-kode 3-side-abonnementswebsted, der viser en interaktiv formular for at præsentere abonnementsindstillinger. Chakra UI bruges til genanvendelige komponenter, der er tilgængelige først, og som er tilgængelige først, og som er skrivefast for streng type-kontrol tilstand og al statisk forespørgsel fra GraphQL.",
+  "project-item-urlshortener-title": "URL-genvej",
+  "project-item-urlshortener-description": "Et designopnotionsprojekt, der fokuserer på brugen af Shrtcode-API ' et til at forkorte URL'er. Brug af Vuex og Local Storage til at gemme listen over genererede link og mulighed for at kopiere dem nemt.",
+  "project-item-collegeemail-title": "E-mail for nyhedsbrev",
+  "project-item-collegeemail-description": "Baseret på et rigtigt nyhedsbrev fra et lokalt college-college-college. Bruger vanilje-HTML-og inline-CSS-teknikker med opdateret design og reaktionsevne. (Alle link fungerer ikke)",
+  "project-item-cloudflare-title": "Cloudflare Logon Screen",
+  "project-item-cloudflare-description": "Et interaktiv logonskærmbillede, der er indbygget i HTML. Kraftig vægt med SASS, herunder robuste blandinger, f.eks. \"flexy\", for at anvende alle de nødvendige egenskaber for Flexbox med de tilbagestående præfikser.",
+  "project-item-weatherapp-title": "Desktop Weather App",
+  "project-item-weatherapp-description": "Et interaktiv logonskærmbillede, der er indbygget i HTML. Kraftig vægt med SASS, herunder robuste blandinger, f.eks. \"flexy\", for at anvende alle de nødvendige egenskaber for Flexbox med de tilbagestående præfikser."
+}

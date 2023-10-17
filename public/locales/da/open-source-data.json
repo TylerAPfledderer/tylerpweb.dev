@@ -1,0 +1,10 @@
+{
+  "open-source-collaborator": "Samarbejd",
+  "open-source-power-contributor": "Power Contributor",
+  "open-source-card-contributions": "Vis mine bidrag",
+  "open-source-card-project": "Vis projektet",
+  "open-source-chakra-desc-1": "Siden maj 2022, har jeg tjent som ekstern samarbejdspartner for en organisation af samme navn, hvis primære pakke er en UI-komponentbibliotek, der er bygget til React.",
+  "open-source-chakra-desc-2": "Bidrag bestod af forskellige opgaver for at forbedre chakra-indholdet og de underliggende scripts, opbygning af en pakkereversion til Vue 3, bygning af Vue-komponenter for det nye Ark UI-hovedløse komponentbibliotek og tilføje komponenter til chakra Pro-webstedet.",
+  "open-source-eth-desc-1": "Jeg blev en primær bidragyder til Ethereum.org i september 2022, som hjælper dem med at migrere deres brugergrænseflade fra Styled Components til Chakra UI. Jeg arbejdede som forbindelsesled mellem kerneteams, migrerende komponenter, revidering af PR'er, revision af migreringer og handicapvenlighed og integration af StorybookJS i deres arbejdsgange for det nye designsystem.",
+  "open-source-eth-desc-2": "Jeg havde hyppigt kommunikation med kundeudvikleren, designeren og resten af holdet, som hjalp med at sikre, at webstedets æstetik og anvendelighed opfyldte forventningerne. Jeg var også beæret over at modtage en indvirkningsgave fra Ethereum-fonden som anerkendelse for mine bidrag."
+}
