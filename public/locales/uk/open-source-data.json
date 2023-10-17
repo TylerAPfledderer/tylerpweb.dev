@@ -1,10 +1,10 @@
 {
-  "open-source-collaborator": "Collaborator",
-  "open-source-power-contributor": "Power Contributor",
-  "open-source-card-contributions": "View My Contributions",
-  "open-source-card-project": "View the Project",
-  "open-source-chakra-desc-1": "Since May of 2022, I have served as an external Collaborator for an organization of the same name whose primary package is a UI component library original built for React.",
-  "open-source-chakra-desc-2": "Contributions consisted of various tasks to improve the Chakra docsite content and underlying scripts, building of a package version for Vue 3, building Vue components for the new Ark UI headless component library, and adding components to the Chakra Pro site.",
-  "open-source-eth-desc-1": "I became a primary contributor to Ethereum.org in September 2022, helping them migrate their UI from Styled Components to Chakra UI. I worked as a liaison between the core teams, migrating components, reviewing PRs, auditing migrations and accessibility, and integrating StorybookJS into their workflow for the new Design System.",
-  "open-source-eth-desc-2": "I had frequent communication with the lead developer, designer, and the rest of the team, which helped ensure the site's aesthetics and usability met expectations. I was also honored to receive an Impact Gift from the Ethereum Foundation as recognition for my contributions."
+  "open-source-collaborator": "Автор",
+  "open-source-power-contributor": "Сила живлення",
+  "open-source-card-contributions": "Перегляд Мої Вклади",
+  "open-source-card-project": "Переглянути проект",
+  "open-source-chakra-desc-1": "З травня 2022 року я служив зовнішнім колаборатором для організації з тією ж назвою, основний пакет якого є бібліотекою компонентів інтерфейсу користувача, який був побудований для React.",
+  "open-source-chakra-desc-2": "Внесок складався з різних завдань, щоб поліпшити контент Chakra docsite і основні скрипти, будівництво пакету версії для Vue 3, побудова компонентів Vue для нового компоненту Ark UI, а також додавання компонентів до сайту Chakra Pro.",
+  "open-source-eth-desc-1": "Я став основним учасником Ethereum.org у вересні 2022 року, допомагаючи їм перенести свій інтерфейс з Styled Components до Chakra UI. Я працював між основними командами, мігруючи компоненти, переглядаючи PRs, аудиту міграцію та доступність, а також інтегрував StorybookJS в свій робочий процес для нової системи дизайну.",
+  "open-source-eth-desc-2": "Я часто спілкувався з провідником, дизайнером і рештою команди, яка допомагала забезпечити естетику сайту і свої очікування. Мені також було вшановано отримати подарунок від Фундації Ethereum як визнання за мої внески."
 }
