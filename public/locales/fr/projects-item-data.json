@@ -1,14 +1,14 @@
 {
   "project-item-card-github": "Source Github",
   "project-item-card-demo": "Site de démonstration",
-  "project-item-coffeeroaster-title": "Site d'abonnement Coffeeroaster",
-  "project-item-coffeeroaster-description": "Un site d'abonnement de 3 pages de conception à code, présentant un formulaire interactif pour présenter les options d'abonnement. L'interface utilisateur Chakra est utilisée pour les composants Styled réutilisables qui sont accessibles en premier, et TypeScript pour un état de vérification de type strict et toutes les requêtes statiques de GraphQL.",
-  "project-item-urlshortener-title": "Raccourisseur d'URL",
-  "project-item-urlshortener-description": "Projet de conception à code mettant l'accent sur l'utilisation de l'API Shrtcode pour raccourcir les URL. L'utilisation de Vuex et du stockage local permet de conserver la liste des liens générés et la possibilité de les copier facilement.",
+  "project-item-coffeeroaster-title": "Coffeeroaster Subscription Site",
+  "project-item-coffeeroaster-description": "Un site d'abonnement de 3 pages de conception à code, présentant un formulaire interactif pour présenter les options d'abonnement. L'interface utilisateur de Chakra est utilisée pour les composants Styled réutilisables qui sont accessibles en premier, et TypeScript pour un état de vérification de type strict et toutes les requêtes statiques à partir de GraphQL.",
+  "project-item-urlshortener-title": "Raccourci URL",
+  "project-item-urlshortener-description": "Un projet de conception à code portant sur l'utilisation de l'API Shrtcode pour raccourcir les URL. Utilisez Vuex et Local Storage pour conserver la liste des liens générés et la possibilité de les copier facilement.",
   "project-item-collegeemail-title": "Bulletin du Collège Courriel",
-  "project-item-collegeemail-description": "D'après un bulletin d'information d'un petit centre d'affaires local de la communauté locale. Utilise la vanille HTML et les techniques CSS en ligne avec une mise à jour de la conception et de la réactivité. (Tous les liens ne fonctionnent pas)",
+  "project-item-collegeemail-description": "Basé sur un véritable bulletin d'information d'un petit centre d'affaires local du collège communautaire. Utilise des techniques CSS à la vanille et en ligne avec une conception et une réactivité mises à jour. (Tous les liens ne fonctionnent pas)",
   "project-item-cloudflare-title": "Ecran de connexion Cloudflare",
-  "project-item-cloudflare-description": "Un écran de connexion réceptif a été construit en HTML. Une grande attention avec SASS, y compris des mixes robustes comme \"flexy\" pour appliquer toutes les propriétés de Flexbox nécessaires avec des préfixes rétrocompatibles.",
-  "project-item-weatherapp-title": "App météo de bureau",
-  "project-item-weatherapp-description": "Un écran de connexion réceptif a été construit en HTML. Une grande attention avec SASS, y compris des mixes robustes comme \"flexy\" pour appliquer toutes les propriétés de Flexbox nécessaires avec des préfixes rétrocompatibles."
+  "project-item-cloudflare-description": "Un écran de connexion réactive construit en HTML. L'accent est mis sur SASS, y compris des mixines robustes comme'flexy'pour appliquer toutes les propriétés de Flexbox nécessaires avec des préfixes compatibles avec les versions antérieures.",
+  "project-item-weatherapp-title": "Application météo de bureau",
+  "project-item-weatherapp-description": "Un écran de connexion réactive construit en HTML. L'accent est mis sur SASS, y compris des mixines robustes comme'flexy'pour appliquer toutes les propriétés de Flexbox nécessaires avec des préfixes compatibles avec les versions antérieures."
 }
