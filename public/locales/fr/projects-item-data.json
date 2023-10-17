@@ -1,14 +1,14 @@
 {
-  "project-item-card-github": "Github Source",
-  "project-item-card-demo": "Demo Site",
-  "project-item-coffeeroaster-title": "Coffeeroaster Subscription Site",
-  "project-item-coffeeroaster-description": "A design-to-code 3-page subscription site, showcasing an interactive form to present subscription options. Chakra UI is used for reusable Styled components that are accessible first, and TypeScript for strict type-checking state and all static querying from GraphQL.",
-  "project-item-urlshortener-title": "URL Shortener",
-  "project-item-urlshortener-description": "A design-to-code project focusing on the use of the Shrtcode API to shorten URLs. Use of Vuex and Local Storage to persist the list of generated links and the ability to copy them easily.",
-  "project-item-collegeemail-title": "College Newsletter Email",
-  "project-item-collegeemail-description": "Based on a real newsletter from a local community college small business center. Uses vanilla HTML and inline CSS techniques with updated design and responsiveness. (All links do not work)",
-  "project-item-cloudflare-title": "Cloudflare Login Screen",
-  "project-item-cloudflare-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes.",
-  "project-item-weatherapp-title": "Desktop Weather App",
-  "project-item-weatherapp-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes."
+  "project-item-card-github": "Source Github",
+  "project-item-card-demo": "Site de démonstration",
+  "project-item-coffeeroaster-title": "Site d'abonnement Coffeeroaster",
+  "project-item-coffeeroaster-description": "Un site d'abonnement de 3 pages de conception à code, présentant un formulaire interactif pour présenter les options d'abonnement. L'interface utilisateur Chakra est utilisée pour les composants Styled réutilisables qui sont accessibles en premier, et TypeScript pour un état de vérification de type strict et toutes les requêtes statiques de GraphQL.",
+  "project-item-urlshortener-title": "Raccourisseur d'URL",
+  "project-item-urlshortener-description": "Projet de conception à code mettant l'accent sur l'utilisation de l'API Shrtcode pour raccourcir les URL. L'utilisation de Vuex et du stockage local permet de conserver la liste des liens générés et la possibilité de les copier facilement.",
+  "project-item-collegeemail-title": "Bulletin du Collège Courriel",
+  "project-item-collegeemail-description": "D'après un bulletin d'information d'un petit centre d'affaires local de la communauté locale. Utilise la vanille HTML et les techniques CSS en ligne avec une mise à jour de la conception et de la réactivité. (Tous les liens ne fonctionnent pas)",
+  "project-item-cloudflare-title": "Ecran de connexion Cloudflare",
+  "project-item-cloudflare-description": "Un écran de connexion réceptif a été construit en HTML. Une grande attention avec SASS, y compris des mixes robustes comme \"flexy\" pour appliquer toutes les propriétés de Flexbox nécessaires avec des préfixes rétrocompatibles.",
+  "project-item-weatherapp-title": "App météo de bureau",
+  "project-item-weatherapp-description": "Un écran de connexion réceptif a été construit en HTML. Une grande attention avec SASS, y compris des mixes robustes comme \"flexy\" pour appliquer toutes les propriétés de Flexbox nécessaires avec des préfixes rétrocompatibles."
 }
