@@ -1,14 +1,14 @@
 {
-  "project-item-card-github": "Github Source",
-  "project-item-card-demo": "Demo Site",
-  "project-item-coffeeroaster-title": "Coffeeroaster Subscription Site",
-  "project-item-coffeeroaster-description": "A design-to-code 3-page subscription site, showcasing an interactive form to present subscription options. Chakra UI is used for reusable Styled components that are accessible first, and TypeScript for strict type-checking state and all static querying from GraphQL.",
-  "project-item-urlshortener-title": "URL Shortener",
-  "project-item-urlshortener-description": "A design-to-code project focusing on the use of the Shrtcode API to shorten URLs. Use of Vuex and Local Storage to persist the list of generated links and the ability to copy them easily.",
+  "project-item-card-github": "Jättiläislähde",
+  "project-item-card-demo": "Demon kohde",
+  "project-item-coffeeroaster-title": "Coffeeraster Tilaustoimipaikka",
+  "project-item-coffeeroaster-description": "Suunnittelukoodi 3-sivuinen tilaussivu, jossa voit esitellä tilausvalintoja vuorovaikutteisessa muodossa. Chakra UI on käytettävissä uudelleenkäytettäviä Styled-komponentteja, jotka ovat käytettävissä ensin, ja TypeScript-koodi tarkassa tyyppisessä tilassa ja kaikki GraphQL-kyselyssä esiintyviä staattisia kyselyjä varten.",
+  "project-item-urlshortener-title": "URL-osoite",
+  "project-item-urlshortener-description": "Suunnittelu-to-koodiprojekti, jossa keskitytään Shrtcode-ohjelmointirajapinnan käyttöön URL-osoitteiden lyhentämiseksi. Vuex-ja paikallistallennustilan avulla voit säilyttää luotujen linkkien luettelon ja kopioida ne helposti.",
   "project-item-collegeemail-title": "College Newsletter Email",
-  "project-item-collegeemail-description": "Based on a real newsletter from a local community college small business center. Uses vanilla HTML and inline CSS techniques with updated design and responsiveness. (All links do not work)",
-  "project-item-cloudflare-title": "Cloudflare Login Screen",
-  "project-item-cloudflare-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes.",
-  "project-item-weatherapp-title": "Desktop Weather App",
-  "project-item-weatherapp-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes."
+  "project-item-collegeemail-description": "Perustuu kunnon uutiskirjeeseen paikallisen yliopiston pienestä yrityskeskuksesta. Uses vanilla HTML-ja inline-CSS-tekniikoita päivitetyn suunnittelun ja reagointikyvyn avulla. (Kaikki linkit eivät toimi)",
+  "project-item-cloudflare-title": "Cloudflare Login -ruutu",
+  "project-item-cloudflare-description": "HTML-koodissa on otettu käyttöön vastaava sisäänkirjausnäyttö. Raskas paino SASS: n kanssa, mukaan lukien vankat sekoittimet, kuten \"flexy\", jotta kaikki tarvittavat Flexbox-ominaisuudet voidaan käyttää takaperin yhteensopivina etuliitteinä.",
+  "project-item-weatherapp-title": "Työpöydän säätila App",
+  "project-item-weatherapp-description": "HTML-koodissa on otettu käyttöön vastaava sisäänkirjausnäyttö. Raskas paino SASS: n kanssa, mukaan lukien vankat sekoittimet, kuten \"flexy\", jotta kaikki tarvittavat Flexbox-ominaisuudet voidaan käyttää takaperin yhteensopivina etuliitteinä."
 }
