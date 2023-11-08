@@ -29,7 +29,7 @@ export const openSourceData: OpenSourceDataItem[] = [
     role: "open-source-collaborator",
     description: ["open-source-chakra-desc-1", "open-source-chakra-desc-2"],
     contributionUrl:
-      "https://github.com/pulls?q=is%3Apr+author%3ATylerAPfledderer+user%3Achakra-ui+",
+      "https://github.com/pulls?q=is%3Amerged+is%3Apr+author%3ATylerAPfledderer+archived%3Afalse+org%3Achakra-ui",
     projectGithub: "https://github.com/chakra-ui",
   },
   {
@@ -38,7 +38,7 @@ export const openSourceData: OpenSourceDataItem[] = [
     role: "open-source-power-contributor",
     description: ["open-source-eth-desc-1", "open-source-eth-desc-2"],
     contributionUrl:
-      "https://github.com/pulls?q=is%3Apr+author%3ATylerAPfledderer+user%3Aethereum",
+      "https://github.com/pulls?q=is%3Amerged+is%3Apr+author%3ATylerAPfledderer+archived%3Afalse+org%3Aethereum",
     projectGithub: "https://github.com/ethereum/ethereum-org-website",
   },
 ];
