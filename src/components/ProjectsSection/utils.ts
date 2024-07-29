@@ -55,14 +55,16 @@ export type ProjectDataItem = {
 };
 
 export const projectsData: ProjectDataItem[] = [
-  {
-    demoUrl: "https://coffeeroastersub.gatsbyjs.io/",
-    description: "project-item-coffeeroaster-description",
-    githubSlug: "coffeeroaster-subscription-site",
-    image: "/images/projects/coffeeroasters-preview.png",
-    projectName: "project-item-coffeeroaster-title",
-    stackTags: [GatsbyIcon, ChakraIcon],
-  },
+  // TODO: This project is currently not functioning. Not displaying until the
+  // project is updated.
+  // {
+  //   demoUrl: "https://coffeeroastersub.gatsbyjs.io/",
+  //   description: "project-item-coffeeroaster-description",
+  //   githubSlug: "coffeeroaster-subscription-site",
+  //   image: "/images/projects/coffeeroasters-preview.png",
+  //   projectName: "project-item-coffeeroaster-title",
+  //   stackTags: [GatsbyIcon, ChakraIcon],
+  // },
   {
     demoUrl: "https://tylerapfledderer.github.io/url-shortening-api/",
     description: "project-item-urlshortener-description",
