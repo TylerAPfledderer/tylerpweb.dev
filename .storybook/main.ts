@@ -1,4 +1,5 @@
 import type { StorybookConfig } from "@storybook/nextjs";
+import * as path from "path";
 
 const config: StorybookConfig = {
   stories: [ "../src/__stories__/**/*.stories.tsx"],
@@ -13,5 +14,16 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ["../public"],
+  webpackFinal: async (config) => {
+    if (config.resolve) {
+
+      config.resolve.alias = {
+        ...config.resolve?.alias,
+        "@/lib": path.resolve(__dirname, "../src/lib"),
+      }
+    }
+
+    return config
+  }
 };
 export default config;

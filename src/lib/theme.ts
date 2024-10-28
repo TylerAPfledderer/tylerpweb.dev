@@ -1,127 +1,58 @@
-import { extendBaseTheme, theme } from "@chakra-ui/react";
+import { createSystem, defaultConfig } from "@chakra-ui/react";
 
-export default extendBaseTheme({
-  styles: {
-    global: {
-      body: {
-        bg: "background",
-        color: "body",
-        fontSize: "md",
-        lineHeight: "1",
+export const system = createSystem(defaultConfig, {
+  theme: {
+    tokens: {
+      fonts: {
+        heading: { value: "var(--font-tw)" },
+        body: { value: "var(--font-mulish)" },
       },
-      p: {
-        _notLast: {
-          mb: "text.base",
-        },
+      fontSizes: {
+        sm: { value: "1rem" },
+        md: { value: "1.33rem" },
+        lg: { value: "1.78rem" },
+        xl: { value: "2.37rem" },
+        "2xl": { value: "3.16rem" },
+        "3xl": { value: "4.21rem" },
+        "4xl": { value: "5.61rem" },
+      },
+      lineHeights: {
+        "1": { value: "2.375rem" },
+        "1.5": { value: "3.56rem" },
+        "2": { value: "4.75rem" },
+        "3": { value: "7.125rem" },
       },
     },
-  },
-  semanticTokens: {
-    colors: {
-      primary: {
-        base: "#297B91",
-        dark: "#1F5E6F",
-      },
-      secondary: {
-        base: "#FFB700",
-        light: "#FFD15C",
-        dark: "#C28B00",
-      },
-      background: "#182326",
-      body: "white",
-    },
-  },
-  fonts: {
-    heading: "var(--font-tw)",
-    body: "var(--font-mulish)",
-  },
-  fontSizes: {
-    sm: "1rem",
-    md: "1.33rem",
-    lg: "1.78rem",
-    xl: "2.37rem",
-    "2xl": "3.16rem",
-    "3xl": "4.21rem",
-    "4xl": "5.61rem",
-  },
-  lineHeights: {
-    "1": "2.375rem",
-    "1.5": "3.56rem",
-    "2": "4.75rem",
-    "3": "7.125rem",
-  },
-  space: {
-    text: {
-      sm: "1.188rem",
-      base: "2.375rem",
-      md: "3.563rem",
-      lg: "4.75rem",
-      xl: "5.938rem",
-      "2xl": "7.125rem",
-      "3xl": "8.313rem",
-      "4xl": "9.5rem",
-    },
-  },
-  components: {
-    Heading: {
-      baseStyle: {
-        fontFamily: "heading",
-        letterSpacing: "wide",
-        // Chrome only (In Canary v117.0.5847.0)
-        textWrap: "balance",
-      },
-      sizes: {
-        "4xl": {
+    textStyles: {
+      "4xl": {
+        value: {
           fontSize: ["2xl", "3xl", "4xl"],
           lineHeight: ["2", null, "3"],
+          letterSpacing: "wide",
         },
-        "3xl": {
+      },
+      "3xl": {
+        value: {
           fontSize: ["xl", "2xl", "3xl"],
           lineHeight: ["1.5", "2", null],
         },
-        "2xl": {
+      },
+
+      "2xl": {
+        value: {
           fontSize: ["lg", "xl", "2xl"],
           lineHeight: ["1", null, "2"],
         },
       },
-      defaultProps: {
-        size: "3xl",
-      },
     },
-    Button: {
-      baseStyle: {
-        ...theme.components.Button.baseStyle,
-        ...theme.components.Button.sizes?.lg,
-        fontSize: "sm",
-      },
-      variants: {
-        solid: {
-          color: "background",
-          bg: "secondary.base",
-          _hover: {
-            bg: "secondary.light",
-          },
-          _active: {
-            bg: "secondary.dark",
-          },
-        },
-        outline: {
-          border: "2px",
-          borderColor: "body",
-          _hover: {
-            bg: "body",
-            color: "background",
-          },
-          _active: {
-            opacity: 0.6,
-          },
+    recipes: {
+      heading: {
+        base: {
+          fontFamily: "heading",
+          letterSpacing: "wide",
+          textWrap: "balance",
         },
       },
-      defaultProps: {
-        variant: "solid",
-      },
     },
-    Tooltip: theme.components.Tooltip,
-    Tabs: theme.components.Tabs,
   },
 });
