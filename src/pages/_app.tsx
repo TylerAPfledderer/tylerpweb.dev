@@ -6,11 +6,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "../lib/theme";
 import seo from "../../next-seo.config";
 
-const titilliumWeb = Titillium_Web({
+export const titilliumWeb = Titillium_Web({
   weight: "700",
   subsets: ["latin"],
 });
-const mulish = Mulish({
+export const mulish = Mulish({
   weight: "400",
   subsets: ["latin"],
 });

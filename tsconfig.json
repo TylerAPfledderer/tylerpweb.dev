@@ -8,13 +8,15 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": "./",
     "paths": {
+      "@/lib/*": ["./src/lib/*"],
       "@/components/*": ["./src/components/*"],
       "@/data": ["./src/lib/data.ts"],
       "@/svg-icons": ["./src/lib/icons"]
@@ -25,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     "next-i18next.config.js",
-    "next.config.js"
+    "next.config.js",
+    "./.storybook/preview.tsx"
   ],
   "exclude": ["node_modules"]
 }
