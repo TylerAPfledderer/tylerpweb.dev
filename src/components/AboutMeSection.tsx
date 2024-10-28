@@ -23,7 +23,7 @@ export const AboutMeSection = () => {
       zIndex: -1,
       top: -14,
       h: calc("100%").add(size28).toString(),
-      w: "100vw",
+      w: "full",
       transform: "skewY(1deg)",
       boxShadow: `inset 0px -30px 20px -18px rgba(0, 0, 0, 0.2) , 
         0px -30px 20px -18px rgba(0, 0, 0, 0.2)`,
