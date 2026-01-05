@@ -1,7 +1,7 @@
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import { Trans, useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Box, Center, Divider, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text, Separator } from "@chakra-ui/react";
 import { AboutMeSection } from "@/components/AboutMeSection";
 import { HeroSection } from "@/components/HeroSection";
 import { MainSection } from "@/components/MainSection";
@@ -28,10 +28,10 @@ export default function Home(
         <MainSection
           py={{ base: "12", lg: "36" }}
           px={{ base: "4" }}
-          spacing={{ base: "20", lg: "36" }}
+          gap={{ base: "20", lg: "36" }}
         >
           <SkillsSection />
-          <Divider
+          <Separator
             borderStyle="solid"
             borderColor="primary.dark"
             maxW="container.xl"

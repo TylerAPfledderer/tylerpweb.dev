@@ -2,15 +2,13 @@ import {
   Box,
   Heading,
   List,
-  ListItem,
   VStack,
   createIcon,
-  PositionProps,
-  ResponsiveValue,
   Icon,
   Tooltip,
   VisuallyHidden,
 } from "@chakra-ui/react";
+import type { SystemStyleObject } from "@chakra-ui/react";
 import {
   HTML5Icon,
   CSS3Icon,
@@ -29,12 +27,14 @@ import { useTranslation } from "next-i18next";
 export const SkillsSection = () => {
   const { t } = useTranslation();
 
-  const skills: Array<
-    Pick<PositionProps, "top" | "left" | "right" | "bottom"> & {
-      Icon: typeof Icon;
-      label: string;
-    }
-  > = [
+  const skills: Array<{
+    top?: string | Array<string | null>;
+    left?: string | Array<string | null>;
+    right?: string | Array<string | null>;
+    bottom?: string | Array<string | null>;
+    Icon: typeof Icon;
+    label: string;
+  }> = [
     {
       Icon: HTML5Icon,
       left: "2",
@@ -104,29 +104,29 @@ export const SkillsSection = () => {
   ];
 
   return (
-    <VStack spacing={{ base: "16", md: "20" }}>
+    <VStack gap={{ base: "16", md: "20" }}>
       <Heading as="h3" size="2xl">
         {t("skills-title")}
       </Heading>
       <Box position="relative" w={{ base: "311px", md: "md" }}>
         <JourneyLine />
         <Box position="absolute" inset={0}>
-          <List aria-label="skills">
+          <List.Root aria-label="skills">
             {skills.map(({ Icon, label, ...rest }, idx) => (
-              <ListItem key={idx} position="absolute" {...rest}>
-                <Tooltip
-                  hasArrow
-                  label={label}
-                  bg="white"
-                  color="background "
-                  placement="auto-start"
-                >
-                  <Icon w="auto" h={{ base: "10", md: "16" }} aria-hidden />
-                </Tooltip>
+              <List.Item key={idx} position="absolute" {...rest}>
+                <Tooltip.Root>
+                  <Tooltip.Trigger asChild>
+                    <Icon w="auto" h={{ base: "10", md: "16" }} aria-hidden />
+                  </Tooltip.Trigger>
+                  <Tooltip.Content bg="white" color="background">
+                    {label}
+                  </Tooltip.Content>
+                  <Tooltip.Arrow bg="white" />
+                </Tooltip.Root>
                 <VisuallyHidden>{label}</VisuallyHidden>
-              </ListItem>
+              </List.Item>
             ))}
-          </List>
+          </List.Root>
         </Box>
       </Box>
     </VStack>

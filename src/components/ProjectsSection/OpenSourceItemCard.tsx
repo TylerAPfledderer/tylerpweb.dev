@@ -37,8 +37,8 @@ export const OpenSourceItemCard = (props: OpenSourceItemCardProps) => {
       maxW="container.md"
     >
       <Icon w="auto" height="24" />
-      <VStack spacing="text.base">
-        <VStack spacing={0}>
+      <VStack gap="text.base">
+        <VStack gap={0}>
           <Heading as="h3" size="2xl">
             {title}
           </Heading>
@@ -56,13 +56,16 @@ export const OpenSourceItemCard = (props: OpenSourceItemCardProps) => {
           justify="center"
           gap="4"
           wrap="wrap"
-          shouldWrapChildren
         >
-          <Button as={Link} href={contributionUrl} isExternal>
-            {t("open-source-card-contributions")}
+          <Button asChild>
+            <Link href={contributionUrl} target="_blank" rel="noopener noreferrer">
+              {t("open-source-card-contributions")}
+            </Link>
           </Button>
-          <Button as={Link} href={projectGithub} variant="outline" isExternal>
-            {t("open-source-card-project")}
+          <Button variant="outline" asChild>
+            <Link href={projectGithub} target="_blank" rel="noopener noreferrer">
+              {t("open-source-card-project")}
+            </Link>
           </Button>
         </Stack>
       </VStack>

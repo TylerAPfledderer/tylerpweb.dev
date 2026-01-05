@@ -4,8 +4,6 @@ import {
   Stack,
   Text,
   VStack,
-  calc,
-  useToken,
 } from "@chakra-ui/react";
 import { MainSection } from "./MainSection";
 import { Trans, useTranslation } from "next-i18next";
@@ -13,7 +11,6 @@ import { Trans, useTranslation } from "next-i18next";
 export const AboutMeSection = () => {
   const { t } = useTranslation();
 
-  const size28 = useToken("sizes", 28);
   const skewBackgroundStyles = {
     _before: {
       content: { lg: `""` },
@@ -22,21 +19,21 @@ export const AboutMeSection = () => {
       position: "absolute",
       zIndex: -1,
       top: -14,
-      h: calc("100%").add(size28).toString(),
+      h: "calc(100% + 7rem)",
       w: "full",
       transform: "skewY(1deg)",
-      boxShadow: `inset 0px -30px 20px -18px rgba(0, 0, 0, 0.2) , 
+      boxShadow: `inset 0px -30px 20px -18px rgba(0, 0, 0, 0.2) ,
         0px -30px 20px -18px rgba(0, 0, 0, 0.2)`,
     },
   };
   return (
     <MainSection
       bg="primary.base"
-      spacing={{ base: 16, lg: 36 }}
+      gap={{ base: 16, lg: 36 }}
       position="relative"
       {...skewBackgroundStyles}
     >
-      <VStack spacing="text.base" maxWidth="prose">
+      <VStack gap="text.base" maxWidth="prose">
         <Heading>
           <Highlight
             query={[t("about-title-highlight-1"), t("about-title-highlight-2")]}
@@ -61,7 +58,7 @@ export const AboutMeSection = () => {
       </VStack>
       <Stack
         direction={{ base: "column", lg: "row" }}
-        spacing={{ base: "text.sm", lg: 28 }}
+        gap={{ base: "text.sm", lg: 28 }}
         align="center"
         justify="space-between"
       >

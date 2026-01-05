@@ -4,7 +4,7 @@ import {
   VStack,
   Heading,
   Button,
-  Img,
+  Image,
   Text,
   Box,
   Link,
@@ -16,7 +16,7 @@ import { SocialLinksList } from "./SocialLinksList";
 export const HeroSection = () => {
   const { t } = useTranslation();
   return (
-    <MainSection spacing={20}>
+    <MainSection gap={20}>
       <Flex
         flexDir={{ base: "column", lg: "row" }}
         columnGap={8}
@@ -26,8 +26,8 @@ export const HeroSection = () => {
         w="full"
         maxW="container.lg"
       >
-        <VStack spacing="text.base">
-          <VStack spacing={{ sm: "text.sm" }}>
+        <VStack gap="text.base">
+          <VStack gap={{ sm: "text.sm" }}>
             <Heading as="h1" size="4xl">
               {t("hero-site-title")}
             </Heading>
@@ -39,11 +39,11 @@ export const HeroSection = () => {
             <Text>{t("hero-desc-1")}</Text>
             <Text>{t("hero-desc-2")}</Text>
           </Box>
-          <Button as={Link} href="#projects-contributions">
-            {t("hero-cta")}
+          <Button asChild>
+            <Link href="#projects-contributions">{t("hero-cta")}</Link>
           </Button>
         </VStack>
-        <Img
+        <Image
           src="/static/version-control.svg"
           alt=""
           flex={1}

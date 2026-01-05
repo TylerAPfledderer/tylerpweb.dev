@@ -27,7 +27,7 @@ function App({ Component, pageProps }: AppProps) {
         `}
       </style>
       <DefaultSeo {...seo} />
-      <ChakraProvider theme={theme}>
+      <ChakraProvider value={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
     </>

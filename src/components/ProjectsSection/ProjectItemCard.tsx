@@ -1,4 +1,4 @@
-import { Image } from "@chakra-ui/next-js";
+import Image from "next/image";
 import {
   Box,
   Button,
@@ -42,7 +42,7 @@ export const ProjectItemCard = (
 
   return (
     <Stack
-      spacing={0}
+      gap={0}
       direction={{
         base: "column",
         lg: idx % 2 === 0 ? "row" : "row-reverse",
@@ -71,7 +71,7 @@ export const ProjectItemCard = (
         flex={{ lg: "3" }}
         py={{ base: "4", lg: "16" }}
         px={{ base: "4", lg: "12" }}
-        spacing="5"
+        gap="5"
         border="1px"
         borderColor="white"
         borderTop={{ base: "none", lg: "1px" }}
@@ -89,29 +89,29 @@ export const ProjectItemCard = (
           },
         }}
       >
-        <HStack as={List} spacing="4">
+        <List.Root as={HStack} gap="4">
           {stackTags.map((Tag, idx) => (
-            <ListItem key={idx}>
+            <List.Item key={idx}>
               <Tag w="8" h="auto" />
-            </ListItem>
+            </List.Item>
           ))}
-        </HStack>
-        <VStack spacing="text.sm" maxW="xl">
+        </List.Root>
+        <VStack gap="text.sm" maxW="xl">
           <Heading as="h3" size="2xl">
             {t(projectName)}
           </Heading>
           <Text>{t(description)}</Text>
         </VStack>
         <HStack wrap="wrap" justify="center">
-          <Button
-            as={Link}
-            href={`https://github.com/tylerapfledderer/${githubSlug}`}
-            isExternal
-          >
-            {t("project-item-card-github")}
+          <Button asChild>
+            <Link href={`https://github.com/tylerapfledderer/${githubSlug}`} target="_blank" rel="noopener noreferrer">
+              {t("project-item-card-github")}
+            </Link>
           </Button>
-          <Button as={Link} variant="outline" href={demoUrl} isExternal>
-            {t("project-item-card-demo")}
+          <Button variant="outline" asChild>
+            <Link href={demoUrl} target="_blank" rel="noopener noreferrer">
+              {t("project-item-card-demo")}
+            </Link>
           </Button>
         </HStack>
       </VStack>
