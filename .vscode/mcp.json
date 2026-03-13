@@ -1,0 +1,34 @@
+{
+  "servers": {
+    "chakra-ui": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@chakra-ui/react-mcp"]
+    },
+    "react-icons": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "react-icons-mcp", "--stdio"]
+    },
+    "next-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "next-devtools-mcp"]
+    },
+    "crowdin": {
+      "type": "http",
+      "url": "https://mcp.crowdin.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${input:crowdin-token}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "crowdin-token",
+      "description": "Crowdin Personal Access Token",
+      "password": true
+    }
+  ]
+}
