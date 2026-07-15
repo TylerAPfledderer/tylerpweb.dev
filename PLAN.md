@@ -4,7 +4,7 @@
 
 `tylerpweb.dev` is a single-page portfolio **in production** (Next 13.4.5 Pages Router, Chakra UI 2.7, React 18.2, 13 i18n locales via next-i18next + Crowdin). Tyler wants three large changes. They were originally sequenced deps-first; the sequence is now **redesign-first**: (1) migrate **Chakra UI v2→v3**, (2) **redesign** to the approved Claude Code Design ("tylerpweb.dev redesign", ID `3888fdd5-74ed-4b01-9f59-d3c985e1ddde`), (3) update deps incl. **Next 13→16 last**.
 
-**Sequencing rationale (verified against current docs, not memory):** the redesign is authored against Chakra v3 (its token map is in `createSystem`'s `{ value: … }` shape), so it genuinely depends on the Chakra migration. But **Chakra v3 does _not_ depend on Next 16** — v3 needs React `>=18` (have 18.2 ✓), Emotion 11 (have 11.11 ✓), and is not locked to any Next major (and the one Next-coupled Chakra package, `@chakra-ui/next-js`, is dropped anyway). So Chakra v3 migrates cleanly on the **existing Next 13.4.5 stack**, the redesign builds on v3 without waiting for the Next upgrade, and **Next 13→16 decouples to the final PR**. Trade-off accepted: the redesign ships on Next 13 until PR3, so the remote's reported vulns aren't cleared until the Next bump lands last (see Step 0 §6).
+**Sequencing rationale (verified against current docs, not memory):** the redesign is authored against Chakra v3 (its token map is in `createSystem`'s `{ value: … }` shape), so it genuinely depends on the Chakra migration. But **Chakra v3 does _not_ depend on Next 16** — v3 needs React `>=18` (have 18.2 ✓), Emotion 11 (have 11.11 ✓), and is not locked to any Next major (and the one Next-coupled Chakra package, `@chakra-ui/next-js`, is dropped anyway). So Chakra v3 migrates cleanly on the **existing Next 13.4.5 stack**, the redesign builds on v3 without waiting for the Next upgrade, and **Next 13→16 decouples to the final PR**. Trade-off accepted: the redesign ships on Next 13 until PR3, so the `next`-attributable vulns aren't cleared until the Next bump lands last. **Note the trade-off is narrower than first stated** — the Next bump clears only the **26 `next` rows** of the measured **53**, and one CRITICAL (`i18next-fs-backend`, via `next-i18next`) is a production vuln it does *not* touch (see the re-baseline in Step 0 §6).
 
 Two realities verified against the tree still drive the approach:
 
@@ -95,7 +95,22 @@ main (production, protected — branch protection ON, CI check required)
    - `on: pull_request` **and** `push` for `[main, modernize-updates]` — the branch filter must include the integration branch or PRs into it run nothing.
    - Single `ubuntu-latest` job, **Bun** via `oven-sh/setup-bun` (pin a version) running on a **Node 24** runtime (`actions/setup-node@node-version: 24`, so the `chakra typegen` step has Node ≥20.6.0): `bun install --frozen-lockfile` → `bun run theme` → `bun run lint` → `bun run typecheck` → `bun run build`. (`--frozen-lockfile` reads `bun.lock`, so it must be committed.)
 5. **`.nvmrc` (`24`)** + `engines.node` `">=20.9.0"` in `package.json` (floor, not a hard-pin, so Vercel/contributors aren't over-constrained while `.nvmrc` selects 24 locally/CI). Node 24 is the latest LTS and satisfies Chakra v3 CLI (≥20.6.0) and Next 16 (≥20.9.0).
-6. Recommended now: **`.github/dependabot.yml`** — Dependabot doesn't support the bun ecosystem for lockfile updates; scope it to `github-actions` (weekly) for now and track app-dep bumps through the PRs. **Note the redesign-first trade-off:** the remote reports 65 vulns, and these are cleared by **PR3's** Next upgrade — which now lands *last*, so those vulns persist through PR1/PR2 (the redesign ships on Next 13 until then). Accepted; flag at the final gate.
+6. Recommended now: **`.github/dependabot.yml`** — Dependabot doesn't support the bun ecosystem for lockfile updates; scope it to `github-actions` (weekly) for now and track app-dep bumps through the PRs. ✅ Done.
+
+> **⚠️ RE-BASELINED 2026-07-15 — the "65 vulns" figure is retired, and the reason matters more than the number.**
+>
+> **Dependabot has been blind to the transitive tree since Step 0 (#14) deleted `yarn.lock`.** Measured: GitHub's dependency graph sees **38 packages**; the real tree has **~937**. Every one of Dependabot's open alerts is attributed to `package.json`, none to a lockfile, and **all 26 are for a single package (`next`)** — the only *direct* dep carrying advisories. The apparent 65 → 26 improvement is **measurement loss, not remediation**. Nothing was fixed.
+>
+> **True baseline (`bun audit`, 2026-07-15): 53 advisory rows — 2 critical, 21 high, 24 moderate, 6 low.**
+> - **26 rows are `next`** → these *do* clear with PR3's Next 13→16 bump. This is the only part of the original claim that survives.
+> - **27 rows are transitive and invisible to Dependabot** → `minimatch` ×3, `i18next-fs-backend` ×2 (**incl. 1 CRITICAL**), `flatted` ×2, `js-yaml` ×2, `picomatch` ×2, `postcss` ×2, `semver` ×2, `brace-expansion` ×2, plus `@babel/runtime`, `ajv`, `braces`, `cross-spawn`, `esbuild`, `micromatch`, `nanoid`, `word-wrap`, `yaml`, `zod`.
+> - **`i18next-fs-backend`'s CRITICAL is a genuine production runtime vuln** (reached via `next-i18next`) that **Next 16 will not touch** — it needs its own bump. It is invisible to Dependabot *and* unaddressed by the plan as written. Treat as the highest-priority dep item in PR3.
+>
+> **This is the same failure class as PR1's "typecheck passes":** a green-looking metric whose *measurement* broke. The count improved because we stopped being able to see, and the plan then cited that number as evidence.
+>
+> **Gate change:** Dependabot cannot be the vuln gate for this repo — it structurally cannot see a bun tree. **Use `bun audit` as the real check** (add it to `ci.yml` in PR3's dep pass; `bun audit --prod` for what ships).
+>
+> **Caveat on `--prod`:** it currently reports 52 of the 53, which is *not* 52 things shipping to users — `package.json` misclassifies `eslint`, `typescript`, `eslint-config-next`, and the `@types/*` into `dependencies` rather than `devDependencies`, so build-time chains (`minimatch`, `flatted`, `js-yaml`, `semver`, `ajv`, `word-wrap`, `cross-spawn`) count as prod. **Fix the classification in PR3's dep pass** — it is cheap and makes `--prod` mean something.
 7. Get CI **green on the current v2 codebase** (baseline) before any migration — proves the gate, captures a known-good start, **and confirms Next 13.4.5 builds on Node 24** (the Node-bump validation).
 8. **Branch protection is a GitHub-settings action Tyler must do** (require the CI check on `main` and the integration branch). Flag explicitly — not doable in-repo.
 
@@ -189,7 +204,12 @@ Each arrow is a CI-green gate. No two risky changes ride the same PR.
 2. Bump `next`, `eslint-config-next`, `@types/*`; **keep React 18.2** (Next 16 supports 18.2 or 19). Node 24 already pinned (Next 16 needs ≥20.9.0); TS 5.1.3 already clears Next 16's ≥5.1.0.
 3. Check `next-seo@6` compat with Next 16 (still consumed in `_app.tsx`).
 4. Re-verify the redesign + Chakra v3 render **unchanged** after the upgrade — the codemod touches Next internals (`next/image`, `next/font`, config), not Chakra, but confirm the redesigned sections and the swapped `<Image>` still render. Storybook visual-diff the sections against their PR2 baseline.
-5. **This is where the 65 vulns clear** (Next bump) — confirm the count drops. `bun run build` + run app. **Gate → final.**
+5. **Dep/vuln pass — re-specified (see the RE-BASELINED note in Step 0 §6).** "Confirm the count drops" is **no longer a valid check** — the count already dropped for the wrong reason (Dependabot went blind when `yarn.lock` was removed). Measure with **`bun audit`**, against the real 2026-07-15 baseline of **53 rows (2 critical, 21 high, 24 moderate, 6 low)**:
+   - **Expect the 26 `next` rows to clear** with the Next 13→16 bump. That is the Next bump's whole vuln contribution — it does **not** clear the other 27.
+   - **Bump `next-i18next` to clear `i18next-fs-backend`'s CRITICAL** — a real production runtime vuln that Next 16 does not touch, and that Dependabot cannot see. Highest-priority dep item here.
+   - **Fix the `dependencies`/`devDependencies` misclassification** (`eslint`, `typescript`, `eslint-config-next`, `@types/*` are in `dependencies`) so `bun audit --prod` reports what actually ships.
+   - **Add `bun audit` to `ci.yml`** — Dependabot structurally cannot gate a bun tree, so without this there is no vuln gate at all.
+   - Then `bun run build` + run app. **Gate → final.**
 
 ### Token map (design → Chakra v3 `createSystem`)
 
@@ -338,7 +358,7 @@ All six live in the project's `./.claude/rules/` and ship with the repo — none
 - **Each PR:** CI green + `verify`/`run` the app locally; visual-diff affected sections in Storybook; `code-review` the diff before merge to integration.
 - **Visual regression (Chromatic, #20)** — the gate for anything the compiler can't see. `chromatic.yml` builds Storybook with bun and publishes the prebuilt `storybook-static` (the action's package-manager detection is npm/yarn/pnpm-only; this repo is bun-only). `exitZeroOnChanges: true` — the job never fails on a diff; **Chromatic's own "UI Tests" check is the review gate**, staying pending until diffs are accepted. Token: `CHROMATIC_PROJECT_TOKEN` repo secret, never committed. Fork PRs get no secret and would fail — fine for a solo repo. TurboSnap deliberately off until baselines are stable.
 - **Pixel-diffing against a baseline build** (the technique that actually caught PR1's regressions, and should be re-used in PR2/PR3): build the previous branch's Storybook in a `git worktree`, serve both, and compare computed styles + screenshots with headless Chromium. It localises a diff to an element and property in a way Chromatic's thumbnails cannot.
-- **PR3 specifically:** confirm the redesign renders unchanged post-Next-16 (Storybook diff vs. PR2 baseline) **and** the 65 vulns clear.
+- **PR3 specifically:** confirm the redesign renders unchanged post-Next-16 (Storybook diff vs. PR2 baseline) **and** run **`bun audit`** against the 2026-07-15 baseline of **53 rows** — expecting the **26 `next` rows** to clear, *not* the whole set. **Do not use Dependabot's number as the check** — it sees only 38 of ~937 packages in this bun tree and reports `next` alone. See Step 0 §6.
 - **Before `main`:** deploy a **Vercel preview** of the integration branch; run the cross-cutting review **as a multi-agent Workflow (requires Tyler's explicit `ultracode` opt-in — pause and ask first; not self-launched)** (v3 correctness, a11y/contrast vs. the **AA** target, responsive, i18n coverage across all 13 locales); Tyler's final visual sign-off; then the single integration→`main` PR.
 
 ---
