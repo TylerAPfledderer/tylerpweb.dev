@@ -147,6 +147,26 @@ const config = defineConfig({
         },
         background: { value: "#182326" },
         body: { value: "white" },
+        // Redesign palette. These sub-keys are NOT among the ones v3's
+        // defaultConfig owns as semanticTokens (it owns bg.subtle/muted/panel
+        // and fg.DEFAULT), so they resolve correctly as plain tokens.
+        // fg.muted / fg.subtle / border.subtle DO collide — see semanticTokens.
+        bg: {
+          canvas: { value: "#0b1617" },
+          surface: { value: "#0f1e20" },
+          band: { value: "#122527" },
+        },
+        accent: {
+          solid: { value: "#33a6c0" },
+          emphasis: { value: "#56c4da" },
+          muted: { value: "#7fb6c2" },
+        },
+        warm: {
+          solid: { value: "#f2b544" },
+        },
+        fg: {
+          default: { value: "#eaf3f2" },
+        },
       },
       // v3 dropped the container.* sizes scale; re-added with the v2 values so
       // the maxW="container.*" call sites keep their caps.
@@ -162,6 +182,8 @@ const config = defineConfig({
       fonts: {
         heading: { value: "var(--font-tw)" },
         body: { value: "var(--font-mulish)" },
+        // Redesign: kickers, tags, sha labels, and the commit motif.
+        mono: { value: "var(--font-mono)" },
       },
       fontSizes: {
         sm: { value: "1rem" },
@@ -189,6 +211,25 @@ const config = defineConfig({
           "2xl": { value: "7.125rem" },
           "3xl": { value: "8.313rem" },
           "4xl": { value: "9.5rem" },
+        },
+      },
+    },
+    // These three names are already owned by v3's defaultConfig as
+    // semanticTokens. Declared as plain tokens they emit at
+    // `&:where(html, .chakra-theme)` — zero specificity — while v3's default
+    // emits at `:root &, .light &` (0,1,0). `:root` matches unconditionally, so
+    // v3's gray wins and the design colour is dead, typechecking clean the whole
+    // way. Declaring them here replaces the defaults at config-merge time and
+    // emits a single declaration. Safe from the `base`-is-a-condition-key trap:
+    // each takes a flat value, not a `.base` sub-key.
+    semanticTokens: {
+      colors: {
+        fg: {
+          muted: { value: "#a9bab9" },
+          subtle: { value: "#7a9ea0" },
+        },
+        border: {
+          subtle: { value: "#56c4da24" },
         },
       },
     },
