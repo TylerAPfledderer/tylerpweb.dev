@@ -63,13 +63,20 @@ main (production, protected — branch protection ON, CI check required)
  │
  └─ modernize-updates           ◄─── long-lived INTEGRATION branch
         │   (all feature branches merge HERE, never into main)
-        ├─ chore/storybook-setup   ─► integration   PR0
-        ├─ refactor/chakra-v3       ─► integration   PR1   (Chakra v2→v3, on Next 13)
+        ├─ chore/storybook-setup   ─► integration   PR0  ✅ MERGED (#17)
+        ├─ fix/self-host-fonts     ─► integration   ✅ MERGED (#18, unplanned — see below)
+        ├─ ci/chromatic            ─► integration   ✅ MERGED (#20, unplanned — see below)
+        ├─ refactor/chakra-v3       ─► integration   PR1   🔄 OPEN (#19, all checks green)
         ├─ feat/redesign            ─► integration   PR2   (redesign, Next 13 + Chakra v3)
         └─ chore/next16-upgrade     ─► integration   PR3   (Next 13→16, redesigned tree)
         │
         └─ modernize-updates ─► main   single final PR (after all gates + Vercel preview)
 ```
+
+**Two unplanned branches landed between PR0 and PR1**, both prompted by failures the planned gates couldn't see:
+
+- **#18 `fix/self-host-fonts`** — `next/font/google` fetches from Google Fonts *at build time* and intermittently ETIMEDOUTs on Vercel. Switched to self-hosted `@fontsource/*`. Makes builds offline-capable and deterministic; the token map below already reflects this.
+- **#20 `ci/chromatic`** — added a **Chromatic visual-regression gate**. Motivated directly by PR1: every gate (typecheck/lint/build/storybook) passed while 16 real visual regressions sat in the diff. Chromatic is now the only check in the stack that can see that class of failure, and it is in place *before* the redesign lands. It also surfaced two latent Storybook font bugs (see PR1 notes).
 
 `main` stays continuously deployable; the new site ships as one reviewed merge with a preview to eyeball.
 
@@ -92,7 +99,7 @@ main (production, protected — branch protection ON, CI check required)
 7. Get CI **green on the current v2 codebase** (baseline) before any migration — proves the gate, captures a known-good start, **and confirms Next 13.4.5 builds on Node 24** (the Node-bump validation).
 8. **Branch protection is a GitHub-settings action Tyler must do** (require the CI check on `main` and the integration branch). Flag explicitly — not doable in-repo.
 
-Storybook build / a11y / visual-regression steps are added to `ci.yml` **incrementally** as they land (PR0/PR2), not up front.
+Storybook build / a11y / visual-regression steps are added **incrementally** as they land, not up front. **Landed since:** `build-storybook` in `ci.yml` (PR0/#17) and a separate `chromatic.yml` visual-regression workflow (#20) — the latter pulled forward ahead of the redesign precisely because PR1 proved the other gates are blind to visual change. a11y remains a PR2 addition.
 
 Verify: push a throwaway branch → confirm the workflow installs with bun on Node 24, runs `lint`/`typecheck`/`build`, and passes on the current tree.
 
@@ -123,7 +130,25 @@ Each arrow is a CI-green gate. No two risky changes ride the same PR.
 
 **PR0 — Storybook safety net** — **`/effort` → `low`** (scaffold + config, build-verified) (into integration first). Stand up Storybook on the *current* components so every section is visually diff-able through PR1/PR2. Confirm `next/font` + path aliases (`@/components`, `@/data`, `@/svg-icons`) resolve. Add a Storybook build step to `ci.yml`.
 
+> **STATUS: COMPLETE (PR [#17](https://github.com/TylerAPfledderer/tylerpweb.dev/pull/17) → `modernize-updates`).** Storybook 10.5 + stories for all 5 sections. **Deviation: `@storybook/react-vite`, not `@storybook/nextjs-vite`** — SB10's Next framework requires Next ≥14.1, incompatible with Next 13.4.5; `next/image` is stubbed via a `.storybook/mocks` alias instead. Revisit swapping to the Next framework at **PR3**, once Next 16 lands. Also required `tsconfig` `moduleResolution: node → bundler` (SB10 subpath exports); no app regression. **Known gap:** the vitest browser tests (the play/CssCheck assertions) are **not** in CI — cold-cache Vite dep re-optimization makes the first run flaky. `build-storybook` is the CI gate; Chromatic (#20) now covers the visual half.
+
 **PR1 — Chakra v2→v3** — **`/effort` → `medium`** for the mechanical steps (1–3, 6–8), **raise `/effort` → `high` for the `theme.ts`→`createSystem` rewrite (step 4)** where recipe/slot API shape and token porting need judgment; drop back to `medium` after (Pages Router, current design, **still Next 13.4.5**) — use the official **`chakra-ui-migrate`** skill + `@chakra-ui/react-mcp` over freehand:
+
+> **STATUS: OPEN, all checks green — PR [#19](https://github.com/TylerAPfledderer/tylerpweb.dev/pull/19) → `modernize-updates`** (lint/typecheck/build ✅ · Vercel ✅ · Chromatic ✅). Awaiting Tyler's merge.
+>
+> **⚠️ The single most important lesson, and it changes how PR2/PR3 must be verified: for a Chakra v3 token migration, "typecheck passes" is close to ZERO signal.** Every token-taking prop (`bg`, `maxW`, `border`, `gap`, …) also accepts an arbitrary string, so a dead token compiles clean, emits raw text as a CSS value, and the **browser silently discards it**. All four gates were green while 16 real regressions sat in the diff. **Do not treat green CI as evidence of visual correctness — that is what Chromatic (#20) is for.**
+>
+> **Root-cause class to expect again in PR2:** v2's `extendBaseTheme` **emptied `components`**, so our recipes were the *only* component styles. v3's `createSystem(defaultConfig, …)` **merges Chakra's default recipes**, which supply values v2 never had — every one of these was invisible to the compiler: outline button inheriting `colorPalette.fg` (near-black on the dark surface), `size.lg`'s `textStyle:"md"` clobbering `fontSize`, heading `4xl`'s textStyle overriding `letterSpacing`, Link's base `gap:1.5`, a 1px transparent border on Button, `borderRadius` `l2`(4px) vs v2's 6px.
+>
+> **Deviations from the plan as written (all verified, all in the diff):**
+> - **Step 2's `@chakra-ui/codemod upgrade` was NOT used** — it is interactive and won't run headless. The migration was **compiler-driven** instead (v3's type errors defined the work list), then pixel-verified. The `spacing`→`gap` rename (18 sites) was done by hand.
+> - **`as` → `asChild` is the project convention** (Tyler's call): `<Parent as={Child}>` → `<Parent asChild><Child/></Parent>`, with the `as` component as the singleton child. **This is load-bearing, not cosmetic** — flattening `as={List}` to style props typechecks but renders a `div`, silently destroying `ul`/`li` semantics.
+> - **Colors live in `tokens`, not `semanticTokens`.** In v3, `base` is the *default-condition* key inside `semanticTokens`, so `primary: { base, dark }` registers `colors.primary` and never `primary.base` — every `.base` call site emitted raw, invalid CSS. Plain `tokens` is also more honest: this app has no color mode.
+> - **`sizes.container.*` re-added** with the v2 values (640/768/1024/1280) — v3 removed the scale, silently unbounding 4 `maxW` sites.
+> - **`Tabs`/`Tooltip` slot recipes were NOT needed.** Tabs uses the stock `Tabs.Root` + a `triggerStyles` object; Tooltip uses the generated `src/components/ui/tooltip.tsx` snippet.
+> - **ACCEPTED VISUAL CHANGE — Projects tabs.** v3 removed the `enclosed-colored` variant outright; the section now uses `enclosed`. Selected-tab chrome is `bg.muted` rather than white and the panel is 8px taller (~7% pixel diff). **Tyler accepted this as-is** — the redesign restyles these tabs anyway. Accept it in Chromatic when baselining.
+> - **Storybook fonts were never loading** (pre-existing, exposed by Chromatic): the preview declared the font *names* but nothing imported the `@fontsource` CSS, and the vars were set on a decorator `<div>` — too late, since the theme's font tokens resolve `var(--font-tw)` at `:root`. Fixed via `.storybook/fonts.css` at `:root`. **PR2 must keep those imports** in `preview.tsx`.
+> - **Visual parity was proven by pixel-diffing every section against a v2 baseline build**, not by eye: AboutMe/ReachOut/Skills = **0px**, Hero = 7px (sub-pixel `CurvedDownArrow` centering; its viewBox letterboxes identically). Re-use this technique in PR2/PR3.
 1. `@chakra-ui/react@latest` + `@emotion/react@latest`; **remove** `@chakra-ui/next-js`, `@emotion/styled`, `framer-motion`, old `@chakra-ui/cli` (all confirmed unused in `src/` or superseded). New `@chakra-ui/cli` provides `chakra typegen` (needs Node ≥20.6.0 — satisfied by the Step 0 Node 24 pin).
 2. `npx @chakra-ui/codemod upgrade` — this renames the **18 `spacing`→`gap`** call-sites; hand-verify the **5 `spacing="text.*"` → `gap="text.*"`** cases still resolve against the ported token scale.
 3. Generate v3 provider → `src/components/ui/provider.tsx`; swap `_app.tsx` to `<Provider>` with `value=` (not `theme=`).
@@ -135,6 +160,14 @@ Each arrow is a CI-green gate. No two risky changes ride the same PR.
 9. **(Workflow — requires Tyler's `ultracode` opt-in; ask before launching)** Verify every section in Storybook + app via a **fan-out review** — one agent per section (Hero, About, Skills, Work/Projects, Contact, Header-less current tree) checking v3-token resolution, `gap` correctness, recipe/slot output, and Storybook visual diff, then an adversarial verify pass on any flagged regression. Efficient here because the 6 sections are independent and the check is identical per section. **Gate.**
 
 **PR2 — Redesign** — **`/effort` → `high`** for design work; the parallelizable build and sweep run as **multi-agent Workflows (each requires Tyler's `ultracode` opt-in — ask first)** (on **Next 13 + Chakra v3** — Next 16 comes *after*):
+
+> **Carry forward from PR1 — non-negotiable, each one cost a round-trip:**
+> - **Green CI ≠ correct.** Dead tokens compile and are silently dropped by the browser. When the token map lands, prove each token resolves (`system.token("colors.x.y")` → a real value, `system.css({bg:"x.y"})` → `var(--chakra-*)`, **not** raw passthrough) before trusting any of it.
+> - **Don't put design colors in `semanticTokens`** unless they are genuinely conditional — `base` is the default-condition key there and will swallow `x.base`. Plain `tokens`.
+> - **Check every new token group against v3's defaults.** Anything the redesign introduces (radii, shadows, borders, sizes) may collide with a default recipe that v2 never had. Assume collision; verify.
+> - **`as={X}` → `asChild` + `<X>` as the singleton child.** Never flatten to style props.
+> - **Keep `.storybook/preview.tsx`'s `@fontsource` + `./fonts.css` imports.** Drop them and fonts silently fall back to a system face with nothing turning red — and Chromatic then baselines the wrong typeface.
+> - **Baseline Chromatic *before* redesigning**, then diff against it. Accept the already-agreed Projects tab change when it appears.
 1. **(`/effort` → `high`)** Resolve the open design gaps below (mobile layouts, real assets, contrast) — judgment-heavy, do sequentially.
 2. **(Workflow — requires Tyler's `ultracode` opt-in; ask before launching)** Build sections to the new design as a **fan-out, one section per agent behind Storybook** — `Header.tsx` (NEW sticky nav) · Hero (branch-graph SVG) · About · Skills (commit-rail SVG) · Work (`ProjectsSection`, tab toggle) · `ContactSection.tsx` (rename of `ReachOutSection`, links only). Shared scaffolding first (`MainSection` band wrapper, `SocialLinksList`, `src/components/ui/provider.tsx`, token map applied to theme) so agents build against a stable base; use worktree isolation since sections are built in parallel. Efficient because each section is an independent unit against a fixed design + token map. Fonts added via `next/font/google` (available in Next 13.4) as CSS vars — extend the existing `--font-*` pattern with `--font-mono`.
 3. Re-string all copy as `t()` keys; update `public/locales/en/*`; verify against the **reviewed Crowdin setup** (run `crowdin status`/MCP query first to confirm sources + languages), then re-sync Crowdin (approval-gated).
@@ -228,7 +261,7 @@ Route: read-only MCP verification needs no approval; the `@crowdin/cli` add and 
 |---|---|---|
 | `branch-safety.md` | (always) | Production; PRs target integration, never `main` directly; only meta/docs push direct |
 | `dependencies.md` | (always) | Dep add/remove needs approval; don't reintroduce dropped deps (`@chakra-ui/next-js`, `@emotion/styled`, `framer-motion`) |
-| `chakra-v3.md` | `src/lib/theme.ts`, `src/components/**`, `src/lib/icons/**` | `createSystem` not `extendTheme`/`extendBaseTheme`; `<Provider value=>`; `gap` not `spacing`; `createIcon`/`<Icon asChild>`; run `chakra typegen` after theme edits |
+| `chakra-v3.md` | `src/lib/theme.ts`, `src/components/**`, `src/lib/icons/**` | `createSystem` not `extendTheme`/`extendBaseTheme`; `<Provider value=>`; `gap` not `spacing`; `createIcon`/`<Icon asChild>`; run `chakra typegen` after theme edits. **Plus, from PR1:** `as={X}` → `asChild` + `<X>` as the singleton child (never flatten to style props — it kills `ul`/`li`/`a` semantics); colors in `tokens`, **not** `semanticTokens` (`base` is a reserved condition key there); **typecheck cannot catch a dead token** — verify tokens resolve (`system.token(...)` → a real `var(--chakra-*)`, not raw passthrough) |
 | `i18n.md` | `src/components/**`, `public/locales/**` | Every user-facing string is a `t()` key; update `en` source; Crowdin sync is approval-gated |
 | `components.md` | `**/*.{tsx,jsx}` | Story-first (`storybook:stories` before any component change) |
 | `git-safety.md` | (always) | Never commit/push/merge to the protected default branch (`main`) or force-push without explicit approval |
@@ -265,9 +298,11 @@ All six live in the project's `./.claude/rules/` and ship with the repo — none
 
 ## Verification
 
-- **Step 0:** throwaway branch → `ci.yml` installs with bun on **Node 24** and runs `lint`/`typecheck`/`build`, passing on the current v2 tree (this also confirms **Next 13.4.5 builds on Node 24**).
+- **Step 0:** throwaway branch → `ci.yml` installs with bun on **Node 24** and runs `lint`/`typecheck`/`build`, passing on the current v2 tree (this also confirms **Next 13.4.5 builds on Node 24**). ✅ done.
 - **Crowdin:** MCP query returns the live project's 13 languages + 3 source namespaces matching the repo; `crowdin status` (if `@crowdin/cli` added) runs clean before any re-sync.
 - **Each PR:** CI green + `verify`/`run` the app locally; visual-diff affected sections in Storybook; `code-review` the diff before merge to integration.
+- **Visual regression (Chromatic, #20)** — the gate for anything the compiler can't see. `chromatic.yml` builds Storybook with bun and publishes the prebuilt `storybook-static` (the action's package-manager detection is npm/yarn/pnpm-only; this repo is bun-only). `exitZeroOnChanges: true` — the job never fails on a diff; **Chromatic's own "UI Tests" check is the review gate**, staying pending until diffs are accepted. Token: `CHROMATIC_PROJECT_TOKEN` repo secret, never committed. Fork PRs get no secret and would fail — fine for a solo repo. TurboSnap deliberately off until baselines are stable.
+- **Pixel-diffing against a baseline build** (the technique that actually caught PR1's regressions, and should be re-used in PR2/PR3): build the previous branch's Storybook in a `git worktree`, serve both, and compare computed styles + screenshots with headless Chromium. It localises a diff to an element and property in a way Chromatic's thumbnails cannot.
 - **PR3 specifically:** confirm the redesign renders unchanged post-Next-16 (Storybook diff vs. PR2 baseline) **and** the 65 vulns clear.
 - **Before `main`:** deploy a **Vercel preview** of the integration branch; run the cross-cutting review **as a multi-agent Workflow (requires Tyler's explicit `ultracode` opt-in — pause and ask first; not self-launched)** (v3 correctness, a11y/contrast vs. the **AA** target, responsive, i18n coverage across all 13 locales); Tyler's final visual sign-off; then the single integration→`main` PR.
 
