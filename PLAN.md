@@ -2,7 +2,7 @@
 
 ## Context
 
-`tylerpweb.dev` is a single-page portfolio **in production** (Next 13.4.5 Pages Router, Chakra UI 2.7, React 18.2, 13 i18n locales via next-i18next + Crowdin). Tyler wants three large changes. They were originally sequenced deps-first; the sequence is now **redesign-first**: (1) migrate **Chakra UI v2→v3**, (2) **redesign** to the approved Claude Code Design ("Website redesign proposal"), (3) update deps incl. **Next 13→16 last**.
+`tylerpweb.dev` is a single-page portfolio **in production** (Next 13.4.5 Pages Router, Chakra UI 2.7, React 18.2, 13 i18n locales via next-i18next + Crowdin). Tyler wants three large changes. They were originally sequenced deps-first; the sequence is now **redesign-first**: (1) migrate **Chakra UI v2→v3**, (2) **redesign** to the approved Claude Code Design ("tylerpweb.dev redesign", ID `3888fdd5-74ed-4b01-9f59-d3c985e1ddde`), (3) update deps incl. **Next 13→16 last**.
 
 **Sequencing rationale (verified against current docs, not memory):** the redesign is authored against Chakra v3 (its token map is in `createSystem`'s `{ value: … }` shape), so it genuinely depends on the Chakra migration. But **Chakra v3 does _not_ depend on Next 16** — v3 needs React `>=18` (have 18.2 ✓), Emotion 11 (have 11.11 ✓), and is not locked to any Next major (and the one Next-coupled Chakra package, `@chakra-ui/next-js`, is dropped anyway). So Chakra v3 migrates cleanly on the **existing Next 13.4.5 stack**, the redesign builds on v3 without waiting for the Next upgrade, and **Next 13→16 decouples to the final PR**. Trade-off accepted: the redesign ships on Next 13 until PR3, so the remote's reported vulns aren't cleared until the Next bump lands last (see Step 0 §6).
 
@@ -161,6 +161,17 @@ Each arrow is a CI-green gate. No two risky changes ride the same PR.
 
 **PR2 — Redesign** — **`/effort` → `high`** for design work; the parallelizable build and sweep run as **multi-agent Workflows (each requires Tyler's `ultracode` opt-in — ask first)** (on **Next 13 + Chakra v3** — Next 16 comes *after*):
 
+> **STATUS: READY TO RUN — front-load session complete (2026-07-15).** All 6 design gaps are closed or decided (#1 closed by Tyler's mobile-first rewrite; #3's fix verified as already applied in the design; #5 no-op — design and repo are identical; #6 decided — 3 neutrals + 1 accent). Palette verified 1:1 against the 9 declared swatches. Dep adds **pre-cleared**: `@fontsource/jetbrains-mono` and `@crowdin/cli`. Crowdin re-sync **carved out** of the run. Approval checkpoint 3 (token naming) **satisfied**.
+>
+> **Can PR2 run unattended? Not fully — but the mid-run stops are removable, and the rest are terminal.** Preconditions for a zero-interruption run:
+> 1. **Session `ultracode` toggle ON** — a *standing* opt-in (sanctioned above: "the keyword in his prompt, **or the session ultracode toggle on**"). This is the only thing that removes the two mid-run stops (steps 2 and 4). Without it, the executor must stop and ask at each.
+> 2. **Session effort at `high`** — PR2 is `/effort high` end to end, so no effort gate fires mid-run. (Gate fires only at the PR3 boundary, which drops to `medium`.)
+>
+> **Irreducibly human, and all at the end — do not attempt to automate:**
+> - **Chromatic diff accepts** — `exitZeroOnChanges: true` keeps the *job* green, but the **UI Tests check stays pending until a human accepts**. In a redesign **every story diffs**, so there is no version of this where a machine signs off on the new look. That is the gate working, not a limitation.
+> - **Copy/content + final visual sign-off** (checkpoint 6) — the point of a redesign is that Tyler likes it.
+> - **Merge approval** (checkpoint 5).
+
 > **Carry forward from PR1 — non-negotiable, each one cost a round-trip:**
 > - **Green CI ≠ correct.** Dead tokens compile and are silently dropped by the browser. When the token map lands, prove each token resolves (`system.token("colors.x.y")` → a real value, `system.css({bg:"x.y"})` → `var(--chakra-*)`, **not** raw passthrough) before trusting any of it.
 > - **Don't put design colors in `semanticTokens`** unless they are genuinely conditional — `base` is the default-condition key there and will swallow `x.base`. Plain `tokens`.
@@ -182,9 +193,18 @@ Each arrow is a CI-green gate. No two risky changes ride the same PR.
 
 ### Token map (design → Chakra v3 `createSystem`)
 
-**Source of truth (DECIDED):** tokens are built **only** from `DesignSystem.dc.html` inside the "Website redesign proposal" Claude Design project (`3888fdd5-74ed-4b01-9f59-d3c985e1ddde`). **Do not reference any other Claude Design project** — the standalone "Personal website design system" project is explicitly out of scope and must not be consulted for token values, even if it appears to overlap. The layout is `Portfolio.dc.html` in the same project.
+**Source of truth (DECIDED):** tokens are built **only** from `DesignSystem.dc.html` inside the **"tylerpweb.dev redesign"** Claude Design project — **match on the ID `3888fdd5-74ed-4b01-9f59-d3c985e1ddde`, not the name** (it was renamed from "Website redesign proposal" on 2026-07-15; the ID is stable and is what this constraint actually pins). **Do not reference any other Claude Design project** — the standalone "Personal website design system" project is explicitly out of scope and must not be consulted for token values, even if it appears to overlap. The layout is `Portfolio.dc.html` in the same project.
 
-Canvas `#0b1617`→`bg.canvas` · Surface `#0f1e20`→`bg.surface` · Band `#122527`→`bg.band` · Teal `#33a6c0`→`accent.solid`/`primary` · Teal-bright `#56c4da`→`accent.emphasis`/link · Amber `#f2b544`→`warm.solid` · Ink `#eaf3f2`→`fg.default` · Muted `#a3b5b4`→`fg.muted` · Line `#56c4da24`→`border.subtle`. Fonts (Titillium Web / Mulish / **JetBrains Mono**) **self-hosted via `@fontsource/*` packages** imported in `_app.tsx` (NOT `next/font/google` — that fetches from Google Fonts at build time and intermittently ETIMEDOUTs on Vercel; switched away in `fix/self-host-fonts`). Font families are set as CSS vars `--font-tw`/`--font-mulish`/`--font-mono` and referenced from `theme.tokens.fonts`. For JetBrains Mono add `@fontsource/jetbrains-mono` + `--font-mono`.
+**✅ Verified against source** — the design system declares exactly **9 swatches** (`DesignSystem.dc.html`, `renderVals()`), and this map mirrors them 1:1. No drift:
+
+Canvas `#0b1617`→`bg.canvas` · Surface `#0f1e20`→`bg.surface` · Band `#122527`→`bg.band` · Teal `#33a6c0`→`accent.solid`/`primary` · Teal-bright `#56c4da`→`accent.emphasis`/link · Amber `#f2b544`→`warm.solid` · Ink `#eaf3f2`→`fg.default` · Line `#56c4da24`→`border.subtle`.
+
+**The `fg` ramp is gap #6's decision, not the swatch list** — the published "Muted" swatch (`#a3b5b4`) is unused, so **`fg.muted` = `#a9bab9`**, plus `fg.subtle` = `#7a9ea0` and `accent.muted` = `#7fb6c2`. See gap #6 for the full table and the absorbed tints.
+
+Fonts (Titillium Web / Mulish / **JetBrains Mono**) **self-hosted via `@fontsource/*` packages** imported in `_app.tsx` (NOT `next/font/google` — that fetches from Google Fonts at build time and intermittently ETIMEDOUTs on Vercel; switched away in `fix/self-host-fonts`). Font families are set as CSS vars `--font-tw`/`--font-mulish`/`--font-mono` and referenced from `theme.tokens.fonts`.
+
+**JetBrains Mono — ✅ APPROVED (dep add pre-cleared for the PR2 run).** The design uses it for kickers, tags, sha labels, and the commit motif; it is absent from `package.json`, `_app.tsx`, and `.storybook/fonts.css`. Add `@fontsource/jetbrains-mono` + `--font-mono` + `theme.tokens.fonts.mono`.
+> **⚠️ PR1 lesson, applies verbatim:** declare `--font-mono` at **`:root`** — in **both** `_app.tsx` *and* `.storybook/fonts.css`. `--chakra-fonts-mono: var(--font-mono)` is substituted at computed-value time **on the element where it is declared**, so a decorator-level wrapper cannot satisfy it: the token renders `undefined` and **typechecks clean**.
 
 ---
 
@@ -213,8 +233,8 @@ The executor runs automated work freely between these points but **must stop and
 2. **Before each dependency add/remove/upgrade:**
    - **PR1** — Chakra swap (`@chakra-ui/react@latest`, `@emotion/react@latest`) + the 4 removals (`@chakra-ui/next-js`, `@emotion/styled`, `framer-motion`, old `@chakra-ui/cli`).
    - **PR3** — Next/deps bumps (`next`, `eslint-config-next`, `@types/*`).
-3. **On `theme.ts` semantic token naming** (PR1 step 4 / PR2 token map) — Tyler owns design/architecture naming.
-4. **Before any Crowdin re-sync or locale change** (PR2 step 3) — external, published.
+3. **On `theme.ts` semantic token naming** (PR1 step 4 / PR2 token map) — Tyler owns design/architecture naming. — **✅ SATISFIED for PR2** in the front-load session: the 9-swatch map is verified against source and the `fg` ramp is decided (gap #6). Re-gate only if PR2 needs a token *not* on the map.
+4. **Before any Crowdin re-sync or locale change** (PR2 step 3) — external, published. — **Carved out of the PR2 run** (see Crowdin section); still gated, just no longer mid-run.
 5. **Before merging any PR into the integration branch** — after CI green, a `code-review` of the diff, then Tyler's go.
 6. **Redesign copy/content + final visual sign-off** (PR2).
 7. **The single integration→`main` PR** — production; always PR + approval, after the multi-agent Workflow review (Tyler's `ultracode` opt-in) and Vercel preview.
@@ -251,9 +271,14 @@ The site's 13-locale sync runs through `crowdin.yml`, which is currently just a 
 
 1. **Confirm `.mcp.json` crowdin server connects** — provide `CROWDIN_TOKEN`, then via the MCP query the live project to verify: (a) the project's target languages exactly match the 13 in `next-i18next.config.js`; (b) all three source namespaces (`common.json`, `projects-item-data.json`, `open-source-data.json`) are registered as sources; (c) the file mapping (`%two_letters_code%/%original_file_name%`) resolves to the real `public/locales/<lang>/` paths; (d) current translation progress per language. This is read-only — the primary "test" with no new dependency.
 2. **Audit `crowdin.yml` for up-to-date correctness**: `%two_letters_code%` is valid for the current all-two-letter locale set; confirm no `preserve_hierarchy`/`base_path` drift, and decide whether auth stays via the Crowdin **GitHub app integration** (recommended — no secrets in repo) or moves to CLI env vars.
-3. **Optional CI-testable path (approval-gated dep add):** add `@crowdin/cli` as a devDep + a `"crowdin:status"` script (`crowdin status`) and reference `${CROWDIN_PROJECT_ID}`/`${CROWDIN_PERSONAL_TOKEN}` env in `crowdin.yml`; this makes `crowdin config`/`crowdin status` a runnable dry-run locally and (with a secret) an optional CI check. Recommend adding it so PR2's re-sync is verifiable before it touches the published project.
+3. **CI-testable path — ✅ APPROVED (dep add pre-cleared).** Add `@crowdin/cli` as a devDep + a `"crowdin:status"` script (`crowdin status`) and reference `${CROWDIN_PROJECT_ID}`/`${CROWDIN_PERSONAL_TOKEN}` env in `crowdin.yml`; this makes `crowdin config`/`crowdin status` a runnable dry-run locally and (with a secret) an optional CI check. **Do this first**, so the re-sync is verifiable before it touches the published project.
 
-Route: read-only MCP verification needs no approval; the `@crowdin/cli` add and any actual upload/re-sync are **approval-gated** (external, published).
+**Route (DECIDED — the re-sync is carved OUT of the PR2 run):**
+- **In PR2, automated:** the in-repo half only — new `en` source strings (gap #4's design copy) + i18n **key extraction**. Both are mechanical, inward, and reversible.
+- **Separate follow-up, approval-gated:** the actual upload / re-sync of the 12 non-en locales. External and published, so it must not fire mid-run — and it should not push to the live project *before* the redesign has visual sign-off anyway.
+- Read-only MCP verification needs no approval.
+
+Rationale: this is what keeps the PR2 run free of external side effects. The re-translation churn is real (gap #4: source strings change, so all 12 locales re-translate, not just new keys) — it deserves its own gate, not a stop in the middle of a build.
 
 **`./.claude/rules/*.md`** (auto-load; `paths:` frontmatter scopes a rule):
 
@@ -274,7 +299,7 @@ All six live in the project's `./.claude/rules/` and ship with the repo — none
 
 ## Open design gaps (accepted, resolve before PR2)
 
-1. **Mobile/responsive** — hero is a desktop row; nav has no mobile menu. **(Tyler updating in Claude Design now.)**
+1. **Mobile/responsive — CLOSED.** Tyler rewrote the design mobile-first (verified in `Portfolio.dc.html`): base inline styles are the phone layout, with `@media (min-width:640px)` swapping `.nav-toggle`/`.nav-panel` → `.nav-links-full`, `@media (min-width:900px)` restoring the hero row + contact card, and a real mobile menu (`toggleMenu`/`menuOpen` state + `<sc-if>`). **⚠️ Note for step 4:** the skills rail uses a **container query** — `@container skills (min-width:820px)` swapping `.skills-rail-desktop`/`.skills-rail-mobile` — *not* a media query, so the responsive sweep cannot fan out over viewport widths alone for that section.
 2. **Project assets — NOT a gap; reuse what exists.** The design's placeholders map 1:1 to existing repo assets — wire the redesign to them, don't source anything new:
    - Screenshots: all 5 in `public/images/projects/*-preview.png` (referenced by `projectsData[].image`).
    - Demo URLs: real, per-project in `projectsData[].demoUrl`.
@@ -283,16 +308,26 @@ All six live in the project's `./.claude/rules/` and ship with the repo — none
    - Motif asset `public/static/version-control.svg` already exists.
    - (Confirms gap #4's weather issue is *only* the locale description string; its image/slug/demo are correct.)
 3. **Contrast — measured (WCAG); DECIDED: target AA, relabel the claim (teal token unchanged):**
-   - **Fix:** `#5f8384` sha/"node" labels (10–11px) = **4.44 → fails AA** → brighten to ≥4.5 (≈`#7a9ea0`).
-   - **Relabel:** design-system copy claims "WCAG AAA (7:1)" but teal `#33a6c0` on canvas = 6.45 (and `#04191d`-on-teal button = 6.33) → change the stated promise to **AA**; **do not** brighten teal, so `accent.solid`/token map is unchanged.
+   - **Fix — ✅ APPLIED IN THE DESIGN (verified).** `#5f8384` sha/"node" labels (10–11px) = **4.44 → failed AA** → brighten to ≥4.5 (≈`#7a9ea0`). `Portfolio.dc.html` now renders the sha labels at `fill:'#7a9ea0'` (**6.33** on canvas, **5.48** on band) — clears AA. Nothing left to do here; PR2 just ports the current values.
+   - **Relabel — ✅ APPLIED IN THE DESIGN (verified).** Copy claimed "WCAG AAA (7:1)" but teal `#33a6c0` on canvas = 6.45 (and `#04191d`-on-teal button = 6.33) → restate the promise as **AA**; **do not** brighten teal, so `accent.solid`/token map is unchanged. `DesignSystem.dc.html`'s "Accessible first" principle now reads *"Text, links, and accents meet WCAG **AA** on the dark canvas; interactive targets are ≥44px."* **Gap #3 is fully closed** — both the fix and the relabel have landed.
    - Correction to earlier draft: `#7fb6c2` mono labels = **7.6–8.2, pass AAA** (not a problem). Ink/amber/muted/teal-bright link all pass AAA.
 4. **Content drift — DECIDED: design copy wins.** Adopt the design's rewritten copy as the new `en` source across the 3 i18n namespaces (NOT `src/lib/data.ts`, which holds only social links; project/OSS structure lives in `ProjectsSection/utils.ts`), then re-translate all 13 locales from it:
    - **🐛 Fixes existing data bug:** `project-item-weatherapp-description` is currently a copy-paste of the Cloudflare login text; the design's correct weather copy replaces it.
    - Hero, About, and all 5 project descriptions are rewritten to the design's tighter copy → new `en` source strings.
-   - **Translation churn:** because source strings change, the Crowdin re-sync in PR2 re-translates all 12 non-en locales (not just new keys) — larger than a keys-only sync; budget for it.
+   - **Translation churn:** because source strings change, the re-sync re-translates all 12 non-en locales (not just new keys) — larger than a keys-only sync; budget for it. **Split (DECIDED):** PR2 does the in-repo half only (new `en` source strings + key extraction, both automatable); the **upload/re-sync is carved out to an approval-gated follow-up** so it never fires mid-run — and never pushes to the live project before the redesign has visual sign-off. See the Crowdin section.
    - Preserve the `about-main-description` `<0>…</0>` Chakra-link interpolation as a `t()` with a component (don't hardcode the inline `<a>` the design shows).
-5. **Skills set** — design's commit-rail hardcodes **11 skills** in order (HTML5→Next); confirm the set/order. The 13 icons cover them (+ `EthIcon` for OSS, `CurvedDownArrow` for UI).
-6. **Token-map fidelity** — design uses ~5 muted body tints (`#a9bab9`, `#c3d2d1`, `#c6d5d4`, `#b8c9c8`); decide whether to tokenize a couple (`fg.muted` + `fg.subtle`) or collapse to one.
+5. **Skills set — DECIDED: no change; adopt as-is.** Verified the design's `skills` array (`Portfolio.dc.html`) against `SkillsSection.tsx`: **identical set, order, and label strings** — `HTML5 · CSS3 · JavaScript · SASS · Bootstrap · VueJS · ReactJS · GatsbyJS · TailwindCSS · Chakra UI · NextJS`. All 11 icons already exist in `src/lib/icons/`.
+   - **New data PR2 must carry across (design content, not a decision):** the design assigns each skill a **brand colour**, used for the commit-rail ring stroke + dot fill. The repo's icons are currently monochrome (`primary.base`), so this is a new per-skill field: HTML5 `#E34F26` · CSS3 `#1572B6` · JavaScript `#F7DF1E` · SASS `#CC6699` · Bootstrap `#7952B3` · VueJS `#42B883` · ReactJS `#61DAFB` · GatsbyJS `#8A4BAF` · TailwindCSS `#38BDF8` · Chakra UI `#2F9E9B` · NextJS `#cfd8d7`.
+6. **Token-map fidelity — DECIDED: 3 neutrals + 1 accent (Chakra's native idiom).** Measured every tint (WCAG, vs canvas/surface/band): **contrast does not force this decision — all clear AA**, lowest being `#7a9ea0` at **5.48** on the band. So it's an authoring-ergonomics call. **Also found: the declared "Muted" swatch `#a3b5b4` is used nowhere** — the design actually renders `#a9bab9`; the published swatch and the code already disagree. The 10 neutrals cluster into 4 luminance tiers (~16 ink / ~12 body / ~9 secondary / ~6.5 micro) and collapse to:
+
+   | Token | Hex | Ratio | Role | Absorbs |
+   |---|---|---|---|---|
+   | `fg.default` | `#eaf3f2` | 16.30 | headings, primary, strong | `#dbeceb` (15.08) |
+   | `fg.muted` | `#a9bab9` | 9.12 | body + descriptive copy | `#c6d5d4` (12.15), `#c3d2d1` (11.79), `#b8c9c8` (10.71), `#a3b5b4` (8.61, declared/unused) |
+   | `fg.subtle` | `#7a9ea0` | 6.33 | micro labels, sha, meta | `#8ea3a2` (6.93) |
+   | `accent.muted` | `#7fb6c2` | 8.21 | mono micro-labels | — *(teal-tinted → accent ramp, not a neutral)* |
+
+   Rationale: maps 1:1 onto v3's native `fg` / `fg.muted` / `fg.subtle` — no invented tier names. **Use `#a9bab9`, not the declared `#a3b5b4`** — match what the design renders. **Accepted cost:** the ~12 tier collapses into 9.12, so long-form body copy dims slightly and the idle tab label (`#b8c9c8`, 10.71) drops to 9.12 — sub-perceptual in isolation, visible only in a side-by-side diff. Expect these as *intentional* deltas when pixel-diffing.
 
 ---
 
