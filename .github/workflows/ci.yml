@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # Bun drives install + scripts. Version pinned to match packageManager in package.json.
       - name: Setup Bun
@@ -22,7 +22,7 @@ jobs:
 
       # Node 24 LTS runtime for the tools bun invokes (next build, chakra typegen — needs Node >= 20.6.0).
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 24
 
