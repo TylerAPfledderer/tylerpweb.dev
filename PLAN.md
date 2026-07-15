@@ -149,7 +149,7 @@ Each arrow is a CI-green gate. No two risky changes ride the same PR.
 
 **PR1 — Chakra v2→v3** — **`/effort` → `medium`** for the mechanical steps (1–3, 6–8), **raise `/effort` → `high` for the `theme.ts`→`createSystem` rewrite (step 4)** where recipe/slot API shape and token porting need judgment; drop back to `medium` after (Pages Router, current design, **still Next 13.4.5**) — use the official **`chakra-ui-migrate`** skill + `@chakra-ui/react-mcp` over freehand:
 
-> **STATUS: OPEN, all checks green — PR [#19](https://github.com/TylerAPfledderer/tylerpweb.dev/pull/19) → `modernize-updates`** (lint/typecheck/build ✅ · Vercel ✅ · Chromatic ✅). Awaiting Tyler's merge.
+> **STATUS: ✅ MERGED 2026-07-15 — PR [#19](https://github.com/TylerAPfledderer/tylerpweb.dev/pull/19) → `modernize-updates`** (lint/typecheck/build ✅ · Vercel ✅ · Chromatic ✅). Chakra v3.36.0 is live on the integration branch, on Next 13.4.5 as planned. **PR2 is now the active phase.**
 >
 > **⚠️ The single most important lesson, and it changes how PR2/PR3 must be verified: for a Chakra v3 token migration, "typecheck passes" is close to ZERO signal.** Every token-taking prop (`bg`, `maxW`, `border`, `gap`, …) also accepts an arbitrary string, so a dead token compiles clean, emits raw text as a CSS value, and the **browser silently discards it**. All four gates were green while 16 real regressions sat in the diff. **Do not treat green CI as evidence of visual correctness — that is what Chromatic (#20) is for.**
 >
@@ -180,7 +180,7 @@ Each arrow is a CI-green gate. No two risky changes ride the same PR.
 >
 > **Can PR2 run unattended? Not fully — but the mid-run stops are removable, and the rest are terminal.** Preconditions for a zero-interruption run:
 > 1. **Session `ultracode` toggle ON** — a *standing* opt-in (sanctioned above: "the keyword in his prompt, **or the session ultracode toggle on**"). This is the only thing that removes the two mid-run stops (steps 2 and 4). Without it, the executor must stop and ask at each.
-> 2. **Session effort at `high`** — PR2 is `/effort high` end to end, so no effort gate fires mid-run. (Gate fires only at the PR3 boundary, which drops to `medium`.)
+> 2. ~~**Session effort at `high`**~~ — **SUPERSEDED 2026-07-15.** These two preconditions are mutually unsatisfiable: `/effort ultracode` *is* `xhigh` + workflow orchestration, so there is no mode that is both "ultracode ON" (precondition 1, which PR2's fan-out steps require) and "effort exactly `high`". **Resolved (Tyler, 2026-07-15): run PR2 on `ultracode`.** `xhigh ≥ high`, and it satisfies precondition 1. The `/effort → high` tags on PR2 step 1 and the routing table are **informational for PR2**; do not gate on them. The effort gate resumes at the **PR3 boundary** (drops to `medium`).
 >
 > **Irreducibly human, and all at the end — do not attempt to automate:**
 > - **Chromatic diff accepts** — `exitZeroOnChanges: true` keeps the *job* green, but the **UI Tests check stays pending until a human accepts**. In a redesign **every story diffs**, so there is no version of this where a machine signs off on the new look. That is the gate working, not a limitation.
@@ -189,8 +189,34 @@ Each arrow is a CI-green gate. No two risky changes ride the same PR.
 
 > **Carry forward from PR1 — non-negotiable, each one cost a round-trip:**
 > - **Green CI ≠ correct.** Dead tokens compile and are silently dropped by the browser. When the token map lands, prove each token resolves (`system.token("colors.x.y")` → a real value, `system.css({bg:"x.y"})` → `var(--chakra-*)`, **not** raw passthrough) before trusting any of it.
-> - **Don't put design colors in `semanticTokens`** unless they are genuinely conditional — `base` is the default-condition key there and will swallow `x.base`. Plain `tokens`.
-> - **Check every new token group against v3's defaults.** Anything the redesign introduces (radii, shadows, borders, sizes) may collide with a default recipe that v2 never had. Assume collision; verify.
+> - **Don't put design colors in `semanticTokens`** unless they are genuinely conditional — `base` is the default-condition key there and will swallow `x.base`. Plain `tokens`. **⚠️ This rule INVERTS for names v3 already owns — see the collision finding below; it applies to exactly 3 tokens on the approved map.**
+> - **Check every new token group against v3's defaults.** Anything the redesign introduces (radii, shadows, borders, sizes) may collide with a default recipe that v2 never had. Assume collision; verify. **This was not hypothetical — it hit 3 of the 11 mapped tokens (below).**
+
+> **🔴 MEASURED 2026-07-15 — 3 of the 11 tokens on the approved map are DEAD as specified. Fix before PR2 step 2.**
+>
+> Probed empirically against the real `@chakra-ui/react@3.36.0` (not docs — the docs do not state precedence). Placing the map in plain `tokens` as the rule above prescribes:
+>
+> | Token | Plain-`tokens` result | Why |
+> |---|---|---|
+> | `bg.canvas` · `bg.surface` · `bg.band` | ✅ `#0b1617` / `#0f1e20` / `#122527` | v3 owns `bg.subtle`/`muted`/`panel`, **not** these sub-keys |
+> | `fg.default` | ✅ `#eaf3f2` | v3 owns `fg.DEFAULT` → `--chakra-colors-fg`, a different var |
+> | `accent.*` · `warm.solid` | ✅ raw hex | v3 owns no `accent`/`warm` namespace |
+> | **`fg.muted`** | 🔴 renders v3 `gray-600` | **collides** with v3's default semanticToken |
+> | **`fg.subtle`** | 🔴 renders v3 `gray-400` | **collides** |
+> | **`border.subtle`** | 🔴 renders v3 `gray-50` | **collides** |
+>
+> **Mechanism — specificity, not source order.** A plain token emits at `&:where(html, .chakra-theme)`; `:where()` has **zero specificity**. v3's default semanticToken emits at `:root &, .light &` — `:root` is (0,1,0) **and matches every document unconditionally**. So v3's light-mode gray wins *even though this app has no color mode and never renders a `.light` class*. Three declarations of the same custom property; ours loses. It typechecks clean and Chromatic would show gray text nobody could explain.
+>
+> **Fix (verified):** put **`fg.muted`, `fg.subtle`, `border.subtle` in `semanticTokens`** — that emits a single `&:where(html, .chakra-theme)` declaration and v3's light/dark defaults are replaced at config-merge time. Everything else on the map stays in plain `tokens`. Safe because these three take a flat `value:` (no `.base` sub-key), so the `base`-is-a-condition-key trap does not apply.
+>
+> **Alternative if a flat rename is preferred:** a project-owned namespace (`ink.muted` etc.) also probes clean — but it abandons the "maps 1:1 onto v3's native `fg`/`fg.muted`/`fg.subtle`" rationale that gap #6 chose these names for. **Recommend the `semanticTokens` fix; it keeps gap #6's decision intact.** Tyler's call — token naming is approval-gated (checkpoint 3).
+>
+> **Reusable probe** (this is what checkpoint 3's "prove each token resolves" should mean in practice):
+> ```ts
+> system.tokens.cssVarMap  // → Map<condition, Map<cssVar, value>>; >1 condition for your
+>                          //   var = a default is contending for the same name
+> system.getTokenCss()     // → the emitted selectors; compare specificity
+> ```
 > - **`as={X}` → `asChild` + `<X>` as the singleton child.** Never flatten to style props.
 > - **Keep `.storybook/preview.tsx`'s `@fontsource` + `./fonts.css` imports.** Drop them and fonts silently fall back to a system face with nothing turning red — and Chromatic then baselines the wrong typeface.
 > - **Baseline Chromatic *before* redesigning**, then diff against it. Accept the already-agreed Projects tab change when it appears.
@@ -284,6 +310,10 @@ These are the mode-switch points, consolidated. **Resolve each tag per the legen
 ## Project config to initialize (safe, project-local — after approval)
 
 **`.mcp.json`** (project root — Claude Code ignores `.vscode/mcp.json`), mirroring the 4 servers already in `.vscode/mcp.json`: `@chakra-ui/react-mcp`, `react-icons-mcp`, `next-devtools-mcp`, `crowdin` (http; token via `${CROWDIN_TOKEN}` env, translating the VS Code `${input:...}` form).
+
+> **STATUS: ✅ DONE 2026-07-15.** Both `.mcp.json` and all 6 `.claude/rules/*.md` were written this session. They had been **silently skipped** — listed as the "first deliverable after approval" but never created, so every gate below ran on PLAN.md prose alone through PR0/PR1. Formats verified against current Claude Code docs before authoring: `.claude/rules/` with `paths:` (a **list** of globs) is real and lazy-loads on matching file reads; `.mcp.json` uses `mcpServers` + `${VAR}` / `${VAR:-default}` expansion.
+>
+> **⚠️ Action for Tyler:** Claude Code has **no equivalent of VS Code's `${input:...}`** prompt — it is env-var only. The crowdin server needs **`CROWDIN_TOKEN` exported in the environment**, or it will pass the literal `${CROWDIN_TOKEN}` and warn. This is why `.vscode/mcp.json` could not be copied verbatim.
 
 ### Crowdin setup review (do early — before PR2 relies on it) — **`/effort` → `low`**
 
