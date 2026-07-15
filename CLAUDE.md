@@ -5,11 +5,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-yarn dev          # Start development server
-yarn build        # Build for production
-yarn lint         # Run ESLint (also runs automatically via Husky pre-commit hook)
-yarn theme        # Generate Chakra UI theme tokens from src/lib/theme.ts
-yarn theme:watch  # Watch and regenerate theme tokens on change
+bun run dev          # Start development server
+bun run build        # Build for production
+bun run lint         # Run ESLint (also runs automatically via Husky pre-commit hook)
+bun run typecheck    # Type-check with tsc --noEmit
+bun run theme        # Generate Chakra UI theme tokens from src/lib/theme.ts
+bun run theme:watch  # Watch and regenerate theme tokens on change
 ```
 
 ## Architecture

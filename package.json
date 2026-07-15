@@ -4,11 +4,16 @@
   "author": "Tyler Pfledderer <tyler.pfledderer@gmail.com>",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "bun@1.3.14",
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "theme": "chakra-cli tokens src/lib/theme.ts",
     "theme:watch": "chakra-cli tokens src/lib/theme.ts --watch",
     "prepare": "husky install"
