@@ -1,0 +1,57 @@
+name: Chromatic
+
+on:
+  pull_request:
+    branches: [main, modernize-updates]
+  push:
+    branches: [main, modernize-updates]
+
+# Visual regression baselines for the Storybook section stories. This is the gate the
+# redesign (PR2) leans on: it catches unintended visual drift that lint/typecheck/build
+# structurally cannot see.
+jobs:
+  chromatic:
+    name: Visual regression
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Chromatic diffs against a baseline commit, so it needs full history —
+          # a shallow clone makes it unable to find the ancestor build.
+          fetch-depth: 0
+
+      # Bun drives install + scripts. Version pinned to match packageManager in package.json.
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
+
+      # Node 24 LTS runtime for the tools bun invokes (chakra typegen needs Node >= 20.6.0).
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate theme typings
+        run: bun run theme
+
+      # Build with bun ourselves rather than handing Chromatic a buildScriptName: the
+      # action shells out to a detected package manager (npm/yarn/pnpm) and this repo is
+      # bun-only. Publishing a prebuilt static dir sidesteps that entirely.
+      - name: Build Storybook
+        run: bun run build-storybook
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@v18
+        with:
+          # Set as a repo secret — never commit the project token.
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: storybook-static
+          # Visual changes are frequently intentional (the redesign is next), so don't
+          # fail the job on them. Chromatic posts its own "UI Tests" check, which stays
+          # pending until the diffs are accepted — that is the actual review gate.
+          exitZeroOnChanges: true
