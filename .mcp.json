@@ -19,7 +19,7 @@
       "type": "http",
       "url": "https://mcp.crowdin.com/mcp/",
       "headers": {
-        "Authorization": "Bearer ${CROWDIN_TOKEN}"
+        "Authorization": "Bearer ${CROWDIN_PERSONAL_TOKEN}"
       }
     }
   }

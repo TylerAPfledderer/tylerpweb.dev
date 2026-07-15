@@ -313,7 +313,34 @@ These are the mode-switch points, consolidated. **Resolve each tag per the legen
 
 > **STATUS: ✅ DONE 2026-07-15.** Both `.mcp.json` and all 6 `.claude/rules/*.md` were written this session. They had been **silently skipped** — listed as the "first deliverable after approval" but never created, so every gate below ran on PLAN.md prose alone through PR0/PR1. Formats verified against current Claude Code docs before authoring: `.claude/rules/` with `paths:` (a **list** of globs) is real and lazy-loads on matching file reads; `.mcp.json` uses `mcpServers` + `${VAR}` / `${VAR:-default}` expansion.
 >
-> **⚠️ Action for Tyler:** Claude Code has **no equivalent of VS Code's `${input:...}`** prompt — it is env-var only. The crowdin server needs **`CROWDIN_TOKEN` exported in the environment**, or it will pass the literal `${CROWDIN_TOKEN}` and warn. This is why `.vscode/mcp.json` could not be copied verbatim.
+> **⚠️ Action for Tyler:** Claude Code has **no equivalent of VS Code's `${input:...}`** prompt — it is env-var only. The crowdin server needs **`CROWDIN_PERSONAL_TOKEN` exported in the environment**, or it will pass the literal `${CROWDIN_PERSONAL_TOKEN}` and warn. This is why `.vscode/mcp.json` could not be copied verbatim.
+>
+> **Env-var name is deliberate:** `CROWDIN_PERSONAL_TOKEN` (+ `CROWDIN_PROJECT_ID`) are the names **Crowdin CLI v4 auto-detects from the shell** — so one exported variable serves *both* the MCP server and `crowdin status`, and `crowdin.yml` needs no `api_token`/`project_id` keys at all (shell env is auto-detected; the `*_env` mapping form is only needed to point at differently-named vars). Do not invent a second name for the same secret.
+
+### Crowdin token scopes (personal access token) — least-privilege
+
+crowdin.com, not Enterprise, so every Enterprise-only scope (`vendor`, `client`, `user`, `team`, `field`, `group`, `organization`, `automation*`) is **N/A**.
+
+**Issue two tokens, matching the plan's own carve-out** — the read-only verification is automatable and un-gated; the re-sync is approval-gated and must not be able to fire early. A read-only token makes that boundary structural rather than procedural.
+
+**Token A — verification (needed now; PR2 + `crowdin status` + optional CI check). All Read only:**
+
+| Scope | Key | Covers |
+|---|---|---|
+| Projects | `project` | (a) target languages match the 13 in `next-i18next.config.js` |
+| Source files & strings | `project.source` | (b) the 3 namespaces are registered as sources; (c) the `%two_letters_code%/%original_file_name%` mapping resolves |
+| Translation status | `project.status` | (d) per-language progress; this is what `crowdin status` reads |
+
+**Token B — re-sync (mint only when the approval-gated follow-up runs):**
+
+| Scope | Key | Access | Covers |
+|---|---|---|---|
+| Source files & strings | `project.source` | **Read *and* Write** | `crowdin upload sources` — the new `en` strings |
+| Translations | `project.translation` | Read only | `crowdin download` (Read+Write **only** if ever uploading translations) |
+
+**Deliberately not granted:** `*` (all scopes) · `tm` · `glossary` · `mt` · `ai*` · `project.member` · `project.task` · `project.report` · `project.screenshot` · `project.webhook` · `webhook` · `notification` · `language` · `application` · `security-log`. None are used by this repo's sync.
+
+`project.status` is **Read only by definition** (no write level exists), so Token A cannot mutate the live project even by mistake — which is exactly the property the PR2 carve-out wants.
 
 ### Crowdin setup review (do early — before PR2 relies on it) — **`/effort` → `low`**
 
