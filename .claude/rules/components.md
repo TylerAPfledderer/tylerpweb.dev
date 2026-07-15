@@ -32,6 +32,14 @@ lands.
   gate and stays pending until a human accepts. In a redesign every story diffs; a machine
   cannot sign off on the new look.
 - **Baseline Chromatic before redesigning**, then diff against it.
+- **`a11y: { test: 'error' }` in `preview.tsx` does NOT gate CI.** The addon's own comment
+  says `'error'` = "fail CI on a11y violations"; that is **false for this repo**, because
+  CI never runs vitest (see the bullet above). It only bites where story tests actually
+  run. The real CI gate for accessibility is **Chromatic's accessibility tests**, which
+  run axe on the Storybook build `chromatic.yml` already uploads and mark the PR
+  unreviewed on a *new* violation (pre-existing ones get baselined, like visual diffs).
+  They must be **enabled from the Chromatic project's Manage page** — a settings action,
+  same class as branch protection, not doable in-repo.
 - **Pixel-diff against a baseline build** for anything subtle — build the previous
   branch's Storybook in a `git worktree`, serve both, compare computed styles +
   screenshots with headless Chromium. This is what actually caught PR1's 16 regressions;

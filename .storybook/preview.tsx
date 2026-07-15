@@ -25,9 +25,27 @@ const preview: Preview = {
 
     a11y: {
       // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: 'todo'
+      // 'error' - fail the story test on a11y violations
+      // 'off'  - skip a11y checks entirely
+      //
+      // 'error', so a violation fails the run instead of being filed as a TODO nobody
+      // is obliged to act on — the same failure class as "typecheck passes on a dead
+      // token". Verified rather than assumed: axe flags the tab trigger at 1.83:1 when
+      // the tab list sits on v3's default gray-100 (the PR #22 bug).
+      //
+      // ⚠️ This does NOT gate CI by itself. The upstream comment claiming 'error' =
+      // "fail CI" is wrong for this repo: CI runs theme/lint/typecheck/build/
+      // build-storybook and NOT vitest (see the NOTE in ci.yml — the browser tests need
+      // an optimizeDeps.include fix + `playwright install --with-deps` first). So this
+      // only bites where story tests actually run: locally, and in CI once that
+      // follow-up lands.
+      //
+      // The real CI gate is Chromatic's own accessibility tests, which run axe on the
+      // Storybook build already uploaded by chromatic.yml and mark the PR unreviewed on
+      // a NEW violation (pre-existing ones are baselined). Those must be switched on
+      // from the Chromatic project's Manage page — a settings action, not an in-repo
+      // one.
+      test: 'error'
     }
   },
   decorators: [
