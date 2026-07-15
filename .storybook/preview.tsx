@@ -3,15 +3,22 @@ import type { Preview } from "@storybook/react-vite";
 import { ChakraProvider } from "@chakra-ui/react";
 import { I18nextProvider } from "react-i18next";
 
+// Register the @font-face rules, mirroring _app.tsx. Declaring the family names in
+// fontVars below is not enough on its own — without these imports nothing loads the
+// actual files, so any machine that lacks the fonts locally (e.g. Chromatic's Linux
+// capture container) silently falls back to a system font. Keep the weights in sync
+// with _app.tsx so Storybook renders what production renders.
+import "@fontsource/titillium-web/700.css";
+import "@fontsource/mulish/400.css";
+
 import theme from "../src/lib/theme";
 import i18n from "./i18n";
 
-// The app injects these font CSS vars from next/font in _app.tsx. Storybook can't fetch
-// Google Fonts offline, so supply static fallbacks under the same var names the theme
-// references (var(--font-tw) / var(--font-mulish)).
+// The theme references these var names (var(--font-tw) / var(--font-mulish)); the app
+// defines them on :root in _app.tsx. Same stacks here so Storybook matches production.
 const fontVars = {
-  "--font-tw": "'Titillium Web', system-ui, sans-serif",
-  "--font-mulish": "'Mulish', system-ui, sans-serif",
+  "--font-tw": '"Titillium Web", sans-serif',
+  "--font-mulish": '"Mulish", sans-serif',
 } as React.CSSProperties;
 
 const preview: Preview = {
