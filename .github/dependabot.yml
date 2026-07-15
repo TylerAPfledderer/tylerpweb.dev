@@ -1,0 +1,9 @@
+version: 2
+updates:
+  # Dependabot does not support the bun ecosystem for lockfile updates, so app
+  # dependencies are bumped through the migration PRs (Next upgrade lands in PR3).
+  # For now, keep GitHub Actions pinned and current.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
