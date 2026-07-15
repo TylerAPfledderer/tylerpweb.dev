@@ -1,0 +1,18 @@
+/*
+ * Mirrors the :root font vars _app.tsx defines. These MUST live at :root — not on a
+ * wrapper element inside the decorator.
+ *
+ * The theme sets fonts.heading: "var(--font-tw)", which Chakra emits at :root as
+ * `--chakra-fonts-heading: var(--font-tw)`. A custom property whose value contains
+ * var() is substituted at computed-value time *on the element where it is declared*.
+ * So --chakra-fonts-heading resolves against :root; if --font-tw is only defined on a
+ * descendant div, the token has already computed to invalid and that empty value
+ * inherits down — every font token renders undefined, no matter what the div says.
+ *
+ * Defining them here also covers portalled content (tooltips render into document.body,
+ * outside any decorator wrapper).
+ */
+:root {
+  --font-tw: "Titillium Web", sans-serif;
+  --font-mulish: "Mulish", sans-serif;
+}
