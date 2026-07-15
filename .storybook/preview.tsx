@@ -1,9 +1,8 @@
 import * as React from "react";
 import type { Preview } from "@storybook/react-vite";
-import { ChakraProvider } from "@chakra-ui/react";
 import { I18nextProvider } from "react-i18next";
 
-import theme from "../src/lib/theme";
+import { Provider } from "../src/components/ui/provider";
 import i18n from "./i18n";
 
 // The app injects these font CSS vars from next/font in _app.tsx. Storybook can't fetch
@@ -33,11 +32,11 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <I18nextProvider i18n={i18n}>
-        <ChakraProvider theme={theme}>
+        <Provider>
           <div style={fontVars}>
             <Story />
           </div>
-        </ChakraProvider>
+        </Provider>
       </I18nextProvider>
     ),
   ],

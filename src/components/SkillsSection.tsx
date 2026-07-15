@@ -1,16 +1,14 @@
 import {
   Box,
+  BoxProps,
   Heading,
   List,
-  ListItem,
   VStack,
   createIcon,
-  PositionProps,
-  ResponsiveValue,
   Icon,
-  Tooltip,
   VisuallyHidden,
 } from "@chakra-ui/react";
+import { Tooltip } from "./ui/tooltip";
 import {
   HTML5Icon,
   CSS3Icon,
@@ -30,7 +28,7 @@ export const SkillsSection = () => {
   const { t } = useTranslation();
 
   const skills: Array<
-    Pick<PositionProps, "top" | "left" | "right" | "bottom"> & {
+    Pick<BoxProps, "top" | "left" | "right" | "bottom"> & {
       Icon: typeof Icon;
       label: string;
     }
@@ -104,29 +102,34 @@ export const SkillsSection = () => {
   ];
 
   return (
-    <VStack spacing={{ base: "16", md: "20" }}>
+    <VStack gap={{ base: "16", md: "20" }}>
       <Heading as="h3" size="2xl">
         {t("skills-title")}
       </Heading>
       <Box position="relative" w={{ base: "311px", md: "md" }}>
         <JourneyLine />
         <Box position="absolute" inset={0}>
-          <List aria-label="skills">
+          <List.Root aria-label="skills" listStyleType="none">
             {skills.map(({ Icon, label, ...rest }, idx) => (
-              <ListItem key={idx} position="absolute" {...rest}>
+              <List.Item key={idx} position="absolute" {...rest}>
                 <Tooltip
-                  hasArrow
-                  label={label}
-                  bg="white"
-                  color="background "
-                  placement="auto-start"
+                  showArrow
+                  content={label}
+                  // Drive --tooltip-bg rather than `bg`: the arrow and arrow-tip
+                  // read that var, so setting `bg` alone leaves a dark arrow
+                  // glued to a white bubble.
+                  contentProps={{
+                    css: { "--tooltip-bg": "colors.white" },
+                    color: "background",
+                  }}
+                  positioning={{ placement: "top-start" }}
                 >
                   <Icon w="auto" h={{ base: "10", md: "16" }} aria-hidden />
                 </Tooltip>
                 <VisuallyHidden>{label}</VisuallyHidden>
-              </ListItem>
+              </List.Item>
             ))}
-          </List>
+          </List.Root>
         </Box>
       </Box>
     </VStack>
