@@ -12,7 +12,9 @@ export const SocialLinksList = () => (
     <List.Root aria-label="social media" listStyleType="none">
       {socialMediaLinks.map(({ href, icon, label, platform }) => (
         <List.Item key={label}>
-          <Flex asChild flexDir="column" fontSize="sm" align="center">
+          {/* gap={0}: v3's Link recipe base sets gap:1.5, which v2's Link did not
+              have — without this the icon and label drift 6px apart. */}
+          <Flex asChild flexDir="column" fontSize="sm" align="center" gap={0}>
             <Link
               href={href}
               color="inherit"

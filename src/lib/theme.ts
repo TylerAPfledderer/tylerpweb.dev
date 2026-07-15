@@ -15,6 +15,9 @@ const headingRecipe = defineRecipe({
     fontFamily: "heading",
     letterSpacing: "wide",
     textWrap: "balance",
+    // v2's extendBaseTheme emptied `components`, so Heading had no default recipe and
+    // inherited normal weight. v3 merges its default recipe, which sets semibold.
+    fontWeight: "normal",
   },
   variants: {
     size: {
@@ -44,6 +47,15 @@ const headingRecipe = defineRecipe({
 // fontSize lives in the size variant (not base) because Chakra's default
 // size.lg carries textStyle:"md", and variants are applied after base.
 const buttonRecipe = defineRecipe({
+  base: {
+    // v2 rendered semibold; v3's default button recipe sets medium (500).
+    fontWeight: "semibold",
+    // v3's base adds a 1px transparent border that v2 had no equivalent for, which
+    // makes every button 2px wider. The outline variant re-asserts its own 2px.
+    borderWidth: "0",
+    // v2 resolved to 6px; v3's base uses the l2 semantic radius, which is 4px.
+    borderRadius: "md",
+  },
   variants: {
     variant: {
       solid: {
@@ -63,10 +75,17 @@ const buttonRecipe = defineRecipe({
       },
     },
     size: {
-      // textStyle:"none" drops the default size.lg's textStyle:"md" (which
-      // would override fontSize and force lineHeight to 1.5rem); the real lg
-      // dimensions still merge in from Chakra's default button recipe.
-      lg: { textStyle: "none", fontSize: "sm" },
+      // v2's baseStyle spread its own sizes.lg ({h:12, minW:12, px:6}) then forced
+      // fontSize:"sm". v3's default lg is smaller (h:11, px:5) and composes
+      // textStyle:"md", which would override fontSize and push lineHeight to 1.5rem.
+      // Pin the v2 dimensions rather than inherit v3's, so the buttons keep their size.
+      lg: {
+        textStyle: "none",
+        fontSize: "sm",
+        h: "12",
+        minW: "12",
+        px: "6",
+      },
     },
   },
   defaultVariants: {
@@ -77,25 +96,27 @@ const buttonRecipe = defineRecipe({
 
 const config = defineConfig({
   globalCss: {
-    // v3's default globalCss sets html{bg:"bg"} (white). Without matching it
-    // here, background-propagation stops and overscroll areas flash white.
+    // The background lives on html, NOT body. v3's default globalCss sets
+    // html{bg:"bg"}, which stops CSS background-propagation — so unlike v2, body
+    // paints its own background box. That box would cover AboutMe's skewed
+    // ::before (zIndex:-1), erasing the teal bleed above and below the section.
+    // Painting html and leaving body bare reproduces v2's propagated-canvas
+    // result, and still keeps overscroll areas dark.
     html: {
       bg: "background",
     },
     body: {
-      bg: "background",
       color: "body",
       fontSize: "md",
       lineHeight: "1",
     },
-    // _notLast is v3's condition for :not(:last-of-type) — a 1:1 port of the v2
-    // source. A hand-written :not(:last-child) is NOT equivalent: it would also
-    // match a <p> followed by a non-<p> sibling (e.g. the hero's scroll notice
-    // above its arrow icon), adding margin v2 never applied.
-    p: {
-      _notLast: {
-        mb: "text.base",
-      },
+    // v2's source was `p: { _notLast: {...} }`, i.e. :not(:last-of-type). Spelled out
+    // flat because globalCss does not process the _notLast condition when nested under
+    // a selector key — it silently emits no rule at all. Must stay :last-of-type, not
+    // :last-child: the latter also matches a <p> followed by a non-<p> sibling (the
+    // hero's scroll notice above its arrow icon), adding margin v2 never applied.
+    "p:not(:last-of-type)": {
+      mb: "text.base",
     },
   },
   theme: {
