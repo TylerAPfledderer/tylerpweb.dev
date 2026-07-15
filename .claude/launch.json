@@ -1,0 +1,13 @@
+{
+  "configurations": [
+    {
+      "name": "Storybook",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "command": "bun x storybook dev --port $PORT --ci",
+      "autoPort": true,
+      "url": "http://localhost:$PORT"
+    }
+  ]
+}

@@ -4,14 +4,21 @@ import { openSourceData, projectsData } from "./utils";
 import { ProjectItemCard } from "./ProjectItemCard";
 import { Trans, useTranslation } from "next-i18next";
 
+// v3's `enclosed` recipe leaves the idle trigger on fg.muted and the list on bg.muted.
+// Both are v3 default semanticTokens, and with no color mode their _light branch wins
+// unconditionally (`:root &` matches everything) — so they render LIGHT surfaces on this
+// dark site. Once the redesign gave fg.muted its dark-canvas value, the idle label landed
+// on a gray-100 tablist at 1.84:1. Pin both ends to the design's own tokens rather than
+// inherit v3's light defaults.
 const triggerStyles = {
   borderTopRadius: "md",
   fontSize: "sm",
   py: "3",
   lineHeight: "100%",
+  color: "fg.muted",
   _selected: {
-    bg: "white",
-    color: "primary.base",
+    bg: "accent.solid",
+    color: "bg.canvas",
   },
 } as const;
 
@@ -32,7 +39,7 @@ export const ProjectsSection = () => {
         // which outranks a flat `pt` style prop — drive its var instead.
         css={{ "--tabs-content-padding": "spacing.16" }}
       >
-        <Tabs.List>
+        <Tabs.List bg="bg.surface">
           <Tabs.Trigger value="open-source" {...triggerStyles}>
             <Trans
               i18nKey="projects-tab-open-source"

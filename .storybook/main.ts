@@ -33,6 +33,12 @@ const config: StorybookConfig = {
         // Resolve the tsconfig `@/*` aliases (@/components, @/data, @/svg-icons) natively.
         tsconfigPaths: true,
         alias: {
+          // next/image needs the Next runtime, which the react-vite builder doesn't
+          // provide (Storybook 10's Next framework requires Next 14.1+; this repo is on
+          // 13.4.5). Unstubbed it throws `process is not defined` at module scope.
+          // ProjectItemCard is its only importer and sits behind the Projects tab, which
+          // lazyMounts — so this went unnoticed until a story actually activated that tab.
+          "next/image": path.join(configDir, "mocks/next-image.tsx"),
           // @chakra-ui/next-js wraps next/image and needs the Next runtime, which the
           // react-vite builder doesn't provide (Storybook 10 requires Next 14.1+). Stub
           // it for Storybook; the package is removed from the app in PR1.
