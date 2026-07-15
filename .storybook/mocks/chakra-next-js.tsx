@@ -17,10 +17,11 @@ type NextImageOnlyProps = {
  * Storybook-only stub for `@chakra-ui/next-js`, which wraps `next/image` and needs the
  * Next.js runtime the framework-agnostic react-vite builder doesn't provide. Renders a
  * plain Chakra `<img>`, dropping next/image-only props so they don't leak to the DOM.
- * The real package is removed from the app in PR1.
+ * `fill` is honored (absolute + 100%/100%) so `objectFit` behaves like the real component
+ * — ProjectItemCard relies on it to cover-fill its fixed-height card. Removed in PR1.
  */
 export const Image = ({
-  fill: _fill,
+  fill,
   priority: _priority,
   quality: _quality,
   placeholder: _placeholder,
@@ -29,5 +30,8 @@ export const Image = ({
   loader: _loader,
   ...rest
 }: React.ComponentProps<typeof ChakraImg> & NextImageOnlyProps) => (
-  <ChakraImg {...rest} />
+  <ChakraImg
+    {...(fill ? { position: "absolute", inset: 0, w: "100%", h: "100%" } : {})}
+    {...rest}
+  />
 );
