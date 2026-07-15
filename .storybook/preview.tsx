@@ -1,5 +1,4 @@
 import type { Preview } from "@storybook/react-vite";
-import { ChakraProvider } from "@chakra-ui/react";
 import { I18nextProvider } from "react-i18next";
 
 // Register the @font-face rules, mirroring _app.tsx. Without these nothing loads the
@@ -12,7 +11,7 @@ import "@fontsource/mulish/400.css";
 // resolve them. See the file for why a decorator-level wrapper cannot work.
 import "./fonts.css";
 
-import theme from "../src/lib/theme";
+import { Provider } from "../src/components/ui/provider";
 import i18n from "./i18n";
 
 const preview: Preview = {
@@ -34,9 +33,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <I18nextProvider i18n={i18n}>
-        <ChakraProvider theme={theme}>
+        <Provider>
           <Story />
-        </ChakraProvider>
+        </Provider>
       </I18nextProvider>
     ),
   ],

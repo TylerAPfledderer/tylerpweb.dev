@@ -1,4 +1,4 @@
-import { Image } from "@chakra-ui/next-js";
+import NextImage from "next/image";
 import {
   Box,
   Button,
@@ -7,7 +7,6 @@ import {
   Icon,
   Link,
   List,
-  ListItem,
   Stack,
   Text,
   VStack,
@@ -42,7 +41,7 @@ export const ProjectItemCard = (
 
   return (
     <Stack
-      spacing={0}
+      gap={0}
       direction={{
         base: "column",
         lg: idx % 2 === 0 ? "row" : "row-reverse",
@@ -59,22 +58,21 @@ export const ProjectItemCard = (
         position="relative"
         overflow="hidden"
       >
-        <Image
+        <NextImage
           src={image}
           alt=""
           fill
-          objectFit="cover"
-          objectPosition={imgObjPosition}
+          style={{ objectFit: "cover", objectPosition: imgObjPosition }}
         />
       </Box>
       <VStack
         flex={{ lg: "3" }}
         py={{ base: "4", lg: "16" }}
         px={{ base: "4", lg: "12" }}
-        spacing="5"
-        border="1px"
+        gap="5"
+        border="sm"
         borderColor="white"
-        borderTop={{ base: "none", lg: "1px" }}
+        borderTop={{ base: "none", lg: "sm" }}
         borderRadius="inherit"
         borderBottomRadius={{ lg: "none" }}
         borderTopRadius="none"
@@ -89,29 +87,35 @@ export const ProjectItemCard = (
           },
         }}
       >
-        <HStack as={List} spacing="4">
-          {stackTags.map((Tag, idx) => (
-            <ListItem key={idx}>
-              <Tag w="8" h="auto" />
-            </ListItem>
-          ))}
+        <HStack asChild gap="4">
+          <List.Root listStyleType="none">
+            {stackTags.map((Tag, idx) => (
+              <List.Item key={idx}>
+                <Tag w="8" h="auto" />
+              </List.Item>
+            ))}
+          </List.Root>
         </HStack>
-        <VStack spacing="text.sm" maxW="xl">
+        <VStack gap="text.sm" maxW="xl">
           <Heading as="h3" size="2xl">
             {t(projectName)}
           </Heading>
           <Text>{t(description)}</Text>
         </VStack>
         <HStack wrap="wrap" justify="center">
-          <Button
-            as={Link}
-            href={`https://github.com/tylerapfledderer/${githubSlug}`}
-            isExternal
-          >
-            {t("project-item-card-github")}
+          <Button asChild>
+            <Link
+              href={`https://github.com/tylerapfledderer/${githubSlug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("project-item-card-github")}
+            </Link>
           </Button>
-          <Button as={Link} variant="outline" href={demoUrl} isExternal>
-            {t("project-item-card-demo")}
+          <Button asChild variant="outline">
+            <Link href={demoUrl} target="_blank" rel="noopener noreferrer">
+              {t("project-item-card-demo")}
+            </Link>
           </Button>
         </HStack>
       </VStack>
