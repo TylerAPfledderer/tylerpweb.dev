@@ -48,6 +48,14 @@ lands.
   - **A green a11y run is not "this section is accessible" — it is "the mounted parts
     are."** Axe cannot see a `lazyMount`/`unmountOnExit` subtree. Give such subtrees their
     own story; do not infer coverage from a green tick.
+  - **Axe silently DECLINES to measure contrast past an undeterminable backdrop — green
+    there is absence-of-measurement, not a pass.** `AboutMeSection` has the identical
+    4.29:1 body-on-legacy-teal that CI *did* fail in `ReachOutSection`, yet axe stayed
+    green on AboutMe. Verified directly: drop the `color="body"` pin and the a11y run still
+    passes. Its skewed `::before` (`position:relative` + `zIndex:-1` + inset `boxShadow`)
+    leaves the effective background undeterminable, so axe reports nothing rather than a
+    violation. A contrast rule that cannot resolve the backdrop yields silence, not a flag
+    — pin such sections by hand and confirm the ratio yourself; do not trust the green.
   - **KNOWN OPEN GAP — `ProjectItemCard` is unchecked by anything.** It is behind
     `ProjectsSection`'s lazyMounted Projects tab, so no story mounts it: axe never sees it,
     Chromatic has never baselined it, and the `next/image` `define` in `main.ts` is
