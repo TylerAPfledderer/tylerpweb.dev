@@ -25,13 +25,34 @@ lands.
 
 ## Verification
 
-- `build-storybook` is the CI gate. The vitest browser tests (play / CssCheck assertions)
-  are **not** in CI — cold-cache Vite dep re-optimization makes the first run flaky.
+- **Two Storybook gates in CI:** `build-storybook`, and the **`story-tests`** job
+  (`bun run test-storybook` → `vitest run --project=storybook`), which runs the play /
+  CssCheck assertions **and axe**. Added in #23; the old "vitest is not in CI" caveat is
+  retired. The cold-cache flake that kept it out is fixed by `optimizeDeps.include` in
+  `vitest.config.ts` — see below.
 - **Chromatic (#20) is the only gate that sees visual regression.** `exitZeroOnChanges:
   true`, so the job never fails on a diff — Chromatic's own "UI Tests" check is the review
   gate and stays pending until a human accepts. In a redesign every story diffs; a machine
   cannot sign off on the new look.
 - **Baseline Chromatic before redesigning**, then diff against it.
+- **Accessibility gates CI, but only over what a story RENDERS.** It needs BOTH halves:
+  `a11y: { test: 'error' }` in `preview.tsx` **and** the `story-tests` job running vitest.
+  Remove either and the gate becomes a no-op that still looks configured — the addon's own
+  comment (`'error'` = "fail CI") is only true when something runs vitest.
+  - **A green a11y run is not "this section is accessible" — it is "the mounted parts
+    are."** Axe cannot see a `lazyMount`/`unmountOnExit` subtree. Give such subtrees their
+    own story; do not infer coverage from a green tick.
+  - **KNOWN OPEN GAP — `ProjectItemCard` is unchecked by anything.** It is behind
+    `ProjectsSection`'s lazyMounted Projects tab, so no story mounts it: axe never sees it,
+    Chromatic has never baselined it, and the `next/image` `define` in `main.ts` is
+    unexercised. Deferred by Tyler to the PR2 fan-out (it restyles the cards and will mount
+    them). **The fan-out must close this**, and should expect the card's first-ever
+    Chromatic baseline plus a possible `process is not defined` at *render* — the `define`
+    only covers module-scope import.
+  - **Chromatic's accessibility tests are complementary, not redundant** — they baseline
+    pre-existing violations and flag only *new* ones, where `story-tests` fails the whole
+    run on any violation. They must be **enabled from the Chromatic project's Manage
+    page** — a settings action, same class as branch protection, not doable in-repo.
 - **Pixel-diff against a baseline build** for anything subtle — build the previous
   branch's Storybook in a `git worktree`, serve both, compare computed styles +
   screenshots with headless Chromium. This is what actually caught PR1's 16 regressions;

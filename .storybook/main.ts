@@ -29,9 +29,28 @@ const config: StorybookConfig = {
       // handling — that lets i18n.ts import the locale JSON from public/ without Vite's
       // "assets in public directory cannot be imported" warning.
       publicDir: false,
+      // ProjectItemCard imports next/image, which reads process.env.__NEXT_IMAGE_OPTS at
+      // module scope. The react-vite builder provides no Next runtime and no `process`, so
+      // merely IMPORTING the module throws `ReferenceError: process is not defined` and the
+      // whole ProjectsSection story file fails to load under vitest. Substituting the one
+      // expression it touches is enough — the card is never actually rendered in a story
+      // (the Projects tab lazyMounts), so next/image's runtime is never exercised.
+      // Revisit at PR3: Next 16 unlocks @storybook/nextjs-vite, which handles next/image
+      // natively and makes this unnecessary.
+      define: {
+        "process.env.__NEXT_IMAGE_OPTS": "undefined",
+      },
       resolve: {
         // Resolve the tsconfig `@/*` aliases (@/components, @/data, @/svg-icons) natively.
         tsconfigPaths: true,
+        // preview.tsx's trackFocusVisible() pre-seed only works if it seeds the SAME module
+        // instance Chakra's zag machines later use — the guard it populates
+        // (`listenerMap`) is module-level state. Two copies = two listenerMaps = the
+        // pre-seed silently no-ops and the "Illegal invocation" storm returns.
+        // The `^` range in package.json makes bun dedupe on an @ark-ui bump; this collapses
+        // them in the bundle even if two ever land on disk (e.g. an ark MAJOR bump the
+        // caret cannot satisfy). Belt and braces, because the failure mode is silent.
+        dedupe: ["@zag-js/focus-visible"],
         alias: {
           // next/image needs the Next runtime, which the react-vite builder doesn't
           // provide (Storybook 10's Next framework requires Next 14.1+; this repo is on
