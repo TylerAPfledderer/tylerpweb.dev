@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "dev:incognito": "next dev & bunx wait-on http://localhost:3000 && '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe' --incognito http://localhost:3000 & wait",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
