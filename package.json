@@ -24,6 +24,7 @@
   "dependencies": {
     "@chakra-ui/react": "^3.36.0",
     "@emotion/react": "^11.14.0",
+    "@fontsource/jetbrains-mono": "^5.2.8",
     "@fontsource/mulish": "^5.2.8",
     "@fontsource/titillium-web": "^5.2.8",
     "@types/node": "20.3.0",

@@ -49,6 +49,24 @@ system.token("colors.x.y")   // → a real value, not undefined
 system.css({ bg: "x.y" })    // → var(--chakra-*), NOT raw passthrough
 ```
 
+**Three probe traps, each of which cost real time in PR2 (#22):**
+
+1. **`system.token()` lies about semanticTokens.** It returns a literal for a plain token
+   but a `var(--…)` **ref** for a semanticToken — there is no single flat value to return.
+   Comparing both against a hex reports a **false FAIL on a correctly fixed token**. The
+   trustworthy signal is the condition count:
+   ```ts
+   system.tokens.cssVarMap  // Map<condition, Map<cssVar, value>>
+   // 1 condition = clean · >1 = a v3 default is contending
+   ```
+2. **`getTokenCss()` is not proof.** It is a config-time object. `conditions:{light:"&",
+   dark:"&"}` looked correct there and was fatal in the browser. **Confirm computed styles
+   on the real rendered widget** (Playwright is already a dep) before believing any fix.
+3. **A transparent backdrop fakes a passing contrast ratio.** `rgba(0,0,0,0)` parses to
+   black, which scores brilliantly against light text. Walk ancestors for the first opaque
+   background — an idle tab's own `background-color` is transparent; its real backdrop is
+   the list behind it.
+
 ## Colors: `tokens` vs `semanticTokens` — the rule INVERTS on collision
 
 Both halves of this are load-bearing. Getting either wrong produces a dead token.
@@ -79,6 +97,38 @@ semanticTokens.colors.fg.muted = "#a9bab9"  emits ONE:
 `:where()` has **zero specificity**; `:root` is (0,1,0) and matches every document
 unconditionally. So v3's light-mode gray wins **even though this app has no color mode
 and never renders a `.light` class**. The design colour is dead and typechecks clean.
+
+### The corollary: every v3 default renders its LIGHT branch on this dark site
+
+The same `:root` mechanism has a second consequence, found in PR2 (#22). v3 ships **112**
+default tokens with a `_light`/`_dark` pair (`bg.*`, `fg.*`, `border.*`, every
+`<color>.solid/subtle/muted/…`, and the shadows). They emit as:
+
+```
+:root &, .light &     ← light values, specificity (0,1,0), :root matches ALWAYS
+.dark &, …            ← dark values, same specificity, needs a .dark ancestor
+```
+
+This app has no color mode, so **nothing ever sets `.dark`** — the light branch wins every
+time. **Every v3 widget we don't explicitly style is a LIGHT widget on a dark site.**
+
+It first bit on the Projects tabs: v3's `enclosed` recipe put the tab list on `bg.muted`
+(= `gray-100`), and once the redesign gave `fg.muted` its dark-canvas value the idle label
+rendered at **1.84:1** — a WCAG failure that typechecked clean and that Chromatic could
+only report as "1 visual change" behind a green check (`exitZeroOnChanges: true`).
+
+**Fix pattern: pin the component to design tokens so it inherits no v3 surface.** Do not
+reach for a color-mode switch:
+
+- `class="dark"` on `<html>` **works** (measured 8.78:1) but declares a color mode this
+  site does not have. **Rejected by Tyler:** with no dark mode, `.dark`/`.light` should not
+  be targetable classes at all.
+- `conditions: { light: "&", dark: "&" }` removes the classes but **kills all 112 tokens** —
+  `&` alone does not match at the token root. Verified in a browser: `bg.muted` computes to
+  empty. The `getTokenCss()` object dump looked correct; only computed styles caught it.
+
+**The other 111 are still armed.** Any component leaning on a v3 default surface hits this
+again.
 
 Before adding any token group, check it against v3's defaults — assume collision, verify.
 Only sub-keys that actually collide matter: `bg.canvas` / `bg.surface` / `bg.band` and

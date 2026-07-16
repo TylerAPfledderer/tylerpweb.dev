@@ -15,4 +15,5 @@
 :root {
   --font-tw: "Titillium Web", sans-serif;
   --font-mulish: "Mulish", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }

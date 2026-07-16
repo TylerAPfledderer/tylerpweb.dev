@@ -30,8 +30,10 @@ trackFocusVisible();
 // _app.tsx so Storybook renders what production renders.
 import "@fontsource/titillium-web/700.css";
 import "@fontsource/mulish/400.css";
-// Defines --font-tw / --font-mulish at :root, which is where the theme's font tokens
-// resolve them. See the file for why a decorator-level wrapper cannot work.
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+// Defines --font-tw / --font-mulish / --font-mono at :root, which is where the theme's
+// font tokens resolve them. See the file for why a decorator-level wrapper cannot work.
 import "./fonts.css";
 
 import { Provider } from "../src/components/ui/provider";
