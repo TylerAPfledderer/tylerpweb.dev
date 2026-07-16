@@ -43,6 +43,14 @@ const config: StorybookConfig = {
       resolve: {
         // Resolve the tsconfig `@/*` aliases (@/components, @/data, @/svg-icons) natively.
         tsconfigPaths: true,
+        // preview.tsx's trackFocusVisible() pre-seed only works if it seeds the SAME module
+        // instance Chakra's zag machines later use — the guard it populates
+        // (`listenerMap`) is module-level state. Two copies = two listenerMaps = the
+        // pre-seed silently no-ops and the "Illegal invocation" storm returns.
+        // The `^` range in package.json makes bun dedupe on an @ark-ui bump; this collapses
+        // them in the bundle even if two ever land on disk (e.g. an ark MAJOR bump the
+        // caret cannot satisfy). Belt and braces, because the failure mode is silent.
+        dedupe: ["@zag-js/focus-visible"],
         alias: {
           // @chakra-ui/next-js wraps next/image and needs the Next runtime, which the
           // react-vite builder doesn't provide (Storybook 10 requires Next 14.1+). Stub

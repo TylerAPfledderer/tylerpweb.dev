@@ -56,18 +56,15 @@ const preview: Preview = {
       // token". Verified rather than assumed: axe flags the tab trigger at 1.83:1 when
       // the tab list sits on v3's default gray-100 (the PR #22 bug).
       //
-      // ⚠️ This does NOT gate CI by itself. The upstream comment claiming 'error' =
-      // "fail CI" is wrong for this repo: CI runs theme/lint/typecheck/build/
-      // build-storybook and NOT vitest (see the NOTE in ci.yml — the browser tests need
-      // an optimizeDeps.include fix + `playwright install --with-deps` first). So this
-      // only bites where story tests actually run: locally, and in CI once that
-      // follow-up lands.
+      // This gates CI via the `story-tests` job (ci.yml), which runs
+      // `vitest run --project=storybook`. BOTH halves are required: Storybook only errors
+      // on a11y when this is 'error' AND something actually runs vitest. Delete either and
+      // the gate silently becomes a no-op that still looks configured.
       //
-      // The real CI gate is Chromatic's own accessibility tests, which run axe on the
-      // Storybook build already uploaded by chromatic.yml and mark the PR unreviewed on
-      // a NEW violation (pre-existing ones are baselined). Those must be switched on
-      // from the Chromatic project's Manage page — a settings action, not an in-repo
-      // one.
+      // ⚠️ Coverage caveat — it only sees what a story RENDERS. Anything behind a
+      // lazyMount/unmountOnExit boundary is invisible to axe, so a green run is not "the
+      // section is accessible", it is "the mounted parts are". Cover such subtrees with
+      // their own story rather than assuming.
       test: 'error'
     }
   },

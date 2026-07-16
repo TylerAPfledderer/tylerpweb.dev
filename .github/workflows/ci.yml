@@ -56,6 +56,9 @@ jobs:
   story-tests:
     name: Story tests (a11y + interactions)
     runs-on: ubuntu-latest
+    # permissions: inherited from the workflow-level `contents: read` above (2729ba6).
+    # A browser test that hangs would otherwise burn the runner's 6h default.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v7
