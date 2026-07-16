@@ -34,7 +34,13 @@ lands.
   true`, so the job never fails on a diff — Chromatic's own "UI Tests" check is the review
   gate and stays pending until a human accepts. In a redesign every story diffs; a machine
   cannot sign off on the new look.
-- **Baseline Chromatic before redesigning**, then diff against it.
+- **Baseline Chromatic before redesigning**, then diff against it. ✅ **Captured: build 77**
+  on `modernize-updates` @ `c46544d` — 6 stories / 5 components / **12 snapshots** (6 visual +
+  6 accessibility, since Chromatic's a11y tests are now enabled), 0 changes. Every fan-out
+  branch cuts from `c46544d`, so Chromatic resolves build 77 as their baseline via git
+  ancestry. **Caveat: the baseline contains no `ProjectItemCard`** (still lazyMounted), so
+  when the Work section mounts the cards they arrive as brand-new stories with nothing to
+  diff against — that first result needs human eyes, not a "no changes" glance.
 - **Accessibility gates CI, but only over what a story RENDERS.** It needs BOTH halves:
   `a11y: { test: 'error' }` in `preview.tsx` **and** the `story-tests` job running vitest.
   Remove either and the gate becomes a no-op that still looks configured — the addon's own
