@@ -11,7 +11,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+// Guards the anchor contract — see HeroSection.stories.tsx for why this is the
+// only thing checking it.
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    await expect(
+      canvasElement.querySelector("#about"),
+      "AboutMeSection must keep id='about' — the header nav targets #about.",
+    ).not.toBeNull();
+  },
+};
 
 // CssCheck (the single one for the whole project): a canary proving the Chakra theme
 // actually loaded in the shared preview. AboutMeSection's MainSection renders as <section>

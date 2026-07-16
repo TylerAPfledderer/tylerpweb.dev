@@ -16,7 +16,7 @@ import { SocialLinksList } from "./SocialLinksList";
 export const HeroSection = () => {
   const { t } = useTranslation();
   return (
-    <MainSection gap={20}>
+    <MainSection id="top" gap={20}>
       <Flex
         flexDir={{ base: "column", lg: "row" }}
         columnGap={8}
@@ -31,7 +31,11 @@ export const HeroSection = () => {
             <Heading as="h1" size="4xl">
               {t("hero-site-title")}
             </Heading>
-            <Text as="span" fontSize={["md", null, "lg"]}>
+            {/* Object syntax, not the array form this used to use. Array indices
+                map to the SORTED breakpoint list, so adding `nav` (640px) to the
+                theme silently moved index 2 from md (768px) to nav (640px) — the
+                lg size would have kicked in 128px early. Named keys cannot shift. */}
+            <Text as="span" fontSize={{ base: "md", md: "lg" }}>
               {t("hero-site-subtitle")}
             </Text>
           </VStack>
@@ -40,7 +44,7 @@ export const HeroSection = () => {
             <Text>{t("hero-desc-2")}</Text>
           </Box>
           <Button asChild>
-            <Link href="#projects-contributions">{t("hero-cta")}</Link>
+            <Link href="#work">{t("hero-cta")}</Link>
           </Button>
         </VStack>
         <Image

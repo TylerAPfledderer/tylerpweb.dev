@@ -29,8 +29,27 @@ export const AboutMeSection = () => {
     },
   };
   return (
+    // TRANSITIONAL: see the same pin in ReachOutSection. This band is the other
+    // legacy primary.base (#297b91) slab, so body's new fg (#eaf3f2) would render
+    // at 4.29:1 here — under AA. White is 4.84:1 and is what shipped before.
+    //
+    // VERIFIED, and worth knowing: axe does NOT flag this section, while it DOES
+    // flag the identical 4.29:1 in ReachOutSection. Tested directly — dropping
+    // this pin leaves the a11y run green. The only structural difference is the
+    // skewed ::before below (position:relative + zIndex:-1 + an inset boxShadow),
+    // which leaves the effective background undeterminable, so axe declines to
+    // measure rather than reporting a violation.
+    //
+    // So the contrast here was never checked by anything. A green a11y run on
+    // this section is the ABSENCE OF A MEASUREMENT, not the presence of a pass.
+    //
+    // Delete this pin in the About section PR, together with bg="primary.base"
+    // and the skew (the design replaces both with a flat bg.band, where #eaf3f2
+    // is 16.30:1 and axe can actually see it).
     <MainSection
+      id="about"
       bg="primary.base"
+      color="body"
       gap={{ base: 16, lg: 36 }}
       position="relative"
       {...skewBackgroundStyles}
