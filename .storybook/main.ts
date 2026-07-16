@@ -29,17 +29,6 @@ const config: StorybookConfig = {
       // handling — that lets i18n.ts import the locale JSON from public/ without Vite's
       // "assets in public directory cannot be imported" warning.
       publicDir: false,
-      // ProjectItemCard imports next/image, which reads process.env.__NEXT_IMAGE_OPTS at
-      // module scope. The react-vite builder provides no Next runtime and no `process`, so
-      // merely IMPORTING the module throws `ReferenceError: process is not defined` and the
-      // whole ProjectsSection story file fails to load under vitest. Substituting the one
-      // expression it touches is enough — the card is never actually rendered in a story
-      // (the Projects tab lazyMounts), so next/image's runtime is never exercised.
-      // Revisit at PR3: Next 16 unlocks @storybook/nextjs-vite, which handles next/image
-      // natively and makes this unnecessary.
-      define: {
-        "process.env.__NEXT_IMAGE_OPTS": "undefined",
-      },
       resolve: {
         // Resolve the tsconfig `@/*` aliases (@/components, @/data, @/svg-icons) natively.
         tsconfigPaths: true,
@@ -57,6 +46,14 @@ const config: StorybookConfig = {
           // 13.4.5). Unstubbed it throws `process is not defined` at module scope.
           // ProjectItemCard is its only importer and sits behind the Projects tab, which
           // lazyMounts — so this went unnoticed until a story actually activated that tab.
+          //
+          // This alias supersedes the `define: { "process.env.__NEXT_IMAGE_OPTS" }` that
+          // #23 used for the same crash: aliasing rewrites the specifier, so the real
+          // next/image module never loads and there is no `process` read to substitute.
+          // The alias is the stronger of the two — it also RENDERS (a chakra <img>
+          // honouring `fill`), which the define cannot, and which the PR2 fan-out needs
+          // when it finally mounts the cards. The define was removed on merge rather than
+          // left as unreachable config with a comment claiming it does the work.
           "next/image": path.join(configDir, "mocks/next-image.tsx"),
           // @chakra-ui/next-js wraps next/image and needs the Next runtime, which the
           // react-vite builder doesn't provide (Storybook 10 requires Next 14.1+). Stub
