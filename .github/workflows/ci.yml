@@ -6,6 +6,9 @@ on:
   push:
     branches: [main, modernize-updates]
 
+permissions:
+  contents: read
+
 jobs:
   verify:
     name: Lint, typecheck & build
