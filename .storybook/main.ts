@@ -29,6 +29,17 @@ const config: StorybookConfig = {
       // handling — that lets i18n.ts import the locale JSON from public/ without Vite's
       // "assets in public directory cannot be imported" warning.
       publicDir: false,
+      // ProjectItemCard imports next/image, which reads process.env.__NEXT_IMAGE_OPTS at
+      // module scope. The react-vite builder provides no Next runtime and no `process`, so
+      // merely IMPORTING the module throws `ReferenceError: process is not defined` and the
+      // whole ProjectsSection story file fails to load under vitest. Substituting the one
+      // expression it touches is enough — the card is never actually rendered in a story
+      // (the Projects tab lazyMounts), so next/image's runtime is never exercised.
+      // Revisit at PR3: Next 16 unlocks @storybook/nextjs-vite, which handles next/image
+      // natively and makes this unnecessary.
+      define: {
+        "process.env.__NEXT_IMAGE_OPTS": "undefined",
+      },
       resolve: {
         // Resolve the tsconfig `@/*` aliases (@/components, @/data, @/svg-icons) natively.
         tsconfigPaths: true,
