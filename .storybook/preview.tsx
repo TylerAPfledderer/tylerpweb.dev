@@ -28,8 +28,13 @@ trackFocusVisible();
 // actual files, so any machine lacking the fonts locally (e.g. Chromatic's Linux capture
 // container) silently falls back to a system font. Keep the weights in sync with
 // _app.tsx so Storybook renders what production renders.
+// Keep IDENTICAL to src/pages/_app.tsx — see the note there for which weights are
+// used and why the design's font link is not the source of truth.
+import "@fontsource/titillium-web/600.css";
 import "@fontsource/titillium-web/700.css";
 import "@fontsource/mulish/400.css";
+import "@fontsource/mulish/600.css";
+import "@fontsource/mulish/700.css";
 import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/500.css";
 // Defines --font-tw / --font-mulish / --font-mono at :root, which is where the theme's
