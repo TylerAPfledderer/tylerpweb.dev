@@ -19,7 +19,7 @@
     "theme:watch": "chakra typegen src/lib/theme.ts --watch",
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build --stats-json",
     "test-storybook": "vitest run --project=storybook"
   },
   "dependencies": {
