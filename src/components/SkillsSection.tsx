@@ -102,7 +102,7 @@ export const SkillsSection = () => {
   ];
 
   return (
-    <VStack gap={{ base: "16", md: "20" }}>
+    <VStack id="skills" gap={{ base: "16", md: "20" }}>
       <Heading as="h3" size="2xl">
         {t("skills-title")}
       </Heading>

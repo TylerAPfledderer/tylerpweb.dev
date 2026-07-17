@@ -1,0 +1,12 @@
+{
+  "version": "1.0",
+  "configurations": [
+    {
+      "name": "Storybook",
+      "type": "storybook",
+      "command": "bunx storybook dev --port $PORT --ci",
+      "cwd": ".",
+      "autoPort": true
+    }
+  ]
+}

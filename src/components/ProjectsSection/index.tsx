@@ -25,8 +25,8 @@ const triggerStyles = {
 export const ProjectsSection = () => {
   const { t } = useTranslation();
   return (
-    <VStack gap={{ base: "16", lg: "24" }} w="full">
-      <Heading id="projects-contributions">{t("projects-title")}</Heading>
+    <VStack id="work" gap={{ base: "16", lg: "24" }} w="full">
+      <Heading>{t("projects-title")}</Heading>
       <Tabs.Root
         defaultValue="open-source"
         variant="enclosed"

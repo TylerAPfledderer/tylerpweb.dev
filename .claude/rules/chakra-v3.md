@@ -135,6 +135,33 @@ Only sub-keys that actually collide matter: `bg.canvas` / `bg.surface` / `bg.ban
 `fg.default` do **not** collide (v3 owns `bg.subtle`, `fg.DEFAULT`, etc.), so they are
 fine as plain tokens.
 
+### `DEFAULT` (uppercase) is the BARE-name key — `default` mints a dead sibling
+
+v3's convention for "the value you get from the bare token name" is the uppercase key
+**`DEFAULT`**. `#22` wrote it lowercase:
+
+```ts
+fg: { default: "…" }   // WRONG — mints colors.fg.default, referenced NOWHERE in src/
+fg: { DEFAULT: "…" }   // RIGHT — registers the bare `colors.fg`
+```
+
+Lowercase `default` is treated as an ordinary sub-key: it creates a real-but-dead
+`fg.default` token AND leaves the bare `fg` sitting on v3's default `_light` value — a
+**black** `<html>` fg, masked on this site only by body's white. Same trap for `bg`.
+Unlike `base` in semanticTokens (which *collapses* onto its parent), `DEFAULT` does not
+collapse a lowercase sibling — the two coexist and the dead one typechecks clean. Fixed in
+PR2: both `fg` and `bg` now resolve at **1 condition**.
+
+### The "1 condition = clean" heuristic has a second exception: plain `radii` overrides
+
+The condition-count probe (`>1 = a v3 default contends`) assumes the failure mode is a
+specificity contest. It is not the only one. A plain-token override of `radii.l1/l2/l3`
+reports **1 condition and is still dead** — the value never enters the registry at all, so
+the emitted var stays `var(--chakra-radii-sm)`. Different failure class from the colors
+case: nothing to out-specify, the token simply isn't registered. **Use `semanticTokens`
+for radii overrides**, and confirm the computed `border-radius` on a real widget — 1
+condition does not clear it here.
+
 ## v3 merges default recipes that v2 never had
 
 v2's `extendBaseTheme` **emptied** `components`, so our recipes were the only component
