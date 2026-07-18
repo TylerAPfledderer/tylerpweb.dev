@@ -1,8 +1,8 @@
 import {
   Box,
   Button,
+  HStack,
   Heading,
-  Icon,
   Link,
   Stack,
   Text,
@@ -26,44 +26,50 @@ export const OpenSourceItemCard = (props: OpenSourceItemCardProps) => {
   const { t } = useTranslation("open-source-data");
 
   return (
+    // Gradient surface card. flex sizing (1 1 300px) is supplied by the container
+    // grid; the card just fills its cell and stretches full height so the action
+    // row can pin to the bottom (mt="auto") across a wrapped row.
     <VStack
-      border="sm"
-      borderColor="body"
-      borderRadius="xl"
-      py="8"
-      px={{ base: "4", md: "16" }}
-      gap="4"
       w="full"
-      maxW="container.md"
+      align="start"
+      gap="5"
+      bgGradient="to-b"
+      gradientFrom="rgba(51,166,192,.09)"
+      gradientTo="rgba(51,166,192,.03)"
+      borderWidth="1px"
+      borderColor="rgba(86,196,218,.16)"
+      borderRadius="22px"
+      p="clamp(28px, 6vw, 38px)"
+      textAlign="start"
     >
-      <Icon w="auto" height="24" />
-      <VStack gap="text.base">
-        <VStack gap={0}>
-          <Heading as="h3" size="2xl">
+      <HStack gap="4" align="center">
+        <Icon w="auto" height="12" flex="none" />
+        <VStack gap="0.5" align="start" minW="0">
+          <Heading as="h3" textStyle="h3">
             {title}
           </Heading>
-          <Text as="span" fontSize="md">
+          <Text as="span" textStyle="mono" color="warm.solid">
             {t(role)}
           </Text>
         </VStack>
-        <Box maxW="prose">
-          {description.map((paragraph, idx) => (
-            <Text key={idx}>{t(paragraph)}</Text>
-          ))}
-        </Box>
-        <Stack direction="row" justify="center" gap="4" wrap="wrap">
-          <Button asChild>
-            <Link href={contributionUrl} target="_blank" rel="noopener noreferrer">
-              {t("open-source-card-contributions")}
-            </Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href={projectGithub} target="_blank" rel="noopener noreferrer">
-              {t("open-source-card-project")}
-            </Link>
-          </Button>
-        </Stack>
-      </VStack>
+      </HStack>
+      <Box>
+        {description.map((paragraph, idx) => (
+          <Text key={idx}>{t(paragraph)}</Text>
+        ))}
+      </Box>
+      <Stack direction="row" gap="3" wrap="wrap" mt="auto" pt="1">
+        <Button asChild variant="solidTeal" size="sm" borderRadius="11px">
+          <Link href={contributionUrl} target="_blank" rel="noopener noreferrer">
+            {t("open-source-card-contributions")}
+          </Link>
+        </Button>
+        <Button asChild variant="outline" size="sm" borderRadius="11px">
+          <Link href={projectGithub} target="_blank" rel="noopener noreferrer">
+            {t("open-source-card-project")}
+          </Link>
+        </Button>
+      </Stack>
     </VStack>
   );
 };
