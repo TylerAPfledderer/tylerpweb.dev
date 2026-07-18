@@ -54,21 +54,21 @@ const preview: Preview = {
       },
     },
 
-    // Viewport toolbar list = the Chakra breakpoints (sm/nav/md/lg/xl/2xl),
-    // derived in ./breakpoint-viewports.ts straight from system.breakpoints so it
-    // cannot drift from the theme. The default (no `initialGlobals.viewport`) stays
-    // Storybook's responsive 100% — a breakpoint is only forced when picked, or by
-    // Chromatic's modes below at capture time.
+    // Viewport toolbar list = base (375) + the Chakra breakpoints
+    // (sm/nav/md/lg/xl/2xl), derived in ./breakpoint-viewports.ts straight from
+    // system.breakpoints so it cannot drift from the theme. The default (no
+    // `initialGlobals.viewport`) stays Storybook's responsive 100% — a viewport is
+    // only forced when picked, or by Chromatic's modes below at capture time.
     viewport: {
       options: breakpointViewports,
     },
 
-    // Chromatic captures one snapshot per breakpoint for EVERY story. Set at the
+    // Chromatic captures one snapshot per viewport for EVERY story. Set at the
     // project level so all five section stories (and their a11y snapshots) inherit
     // the full per-viewport matrix without repeating it per file. `modes` replaces
     // the single default capture with one per entry — so each section is diffed at
-    // sm/nav/md/lg/xl/2xl instead of at one arbitrary width. A story that needs a
-    // narrower set can still override `chromatic.modes` locally.
+    // base/sm/nav/md/lg/xl/2xl instead of at one arbitrary width. A story that
+    // needs a narrower set can still override `chromatic.modes` locally.
     chromatic: {
       modes: breakpointModes,
     },

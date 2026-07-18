@@ -15,10 +15,36 @@ import { system } from "../src/lib/theme";
 // are the breakpoints", not just the one override theme.ts declares. It is public
 // typed API (BreakpointEntry[] = { name, min?, max? }), not an internal.
 //
-// The `base` (0-width) breakpoint has no entry in `.values` and is intentionally
-// omitted: it is the implicit below-`sm` default, not a boundary to snapshot at.
-// Every entry that IS here carries a `min`, and we snapshot at exactly that
-// min-width — the width at which the breakpoint first activates.
+// Every entry that comes from `.values` carries a `min`, and we snapshot at
+// exactly that min-width — the width at which the breakpoint first activates.
+
+// Chakra's `base` breakpoint is the implicit below-`sm` default and has NO entry
+// in `.values` (its min-width is 0). Pin it to a concrete 375px — the canonical
+// modern-phone width (iPhone SE 2 / 8 / X-class) — so the true mobile layout gets
+// its own snapshot, which the 480px `sm` capture never reaches. Prepended to the
+// derived set; the sort below keeps it first since 375 < 480.
+const EXTRA_VIEWPORTS: { name: string; width: number }[] = [
+  { name: "base", width: 375 },
+];
+
+// A common real-world height for each viewport WIDTH — the height a device (or, at
+// desktop widths, the most common browser viewport) of that width actually has.
+// Height does NOT affect Chromatic captures: full story height is snapshotted
+// (cropToViewport is off), so this only sets the toolbar preview's aspect ratio.
+// Any width not listed (e.g. a future breakpoint) falls back to a 16:10 ratio.
+const COMMON_HEIGHT_BY_WIDTH: Record<number, number> = {
+  375: 667, //   iPhone SE (2nd gen) / 8 — canonical phone
+  480: 800, //   WVGA — common small Android
+  640: 960, //   DVGA
+  768: 1024, //  iPad, portrait
+  1024: 768, //  iPad, landscape (XGA)
+  1280: 800, //  WXGA laptop
+  1536: 864, //  the most common desktop viewport (scaled 1080p laptop)
+};
+
+function heightFor(width: number): number {
+  return COMMON_HEIGHT_BY_WIDTH[width] ?? Math.round((width * 10) / 16);
+}
 
 // Chakra breakpoint minimums are rem (e.g. "30rem"); Chromatic modes accept only
 // whole numbers or "px"-suffixed strings. Convert to integer px. rem/em are ×16
@@ -42,33 +68,33 @@ function viewportType(px: number): "mobile" | "tablet" | "desktop" {
   return "desktop";
 }
 
-const entries = system.breakpoints.values.filter(
-  (entry): entry is { name: string; min: string; max?: string | null } =>
-    typeof entry.min === "string",
-);
+// base (375) + the six named breakpoints, ascending by width.
+const viewports = [
+  ...EXTRA_VIEWPORTS,
+  ...system.breakpoints.values
+    .filter(
+      (entry): entry is { name: string; min: string; max?: string | null } =>
+        typeof entry.min === "string",
+    )
+    .map((entry) => ({ name: entry.name, width: toPx(entry.min) })),
+].sort((a, b) => a.width - b.width);
 
-// { sm: { name, styles, type }, nav: {...}, md, lg, xl, 2xl }
+// { base: {...}, sm: {...}, nav, md, lg, xl, 2xl }
 export const breakpointViewports: ViewportMap = Object.fromEntries(
-  entries.map((entry) => {
-    const width = toPx(entry.min);
-    return [
-      entry.name,
-      {
-        name: `${entry.name} (${width}px)`,
-        // Height is a nominal tall box for the toolbar preview. Chromatic captures
-        // full story height by default (cropToViewport is off), so the width is
-        // the load-bearing value; height never crops a section.
-        styles: { width: `${width}px`, height: "900px" },
-        type: viewportType(width),
-      },
-    ];
-  }),
+  viewports.map(({ name, width }) => [
+    name,
+    {
+      name: `${name} (${width}px)`,
+      styles: { width: `${width}px`, height: `${heightFor(width)}px` },
+      type: viewportType(width),
+    },
+  ]),
 );
 
-// One Chromatic mode per breakpoint, each referencing a viewport option by key.
+// One Chromatic mode per viewport, each referencing a viewport option by key.
 // Applied globally in preview.tsx so EVERY story (every section) is snapshotted
-// at EVERY breakpoint — the per-viewport-per-section coverage this adds.
-// { sm: { viewport: "sm" }, nav: { viewport: "nav" }, ... }
+// at EVERY viewport — the per-viewport-per-section coverage this adds.
+// { base: { viewport: "base" }, sm: { viewport: "sm" }, ... }
 export const breakpointModes = Object.fromEntries(
-  entries.map((entry) => [entry.name, { viewport: entry.name }]),
+  viewports.map(({ name }) => [name, { viewport: name }]),
 ) as Record<string, { viewport: string }>;
