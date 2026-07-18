@@ -124,7 +124,7 @@ const buttonRecipe = defineRecipe({
         fontWeight: "600",
         _hover: {
           borderColor: "accent.emphasis",
-          bg: "rgba(86,196,218,.08)",
+          bg: "accent.wash",
         },
       },
     },
@@ -134,6 +134,13 @@ const buttonRecipe = defineRecipe({
       lg: {
         textStyle: "none",
         fontSize: "1.03125rem",
+      },
+      // 14.5px — the design's in-card action buttons (Work section cards). Tighter
+      // horizontal padding than lg's 30px. textStyle:"none" for the same reason.
+      sm: {
+        textStyle: "none",
+        fontSize: "0.90625rem",
+        px: "5",
       },
     },
   },
@@ -383,6 +390,11 @@ const config = defineConfig({
           contrast: { value: "#04191d" },
           // Link hover only. The design's global `a:hover`.
           bright: { value: "#8bd8e8" },
+          // The design's recurring teal wash at 8% — the pill-toggle track, the
+          // outline-button hover fill, and the hero social-pill hover all use it.
+          // Named because it recurs; the pill-track BORDER is border.subtle
+          // (#56c4da24 = rgba(86,196,218,.14)), already a token.
+          wash: { value: "rgba(86,196,218,.08)" },
         },
         warm: {
           solid: { value: "#f2b544" },
