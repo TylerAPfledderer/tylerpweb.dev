@@ -1,14 +1,4 @@
-import {
-  CSS3Icon,
-  ChakraIcon,
-  EthIcon,
-  GatsbyIcon,
-  HTML5Icon,
-  NextIcon,
-  ReactIcon,
-  SassIcon,
-  VueIcon,
-} from "@/svg-icons";
+import { ChakraIcon, EthIcon } from "@/svg-icons";
 import type { Icon } from "@chakra-ui/react";
 import type { ParseKeys } from "i18next";
 
@@ -48,7 +38,9 @@ type ProjectsItemDataKeys = ParseKeys<"projects-item-data">;
 
 export type ProjectDataItem = {
   image: string;
-  stackTags: Array<typeof Icon>;
+  // Text stack tags. Brand nouns, kept UNKEYED per the i18n data/copy rule
+  // (you'd write "Chakra UI" identically in ja and uk → data, not copy).
+  stackTags: string[];
   projectName: ProjectsItemDataKeys;
   description: ProjectsItemDataKeys;
   githubSlug: string;
@@ -62,7 +54,7 @@ export const projectsData: ProjectDataItem[] = [
     githubSlug: "coffeeroaster-subs",
     image: "/images/projects/coffeeroasters-preview.png",
     projectName: "project-item-coffeeroaster-title",
-    stackTags: [NextIcon, ChakraIcon],
+    stackTags: ["Chakra UI", "TypeScript", "GraphQL"],
   },
   {
     demoUrl: "https://tylerapfledderer.github.io/url-shortening-api/",
@@ -70,7 +62,7 @@ export const projectsData: ProjectDataItem[] = [
     githubSlug: "url-shortening-api",
     image: "/images/projects/url-shorten-preview.png",
     projectName: "project-item-urlshortener-title",
-    stackTags: [VueIcon, CSS3Icon],
+    stackTags: ["VueJS", "REST API", "LocalStorage"],
   },
   {
     demoUrl: "https://tylerapfledderer.github.io/college-email-newsletter/",
@@ -78,7 +70,7 @@ export const projectsData: ProjectDataItem[] = [
     githubSlug: "college-email-newsletter",
     image: "/images/projects/newsletter-email-preview.png",
     projectName: "project-item-collegeemail-title",
-    stackTags: [HTML5Icon, CSS3Icon],
+    stackTags: ["HTML Email", "Inline CSS", "Responsive"],
   },
   {
     demoUrl: "https://tylerapfledderer.github.io/cloudflare/",
@@ -86,7 +78,7 @@ export const projectsData: ProjectDataItem[] = [
     githubSlug: "cloudflare",
     image: "/images/projects/cloudflare-preview.png",
     projectName: "project-item-cloudflare-title",
-    stackTags: [HTML5Icon, SassIcon],
+    stackTags: ["SASS", "Flexbox", "HTML5"],
   },
   {
     demoUrl: "https://tylerapfledderer.github.io/weather-app-react",
@@ -94,6 +86,6 @@ export const projectsData: ProjectDataItem[] = [
     githubSlug: "weather-app-react",
     image: "/images/projects/weather-app-preview.png",
     projectName: "project-item-weatherapp-title",
-    stackTags: [ReactIcon, SassIcon],
+    stackTags: ["SASS", "HTML5", "UI Design"],
   },
 ];

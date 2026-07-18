@@ -1,6 +1,6 @@
 {
-  "project-item-card-github": "Github Source",
-  "project-item-card-demo": "Demo Site",
+  "project-item-card-source": "Source",
+  "project-item-card-demo": "Demo",
   "project-item-coffeeroaster-title": "Coffeeroaster Subscription Site",
   "project-item-coffeeroaster-description": "A design-to-code 3-page subscription site, showcasing an interactive form to present subscription options. Chakra UI is used for reusable Styled components that are accessible first, and TypeScript for strict type-checking state and all static querying from GraphQL.",
   "project-item-urlshortener-title": "URL Shortener",
@@ -10,5 +10,5 @@
   "project-item-cloudflare-title": "Cloudflare Login Screen",
   "project-item-cloudflare-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes.",
   "project-item-weatherapp-title": "Desktop Weather App",
-  "project-item-weatherapp-description": "A responsive login screen built in HTML. Heavy emphasis with SASS including robust mixins such as 'flexy' to apply all the needed Flexbox properties with backward-compatible prefixes."
+  "project-item-weatherapp-description": "A responsive weather forecast interface built in HTML with a SASS-driven layout system and a clean current-conditions panel."
 }
