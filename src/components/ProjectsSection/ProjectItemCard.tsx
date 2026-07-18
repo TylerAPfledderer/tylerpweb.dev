@@ -4,121 +4,96 @@ import {
   Button,
   HStack,
   Heading,
-  Icon,
   Link,
   List,
-  Stack,
   Text,
   VStack,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useTranslation } from "next-i18next";
 import { ProjectDataItem } from "./utils";
 
 export interface ProjectItemCardProps extends ProjectDataItem {}
 
-export const ProjectItemCard = (
-  props: ProjectItemCardProps & { idx: number }
-) => {
-  const {
-    demoUrl,
-    description,
-    githubSlug,
-    image,
-    projectName,
-    stackTags,
-    idx,
-  } = props;
+export const ProjectItemCard = (props: ProjectItemCardProps) => {
+  const { demoUrl, description, githubSlug, image, projectName, stackTags } =
+    props;
 
   const { t } = useTranslation("projects-item-data");
 
-  const imgObjPosition = useBreakpointValue({
-    base: "top center",
-    lg: "top left",
-  });
-
-  const isOddIndex = idx % 2 === 0;
-
   return (
-    <Stack
-      gap={0}
-      direction={{
-        base: "column",
-        lg: idx % 2 === 0 ? "row" : "row-reverse",
-      }}
-      width="full"
-      borderRadius="md"
+    // Grid card. The container grid sizes the cell; the card fills it, stacks
+    // vertically, and clips the screenshot to the rounded top. The real
+    // screenshot is kept (design showed a placeholder) — next/image `fill`.
+    <VStack
+      w="full"
+      align="stretch"
+      gap="0"
+      bg="bg.surface"
+      borderWidth="1px"
+      borderColor="rgba(86,196,218,.14)"
+      borderRadius="20px"
       overflow="hidden"
-      maxW={{ base: "md", md: "xl", lg: "full" }}
+      textAlign="start"
     >
       <Box
-        flex={{ lg: "2" }}
-        width="full"
-        height={{ base: "52", md: "64", lg: "auto" }}
         position="relative"
-        overflow="hidden"
+        w="full"
+        aspectRatio="16 / 10"
+        borderBottomWidth="1px"
+        borderColor="rgba(86,196,218,.12)"
       >
         <NextImage
           src={image}
           alt=""
           fill
-          style={{ objectFit: "cover", objectPosition: imgObjPosition }}
+          style={{ objectFit: "cover", objectPosition: "top center" }}
         />
       </Box>
-      <VStack
-        flex={{ lg: "3" }}
-        py={{ base: "4", lg: "16" }}
-        px={{ base: "4", lg: "12" }}
-        gap="5"
-        border="sm"
-        borderColor="white"
-        borderTop={{ base: "none", lg: "sm" }}
-        borderRadius="inherit"
-        borderBottomRadius={{ lg: "none" }}
-        borderTopRadius="none"
-        {...{
-          [isOddIndex ? "borderLeft" : "borderRight"]: { lg: "none" },
-          [isOddIndex ? "borderTopRightRadius" : "borderTopLeftRadius"]: {
-            base: "none",
-            lg: "inherit",
-          },
-          [isOddIndex ? "borderBottomRightRadius" : "borderBottomLeftRadius"]: {
-            lg: "inherit",
-          },
-        }}
-      >
-        <HStack asChild gap="4">
+      <VStack flex="1" align="start" gap="4" px="6" pt="6" pb="7">
+        <VStack flex="1" align="start" gap="4">
+          <Heading as="h3" textStyle="h3">
+            {t(projectName)}
+          </Heading>
+          <Text fontSize="sm" color="fg.muted">
+            {t(description)}
+          </Text>
+        </VStack>
+        <HStack asChild gap="1.5" wrap="wrap">
           <List.Root listStyleType="none">
-            {stackTags.map((Tag, idx) => (
-              <List.Item key={idx}>
-                <Tag w="8" h="auto" />
+            {stackTags.map((tag) => (
+              <List.Item key={tag}>
+                <Text
+                  textStyle="mono"
+                  fontSize="0.6875rem"
+                  color="accent.muted"
+                  bg="rgba(86,196,218,.09)"
+                  px="2.5"
+                  py="1"
+                  borderRadius="6px"
+                >
+                  {tag}
+                </Text>
               </List.Item>
             ))}
           </List.Root>
         </HStack>
-        <VStack gap="text.sm" maxW="xl">
-          <Heading as="h3" size="2xl">
-            {t(projectName)}
-          </Heading>
-          <Text>{t(description)}</Text>
-        </VStack>
-        <HStack wrap="wrap" justify="center">
-          <Button asChild>
+        <HStack gap="2.5" w="full">
+          <Button asChild variant="outline" size="sm" borderRadius="10px" flex="1">
             <Link
               href={`https://github.com/tylerapfledderer/${githubSlug}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t("project-item-card-github")}
+              {t("project-item-card-source")}
             </Link>
           </Button>
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" size="sm" borderRadius="10px" flex="1">
             <Link href={demoUrl} target="_blank" rel="noopener noreferrer">
               {t("project-item-card-demo")}
             </Link>
           </Button>
         </HStack>
       </VStack>
-    </Stack>
+    </VStack>
   );
 };
