@@ -1,147 +1,226 @@
-import {
-  Box,
-  BoxProps,
-  Heading,
-  List,
-  VStack,
-  createIcon,
-  Icon,
-  VisuallyHidden,
-} from "@chakra-ui/react";
-import { Tooltip } from "./ui/tooltip";
-import {
-  HTML5Icon,
-  CSS3Icon,
-  JavaScriptIcon,
-  SassIcon,
-  BootstrapIcon,
-  VueIcon,
-  ReactIcon,
-  GatsbyIcon,
-  TailwindIcon,
-  ChakraIcon,
-  NextIcon,
-} from "@/svg-icons";
+import { Box, Flex, Heading, Text, VStack, chakra } from "@chakra-ui/react";
 import { useTranslation } from "next-i18next";
+
+// The design's 11 skills, in order, each with the brand colour used for the
+// commit-rail ring stroke + dot fill (Portfolio.dc.html §skills renderVals).
+// Local to this section: it is the only consumer, mirroring the previous in-file
+// skills array and the Work/About local-styled-data convention. Names are brand
+// proper nouns — literals, not t() keys.
+const SKILLS = [
+  { label: "HTML5", color: "#E34F26" },
+  { label: "CSS3", color: "#1572B6" },
+  { label: "JavaScript", color: "#F7DF1E" },
+  { label: "SASS", color: "#CC6699" },
+  { label: "Bootstrap", color: "#7952B3" },
+  { label: "VueJS", color: "#42B883" },
+  { label: "ReactJS", color: "#61DAFB" },
+  { label: "GatsbyJS", color: "#8A4BAF" },
+  { label: "TailwindCSS", color: "#38BDF8" },
+  { label: "Chakra UI", color: "#2F9E9B" },
+  { label: "NextJS", color: "#cfd8d7" },
+] as const;
+
+const sha = (i: number) => `#${String(i + 1).padStart(2, "0")}`;
+
+// Rail geometry: 11 nodes evenly spaced across the 1180-wide viewBox, 60→1120.
+const RAIL_X0 = 60;
+const RAIL_STEP = (1120 - RAIL_X0) / (SKILLS.length - 1); // 106
+
+// Desktop commit rail (shown once the section's own width clears 820px, via the
+// themed `skillsWide` container condition). An SVG: a base line, an animated teal
+// line drawn in via `drawrail`, and one node per skill (ring in the brand colour,
+// inner dot, label alternating above/below, sha). drawrail is `to`-only, so the
+// teal line supplies its own inline start state (dasharray/offset 1 on pathLength
+// 1) or it renders already-drawn. Reduced-motion resolves animations to their
+// final state (rail drawn) — correct here.
+const DesktopRail = () => (
+  <Box display="none" _skillsWide={{ display: "block" }} pt="2" pb="5" px="1">
+    <chakra.svg
+      viewBox="0 0 1180 300"
+      w="full"
+      display="block"
+      role="img"
+      aria-label="Commit rail of skills learned along the way"
+    >
+      <line
+        x1="40"
+        y1="150"
+        x2="1140"
+        y2="150"
+        stroke="rgba(86,196,218,.18)"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <line
+        x1="40"
+        y1="150"
+        x2="1140"
+        y2="150"
+        stroke="#33a6c0"
+        strokeWidth="4"
+        strokeLinecap="round"
+        pathLength={1}
+        style={{
+          strokeDasharray: 1,
+          strokeDashoffset: 1,
+          animationName: "drawrail",
+          animationDuration: "2s",
+          animationTimingFunction: "ease",
+          animationDelay: ".2s",
+          animationFillMode: "forwards",
+        }}
+      />
+      {SKILLS.map((s, i) => {
+        const x = RAIL_X0 + RAIL_STEP * i;
+        const above = i % 2 === 0;
+        const tickY = above ? 96 : 204;
+        const labelY = above ? 78 : 224;
+        const shaY = above ? 60 : 242;
+        return (
+          <g
+            key={s.label}
+            style={{
+              transformOrigin: `${x}px 150px`,
+              animationName: "nodepop",
+              animationDuration: ".5s",
+              animationTimingFunction: "ease",
+              animationDelay: `${0.4 + i * 0.13}s`,
+              animationFillMode: "both",
+            }}
+          >
+            <line
+              x1={x}
+              y1={150}
+              x2={x}
+              y2={tickY}
+              stroke="rgba(86,196,218,.25)"
+              strokeWidth={2}
+            />
+            <circle
+              cx={x}
+              cy={150}
+              r={13}
+              fill="#0b1617"
+              stroke={s.color}
+              strokeWidth={3}
+            />
+            <circle cx={x} cy={150} r={5.5} fill={s.color} />
+            <text
+              x={x}
+              y={labelY}
+              textAnchor="middle"
+              fontFamily="var(--font-mono)"
+              fontSize={15}
+              fontWeight={600}
+              fill="#dbeceb"
+            >
+              {s.label}
+            </text>
+            <text
+              x={x}
+              y={shaY}
+              textAnchor="middle"
+              fontFamily="var(--font-mono)"
+              fontSize={11}
+              fill="#7a9ea0"
+            >
+              {sha(i)}
+            </text>
+          </g>
+        );
+      })}
+    </chakra.svg>
+  </Box>
+);
+
+// Mobile commit-chip grid — the narrow-width copy. Reflows into 1–3 columns to
+// fill width; hidden once the rail takes over.
+const MobileChips = () => (
+  <Box
+    display="grid"
+    gridTemplateColumns="repeat(auto-fill, minmax(220px, 1fr))"
+    gap="3"
+    _skillsWide={{ display: "none" }}
+  >
+    {SKILLS.map((s, i) => (
+      <Flex
+        key={s.label}
+        align="center"
+        gap="3.5"
+        px="4"
+        py="3.5"
+        rounded="13px"
+        bg="accent.wash"
+        borderWidth="1px"
+        borderColor="border.subtle"
+      >
+        <Box
+          flex="none"
+          boxSize="20px"
+          rounded="full"
+          bg="bg.canvas"
+          borderWidth="3px"
+          borderColor={s.color}
+        />
+        <Flex align="baseline" justify="space-between" gap="3" flex="1" minW="0">
+          <Text
+            as="span"
+            fontFamily="heading"
+            fontWeight="600"
+            fontSize="19px"
+            color="fg"
+          >
+            {s.label}
+          </Text>
+          <Text
+            as="span"
+            flex="none"
+            fontFamily="mono"
+            fontSize="12px"
+            color="fg.subtle"
+          >
+            {sha(i)}
+          </Text>
+        </Flex>
+      </Flex>
+    ))}
+  </Box>
+);
 
 export const SkillsSection = () => {
   const { t } = useTranslation();
-
-  const skills: Array<
-    Pick<BoxProps, "top" | "left" | "right" | "bottom"> & {
-      Icon: typeof Icon;
-      label: string;
-    }
-  > = [
-    {
-      Icon: HTML5Icon,
-      left: "2",
-      top: "-4",
-      label: "HTML5",
-    },
-    {
-      Icon: CSS3Icon,
-      left: ["20", null, "24"],
-      top: ["-5", null, "-7"],
-      label: "CSS3",
-    },
-    {
-      Icon: JavaScriptIcon,
-      left: ["40", null, "48"],
-      top: ["-2", null, "-4"],
-      label: "JavaScript",
-    },
-    {
-      Icon: SassIcon,
-      right: ["14", null, "20"],
-      top: ["10", null, "14"],
-      label: "SASS",
-    },
-    {
-      Icon: BootstrapIcon,
-      left: ["44", null, "56"],
-      top: ["24", null, "36"],
-      label: "Bootstrap",
-    },
-    {
-      Icon: VueIcon,
-      left: ["24", null, "28"],
-      top: ["32", null, "44"],
-      label: "VueJS",
-    },
-    {
-      Icon: ReactIcon,
-      left: "4",
-      top: ["32", null, "48"],
-      label: "ReactJS",
-    },
-    {
-      Icon: GatsbyIcon,
-      left: ["4", null, "2"],
-      bottom: ["4", null, "8"],
-      label: "GatsbyJS",
-    },
-    {
-      Icon: TailwindIcon,
-      left: ["20", null, "24"],
-      bottom: "-3",
-      label: "TailwindCSS",
-    },
-    {
-      Icon: ChakraIcon,
-      right: ["24", null, "36"],
-      bottom: ["-4", null, "-6"],
-      label: "Chakra UI",
-    },
-    {
-      Icon: NextIcon,
-      right: ["8", null, "12"],
-      bottom: ["-1", null, "-2"],
-      label: "NextJS",
-    },
-  ];
-
   return (
-    <VStack id="skills" gap={{ base: "16", md: "20" }}>
-      <Heading as="h3" size="2xl">
-        {t("skills-title")}
-      </Heading>
-      <Box position="relative" w={{ base: "311px", md: "md" }}>
-        <JourneyLine />
-        <Box position="absolute" inset={0}>
-          <List.Root aria-label="skills" listStyleType="none">
-            {skills.map(({ Icon, label, ...rest }, idx) => (
-              <List.Item key={idx} position="absolute" {...rest}>
-                <Tooltip
-                  showArrow
-                  content={label}
-                  // Drive --tooltip-bg rather than `bg`: the arrow and arrow-tip
-                  // read that var, so setting `bg` alone leaves a dark arrow
-                  // glued to a white bubble.
-                  contentProps={{
-                    css: { "--tooltip-bg": "colors.white" },
-                    color: "background",
-                  }}
-                  positioning={{ placement: "top-start" }}
-                >
-                  <Icon w="auto" h={{ base: "10", md: "16" }} aria-hidden />
-                </Tooltip>
-                <VisuallyHidden>{label}</VisuallyHidden>
-              </List.Item>
-            ))}
-          </List.Root>
+    // Full-bleed canvas band (the alternation: about=band, skills=canvas, work=band).
+    // The legacy MainSection wrapper + JourneyLine scatter are gone.
+    <Flex as="section" id="skills" w="full" bg="bg.canvas" textAlign="start">
+      <VStack
+        w="full"
+        maxW="container.page"
+        mx="auto"
+        px="clamp(20px, 5vw, 32px)"
+        py="clamp(64px, 12vw, 120px)"
+        gap="clamp(40px, 7vw, 60px)"
+        align="stretch"
+      >
+        <VStack gap="4" align="start">
+          <Text textStyle="mono" color="accent.emphasis">
+            {t("skills-kicker")}
+          </Text>
+          <Heading textStyle="h2" asChild>
+            <h2>{t("skills-title")}</h2>
+          </Heading>
+          <Text color="fg.muted" textStyle="lead" maxW="52ch">
+            {t("skills-desc")}
+          </Text>
+        </VStack>
+        {/* The container query fires on THIS element's inline size, not the
+            viewport — it must carry containerType + containerName or _skillsWide
+            never triggers. */}
+        <Box containerType="inline-size" containerName="skills">
+          <DesktopRail />
+          <MobileChips />
         </Box>
-      </Box>
-    </VStack>
+      </VStack>
+    </Flex>
   );
 };
-
-const JourneyLine = createIcon({
-  viewBox: "0 0 347 300",
-  defaultProps: {
-    width: "full",
-    height: "auto",
-    color: "primary.base",
-  },
-  d: "M346.724 269.187C347.418 267.683 346.762 265.9 345.257 265.206L320.743 253.89C319.238 253.196 317.456 253.853 316.762 255.357C316.067 256.861 316.724 258.644 318.228 259.338L340.019 269.396L329.961 291.187C329.266 292.691 329.923 294.474 331.427 295.168C332.932 295.862 334.714 295.206 335.408 293.701L346.724 269.187ZM117.64 156.342L117.966 159.325L117.64 156.342ZM342.963 265.115C339.978 266.214 337 267.278 334.029 268.306L335.992 273.976C338.999 272.935 342.015 271.858 345.037 270.745L342.963 265.115ZM308.584 276.32C302.502 278.047 296.461 279.628 290.467 281.07L291.869 286.903C297.943 285.443 304.062 283.841 310.223 282.092L308.584 276.32ZM264.342 286.539C258.114 287.649 251.947 288.611 245.848 289.43L246.647 295.377C252.831 294.546 259.082 293.571 265.395 292.446L264.342 286.539ZM219.285 292.154C212.957 292.6 206.719 292.894 200.578 293.044L200.725 299.042C206.957 298.889 213.287 298.591 219.707 298.139L219.285 292.154ZM173.896 292.791C167.53 292.51 161.295 292.074 155.201 291.493L154.632 297.466C160.828 298.057 167.164 298.5 173.632 298.785L173.896 292.791ZM128.871 287.964C122.567 286.864 116.459 285.605 110.562 284.205L109.175 290.042C115.192 291.471 121.418 292.754 127.84 293.875L128.871 287.964ZM84.9832 276.82C78.8767 274.714 73.092 272.449 67.6517 270.049L65.2305 275.539C70.8311 278.009 76.7715 280.335 83.0274 282.492L84.9832 276.82ZM44.3712 257.674C38.8098 254.094 33.9032 250.369 29.6917 246.56L25.6667 251.009C30.151 255.066 35.3241 258.986 41.1239 262.719L44.3712 257.674ZM14.3226 226.426C11.8459 220.698 11.025 215.069 11.8852 209.659L5.95961 208.717C4.89616 215.406 5.95253 222.186 8.81533 228.808L14.3226 226.426ZM24.5876 189.101C28.6005 185.634 33.6089 182.295 39.6976 179.162L36.9518 173.827C30.5201 177.137 25.0989 180.73 20.6646 184.562L24.5876 189.101ZM64.191 169.552C69.7223 167.89 75.7237 166.352 82.2115 164.956L80.9492 159.091C74.3205 160.517 68.1632 162.094 62.4644 163.806L64.191 169.552ZM108.353 160.484C111.475 160.071 114.679 159.684 117.966 159.325L117.314 153.36C113.983 153.724 110.733 154.116 107.565 154.536L108.353 160.484ZM117.966 159.325C121.267 158.964 124.505 158.578 127.683 158.167L126.914 152.217C123.776 152.622 120.577 153.004 117.314 153.36L117.966 159.325ZM154.469 153.858C161.02 152.577 167.248 151.175 173.156 149.663L171.669 143.85C165.878 145.332 159.763 146.709 153.317 147.97L154.469 153.858ZM199.21 141.558C205.638 139.144 211.538 136.567 216.92 133.849L214.215 128.493C209.045 131.105 203.346 133.596 197.101 135.941L199.21 141.558ZM240.012 118.797C245.493 114.076 249.861 109.101 253.118 103.944L248.044 100.74C245.15 105.324 241.196 109.859 236.096 114.25L240.012 118.797ZM260.035 76.397C259.369 69.902 257.145 63.5143 253.515 57.392L248.354 60.4519C251.596 65.9201 253.499 71.4811 254.067 77.0094L260.035 76.397ZM234.674 36.7619C229.845 32.9924 224.375 29.4207 218.297 26.0929L215.415 31.3557C221.24 34.5447 226.435 37.9417 230.982 41.4916L234.674 36.7619ZM193.194 15.0109C187.423 12.97 181.313 11.1031 174.875 9.43179L173.368 15.2393C179.648 16.8696 185.593 18.6869 191.193 20.6675L193.194 15.0109ZM148.072 3.9437C141.948 2.99634 135.602 2.20761 129.04 1.59082L128.479 7.56448C134.925 8.17044 141.152 8.94461 147.155 9.87317L148.072 3.9437ZM101.999 0.078125C95.7779 -0.0450439 89.3989 -0.0234375 82.8671 0.151764L83.028 6.14963C89.4683 5.97684 95.7541 5.95569 101.881 6.07693L101.999 0.078125ZM55.7521 1.70926C49.5404 2.25018 43.2109 2.92404 36.7673 3.73727L37.5186 9.69006C43.8865 8.88638 50.139 8.22076 56.2726 7.68665L55.7521 1.70926ZM9.93974 7.82932C6.79121 8.39069 3.61879 8.98431 0.422847 9.61087L1.57715 15.4988C4.73963 14.8788 7.87834 14.2915 10.9929 13.7361L9.93974 7.82932Z",
-});

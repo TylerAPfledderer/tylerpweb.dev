@@ -1,10 +1,9 @@
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import { Trans, useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Box, Center, Separator, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { AboutMeSection } from "@/components/AboutMeSection";
 import { HeroSection } from "@/components/HeroSection";
-import { MainSection } from "@/components/MainSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ReachOutSection } from "@/components/ReachOutSection";
 import { SkillsSection } from "@/components/SkillsSection";
@@ -25,20 +24,13 @@ export default function Home(
       <Box as="main" textAlign="center">
         <HeroSection />
         <AboutMeSection />
-        <MainSection
-          py={{ base: "12", lg: "36" }}
-          px={{ base: "4" }}
-          gap={{ base: "20", lg: "36" }}
-        >
-          <SkillsSection />
-          <Separator
-            borderStyle="solid"
-            borderColor="primary.dark"
-            w="full"
-            maxW="container.xl"
-          />
-          <ProjectsSection />
-        </MainSection>
+        {/* Skills + Work now self-band (each renders its own full-bleed
+            <section> with the alternating canvas/band bg); the old shared
+            MainSection wrapper + its primary.dark Separator are retired — the
+            bg alternation is the visual separator. MainSection.tsx stays until
+            the sweep, still consumed by the un-redesigned HeroSection. */}
+        <SkillsSection />
+        <ProjectsSection />
         <ReachOutSection />
       </Box>
       <Flex
