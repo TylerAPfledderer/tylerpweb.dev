@@ -42,6 +42,7 @@ import "@fontsource/jetbrains-mono/500.css";
 import "./fonts.css";
 
 import { Provider } from "../src/components/ui/provider";
+import { breakpointModes, breakpointViewports } from "./breakpoint-viewports";
 import i18n from "./i18n";
 
 const preview: Preview = {
@@ -51,6 +52,25 @@ const preview: Preview = {
        color: /(background|color)$/i,
        date: /Date$/i,
       },
+    },
+
+    // Viewport toolbar list = base (375) + the Chakra breakpoints
+    // (sm/nav/md/lg/xl/2xl), derived in ./breakpoint-viewports.ts straight from
+    // system.breakpoints so it cannot drift from the theme. The default (no
+    // `initialGlobals.viewport`) stays Storybook's responsive 100% — a viewport is
+    // only forced when picked, or by Chromatic's modes below at capture time.
+    viewport: {
+      options: breakpointViewports,
+    },
+
+    // Chromatic captures one snapshot per viewport for EVERY story. Set at the
+    // project level so all five section stories (and their a11y snapshots) inherit
+    // the full per-viewport matrix without repeating it per file. `modes` replaces
+    // the single default capture with one per entry — so each section is diffed at
+    // base/sm/nav/md/lg/xl/2xl instead of at one arbitrary width. A story that
+    // needs a narrower set can still override `chromatic.modes` locally.
+    chromatic: {
+      modes: breakpointModes,
     },
 
     a11y: {
