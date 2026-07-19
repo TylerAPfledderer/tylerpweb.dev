@@ -28,9 +28,9 @@ export const AboutMeSection = () => {
     // slab + skewed ::before are gone: the design replaces both with a flat
     // bg.band (#122527), where fg (#eaf3f2) is 16.30:1 and axe can measure it —
     // so the old hand-pinned color="body" contrast pin is retired here too.
-    <chakra.section
+    <Flex
+      as="section"
       id="about"
-      display="flex"
       w="full"
       bg="bg.band"
       borderYWidth="1px"
@@ -87,6 +87,6 @@ export const AboutMeSection = () => {
           </InfoCard>
         </Flex>
       </VStack>
-    </chakra.section>
+    </Flex>
   );
 };
