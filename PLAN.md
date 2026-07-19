@@ -153,6 +153,16 @@ would collide:
    SVG (keep static `version-control.svg`); **leaves** the dead `waggle` keyframe for the
    sweep. Keys: `hero-site-title` → `<0>Tyler</0>`, add `hero-cta-contact`/`hero-social-label`,
    remove `hero-page-scroll-notice`, Email pill label via `t()`.
+   - **🔶 KNOWN DESIGN ISSUE — circle back (Tyler flagged 2026-07-18):** the Hero
+     column→row switch is a **container query** (`heroWide = @container hero (min-width:900px)`),
+     but the design uses a **viewport `@media (min-width:900px)`**. The container query fires
+     **~64px late** (container width = viewport minus the section's h-padding), so the columns
+     stay stacked from ~900–964px viewport where the design has already gone side-by-side.
+     The gradient-contrast structure requires the container be an outer wrapper with the switch
+     on an inner child (an element can't respond to its own container query). Decision: **keep
+     the container query for now**; the offset is a design-fidelity gap to resolve later
+     (either switch Hero to a viewport breakpoint at 900px, or accept the offset). Do not add a
+     new viewport breakpoint without Tyler's sign-off.
 3. **Header** — new stateful `Header.tsx`: sticky blurred nav, TP gradient badge, desktop
    links + Contact pill, mobile hamburger + dropdown (`useState`, `aria-expanded`,
    Escape-to-close, **focus-return-to-toggle on close — required**). Raw rgba header/border

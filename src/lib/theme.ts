@@ -159,8 +159,17 @@ const config = defineConfig({
   // containerType:"inline-size" + containerName:"skills" or it never fires.
   // Skills swaps its graphic on CONTENT width, not viewport, because the rail
   // needs 760px of its own box — a viewport query would lie about that.
+  //
+  // heroWide: the Hero copy/graphic columns go side-by-side. Consumed as
+  // _heroWide; the element must carry containerType + containerName:"hero".
+  //
+  // KNOWN OFFSET (tracked in PLAN.md): the design switches on a VIEWPORT media
+  // query (@media min-width:900px), but this is a CONTAINER query, so it fires
+  // ~64px late (container = viewport minus the section's h-padding). Left as a
+  // container query per Tyler; the offset is a design issue to circle back to.
   conditions: {
     skillsWide: "@container skills (min-width: 820px)",
+    heroWide: "@container hero (min-width: 900px)",
   },
   globalCss: {
     // The background lives on html, NOT body. TWO independent reasons — the

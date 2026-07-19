@@ -9,7 +9,8 @@ import { IconType } from "react-icons/lib";
 type SocialMediaLinkType = {
   href: string;
   icon: IconType;
-  /** The full handle. Rendered by the current SocialLinksList. */
+  /** The full handle. Retained for future use; the redesigned Hero renders
+   *  `shortLabel` in its social pills, not this. */
   label: string;
   /**
    * The redesign's hero pill text — deliberately terser than `label`.
