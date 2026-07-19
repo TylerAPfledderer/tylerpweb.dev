@@ -32,6 +32,26 @@ This project migrated v2 → v3 in PR #19. The v2 APIs are gone; do not reintrod
 Never flatten an `as={X}` into style props. It compiles, it looks right, and it throws
 away the `ul` / `li` / `a` semantics the a11y tree depends on.
 
+### Prefer `as="<html-element>"` over `chakra.<element>` for plain HTML elements
+
+For a bare HTML element with no custom component behind it, reach for a layout
+primitive with an `as` string — `<Flex as="section">`, `<Box as="nav">` — not
+`chakra.section` / `chakra.nav`. Reserve `as` for **HTML element strings**; for a
+**component** that forwards props, use `asChild` with the component as the singleton
+child (the section above). This keeps one consistent idiom across the codebase and makes
+the intent (layout box vs. semantic element vs. composed component) legible at the call
+site.
+
+- `as="section"` (string) → renders a real `<section>`; the element/anchor semantics and
+  `querySelector("section")`-style story guards are preserved. This is the sanctioned form.
+- `as={SomeComponent}` → **avoid**; use `asChild` + `<SomeComponent>` instead, so the
+  component's own props/behavior compose in rather than being flattened away.
+
+The Chakra MCP confirms the prop shapes (`as: React.ElementType`, `asChild: boolean —
+"combining their props and behavior"`) but does NOT encode this reach-for guidance —
+`as`'s type permits components too. This preference is a project convention, enforced
+here, not by the library. `chakra.<element>` is not wrong, but it is not the house style.
+
 ## Typecheck CANNOT catch a dead token
 
 Every token-taking prop (`bg`, `color`, `maxW`, `gap`, …) also accepts an arbitrary
