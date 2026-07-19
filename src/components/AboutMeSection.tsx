@@ -5,15 +5,20 @@ import { Trans, useTranslation } from "next-i18next";
 // surface with a hairline border; the second swaps the teal wash for amber. The
 // body copy colour (#c6d5d4) is one of the design's unnamed greys — raw until
 // that ramp is settled in the DS, matching the Work cards' treatment.
-const cardBase = {
-  flex: "1 1 300px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "4",
-  rounded: "20px",
-  p: "clamp(28px, 6vw, 38px)",
-  borderWidth: "1px",
-} as const;
+//
+// The shared card shell as a styled component; the per-card gradient + border
+// stay as instance props since they differ (teal vs amber).
+const InfoCard = chakra("div", {
+  base: {
+    flex: "1 1 300px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "4",
+    rounded: "20px",
+    p: "clamp(28px, 6vw, 38px)",
+    borderWidth: "1px",
+  },
+});
 
 export const AboutMeSection = () => {
   const { t } = useTranslation();
@@ -58,8 +63,7 @@ export const AboutMeSection = () => {
           </Heading>
         </VStack>
         <Flex wrap="wrap" gap="6">
-          <chakra.div
-            {...cardBase}
+          <InfoCard
             bgGradient="to-br"
             gradientFrom="rgba(51,166,192,.1)"
             gradientTo="rgba(51,166,192,.03)"
@@ -69,9 +73,8 @@ export const AboutMeSection = () => {
               {t("about-card-code-title")}
             </Heading>
             <Text color="#c6d5d4">{t("about-card-code-desc")}</Text>
-          </chakra.div>
-          <chakra.div
-            {...cardBase}
+          </InfoCard>
+          <InfoCard
             bgGradient="to-br"
             gradientFrom="rgba(242,181,68,.09)"
             gradientTo="rgba(242,181,68,.02)"
@@ -81,7 +84,7 @@ export const AboutMeSection = () => {
               {t("about-card-origin-title")}
             </Heading>
             <Text color="#c6d5d4">{t("about-card-origin-desc")}</Text>
-          </chakra.div>
+          </InfoCard>
         </Flex>
       </VStack>
     </chakra.section>
