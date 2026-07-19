@@ -23,8 +23,8 @@ export const Default: Story = {
 };
 
 // CssCheck (the single one for the whole project): a canary proving the Chakra theme
-// actually loaded in the shared preview. AboutMeSection's MainSection renders as <section>
-// with bg="primary.base" (#297B91 -> rgb(41, 123, 145)); an unstyled render would not match.
+// actually loaded in the shared preview. AboutMeSection now renders its own <section>
+// with bg="bg.band" (#122527 -> rgb(18, 37, 39)); an unstyled render would not match.
 // The expected value is hardcoded ON PURPOSE — deriving it from the theme would make the
 // assertion tautological (it would pass even if CSS never loaded).
 export const CssCheck: Story = {
@@ -33,7 +33,7 @@ export const CssCheck: Story = {
     await expect(section).not.toBeNull();
     await expect(
       getComputedStyle(section!).backgroundColor,
-      "Expected AboutMeSection's bg to resolve to the theme's primary.base. If you changed primary.base in src/lib/theme.ts, update this value; otherwise the ChakraProvider/theme likely isn't loading in .storybook/preview.tsx.",
-    ).toBe("rgb(41, 123, 145)");
+      "Expected AboutMeSection's bg to resolve to the theme's bg.band. If you changed bg.band in src/lib/theme.ts, update this value; otherwise the ChakraProvider/theme likely isn't loading in .storybook/preview.tsx.",
+    ).toBe("rgb(18, 37, 39)");
   },
 };
