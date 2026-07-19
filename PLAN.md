@@ -79,14 +79,24 @@ enough"; never silently run at the wrong tier.
 It requires Tyler's explicit opt-in each time (keyword in prompt, or session toggle on);
 never self-launched. If declined, fall back to single-agent at `/high`.
 
+**What is NOT gated:**
+- **`/fast`** is a throughput toggle (Opus, faster output — same model, same reasoning). It
+  is outside this gate entirely: no step is conditioned on it, it never triggers a stop, and
+  it composes freely with any effort tier.
+- **PR2 per-section effort is advisory, not gated** (line 88): the blueprints rate Skills/
+  Hero/Header as high-judgment, so `/high` is *recommended* and surfaced at each section —
+  but the executor proceeds at whatever tier is set without stopping. The effort **gate**
+  formally fires only at the **PR3 boundary → `medium`**.
+
 ### Effort routing
 
 | Phase / step                                                  | Effort                                                                     | Why                                                                                                                                                   |
 | ------------------------------------------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Step 0, PR0                                                   | ✅ done                                                                     | —                                                                                                                                                     |
 | PR1 (incl. `theme.ts` rewrite)                                | ✅ done                                                                     | —                                                                                                                                                     |
-| **PR2 — redesign**                                            | **`ultracode`** (Tyler's call, superseding the old `/high` tags)           | `/effort ultracode` (xhigh + orchestration) satisfies the fan-out opt-in; the per-section `/high` tags are informational for PR2, do not gate on them |
-| PR2 section build                                             | single-agent per section **or** `ultracode` fan-out                        | Sections are independent units against a fixed design/token map. Both modes proven; ask Tyler which per remaining section                             |
+| **PR2 — redesign** | `/high` **recommended, advisory (not gated)** | Blueprints rate the sections high-judgment; surface the recommendation, proceed at whatever tier is set. The `ultracode` fan-out applies to research/verification, not the serial build |
+| PR2 section build | single-agent, **serial** per section | Builds can't fan out — Skills/Hero share `index.tsx` + Hero edits `theme.ts`, and Header must land after the ids it links to exist. Blueprint *research* fanned out; the build is serial |
+| PR2 per-section verification sweep | Workflow — needs `ultracode` opt-in | Within one section, breakpoints × a11y × axe-blind-spot contrast are independent → fan-outable |
 | **PR3 — deps + Next codemod**                                 | **`/effort` → `medium`** (raise to `high` only on manual config conflicts) | Codemod-driven, build-verified. **The effort gate resumes here.**                                                                                     |
 | Pre-production cross-cutting review before integration→`main` | **Workflow — needs `ultracode` opt-in**                                    | Multi-agent adversarial verify at the production gate                                                                                                 |
 
@@ -111,10 +121,52 @@ PR with its own Chromatic diff.
 5. Verify: typecheck + `run-story-tests` (play + axe) green, then publish the visual
    review for Tyler's sign-off before commit.
 
-**Remaining sections:** Skills (also retires the shared `MainSection` wrapper; has a
-`@container skills` graphic swap — already themed), Hero (branch-graph SVG; sole remaining
-`SocialLinksList` consumer, so its PR owns that component's fate), Header (new stateful
-sticky nav; couples to every section's anchor id — riskiest of the three).
+### Remaining sections — build order & decisions
+
+Blueprints were produced by an ultracode fan-out (3 research agents + a completeness
+critic, grep-verified). **Build order is serial: Skills → Hero → Header.** The *research*
+fanned out; the *build* cannot — the sections share mutation points, so parallel worktrees
+would collide:
+
+- **`src/pages/index.tsx`** — Skills and Hero each remove a different `MainSection` wrapper
+  from it (same import/JSX lines). Serialize to avoid a merge conflict.
+- **`src/lib/theme.ts`** — Hero adds a `heroWide` container condition + regenerated typegen.
+- **Anchor contract** — Header links to `#about/#skills/#work/#contact`; it lands **last** so
+  every target id exists in redesigned form and its Chromatic snapshot is over finished
+  sections. Each section is still its own PR with its own human Chromatic accept, so the
+  merge+accept gate is serial regardless of build parallelism. (Within a single section,
+  the PR2-step-4 verification sweep — breakpoints × a11y × contrast — *is* fan-outable.)
+
+1. **Skills** — band shell on `bg.canvas`; mono kicker + h2 + desc; commit-rail SVG
+   (desktop, via the themed `@container skills`) / commit-chip grid (mobile). Retires the
+   Skills/Work `MainSection` wrapper + deletes the legacy `Separator`. **Decisions:** desc →
+   `fg.muted`, rail sha → `fg.subtle` (named tokens); brand colors in a local `SKILLS` array;
+   skill names stay literals; keys `skills-kicker`/`skills-desc` add, `skills-title` change.
+   **Before building: verify `ProjectsSection/index.tsx`'s direct `MainSection` import** — the
+   blueprints assumed "ProjectsSection self-bands"; removing the outer wrapper must not
+   strand Work's padding.
+2. **Hero** — band shell with the two-layer positioned radial as a **raw `bgImage`** (not
+   `bgGradient` — keyword shorthand can't express `at 78% -10%`); mono kicker, `display` h1
+   with a teal `<span>` on "Tyler", amber→#work + teal-outline→#contact CTAs, 4 text social
+   pills. **Deletes `SocialLinksList`** (Hero's only consumer) + fixes the stale `data.ts:12`
+   comment. Adds `heroWide` to theme (`bun run theme`). **Defers** the animated branch-graph
+   SVG (keep static `version-control.svg`); **leaves** the dead `waggle` keyframe for the
+   sweep. Keys: `hero-site-title` → `<0>Tyler</0>`, add `hero-cta-contact`/`hero-social-label`,
+   remove `hero-page-scroll-notice`, Email pill label via `t()`.
+3. **Header** — new stateful `Header.tsx`: sticky blurred nav, TP gradient badge, desktop
+   links + Contact pill, mobile hamburger + dropdown (`useState`, `aria-expanded`,
+   Escape-to-close, **focus-return-to-toggle on close — required**). Raw rgba header/border
+   alphas stay raw (`.78`/`.12`/`.22` — `border.subtle` is `.14`, a wrong-substitution trap);
+   999px Contact pill built locally, not from the button recipe. **This PR owns
+   `scroll-margin-top`** on section ids (the sticky header creates the occlusion). Hand-built
+   hamburger (no react-icons). Keys: `header-brand-name`, `header-nav-*`, `header-menu-toggle-label`.
+
+**Do NOT delete `MainSection.tsx`** in Skills or Hero — it stays until the sweep removes the
+last consumer. All three remaining sections have an **axe contrast blind spot** (Skills SVG
+rail, Hero radial, Header blur): axe goes "incomplete" (silent pass), so flag + hand-verify
+those ratios — see the `gradient-contrast-axe-gap` memory. The two `op:"change"` i18n keys
+leave the 12 non-en locales structurally stale → feeds the approval-gated Crowdin re-sync;
+**do not sync.**
 
 **Irreducibly human at the end — do not automate:**
 - **Chromatic UI Tests accept** — `exitZeroOnChanges: true` keeps the job green, but the
