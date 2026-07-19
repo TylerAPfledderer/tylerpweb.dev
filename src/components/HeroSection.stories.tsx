@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect } from "storybook/test";
+import { expect, within } from "storybook/test";
 
 import { HeroSection } from "./HeroSection";
+import { socialMediaLinks } from "@/data";
 
 const meta = {
   component: HeroSection,
@@ -31,5 +32,34 @@ export const Default: Story = {
       canvasElement.querySelector('a[href="#work"]'),
       "Hero's CTA must target #work (renamed from #projects-contributions).",
     ).not.toBeNull();
+
+    // The redesign's new second CTA — Hero is the only #contact referrer besides
+    // the header, so this guards that fragment the same way.
+    await expect(
+      canvasElement.querySelector('a[href="#contact"]'),
+      "Hero's secondary CTA must target #contact.",
+    ).not.toBeNull();
+  },
+};
+
+// Guards the social-pill wiring: the redesign renders one pill per
+// socialMediaLinks entry (shortLabel text, except Email which is a t() key), and
+// each pill's href must match its data entry. A silent data/label drift here
+// would ship broken or mislabelled social links with no other gate catching it.
+export const SocialPills: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const list = canvasElement.querySelector('ul[aria-label="Social media"]');
+    await expect(list).not.toBeNull();
+    const anchors = list!.querySelectorAll("a");
+    await expect(anchors.length).toBe(socialMediaLinks.length);
+
+    for (const { href, shortLabel, platform } of socialMediaLinks) {
+      // Email's pill text is a t() key ("Email"); every other is the shortLabel.
+      const text = platform === "Email" ? "Email" : shortLabel;
+      const pill = canvas.getByRole("link", { name: `My ${platform}` });
+      await expect(pill).toHaveAttribute("href", href);
+      await expect(pill).toHaveTextContent(text);
+    }
   },
 };
