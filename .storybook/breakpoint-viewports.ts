@@ -95,17 +95,17 @@ export const breakpointViewports: ViewportMap = Object.fromEntries(
 // story (every section) is snapshotted at EVERY viewport — the
 // per-viewport-per-section coverage this adds.
 //
-// Each mode carries EXPLICIT dimensions, not a `{ viewport: name }` string
-// reference. Chromatic documents both forms, and the string form is what this
-// file emitted originally — but the per-story `modes` overrides in
-// Header.stories.tsx did not take effect with it (Tyler observed the snapshots
-// coming back at the wrong widths). The string form requires Chromatic to
-// resolve the name against Storybook's viewport options at capture time;
-// width/height leaves nothing to resolve, so it cannot fail that way.
+// Each mode carries EXPLICIT dimensions rather than a `{ viewport: name }`
+// string reference. Chromatic documents both forms; this one needs no lookup
+// against Storybook's viewport options at capture time, so it has one less
+// moving part. Kept for that reason alone.
 //
-// NOTE: the resolution failure is the *suspected* cause, inferred from the fix
-// working — it was never isolated directly. If per-story modes misbehave again,
-// re-check this assumption rather than trusting it.
+// It is NOT the fix for per-story mode overrides, though an earlier commit
+// (58307a9) claimed it was. Those overrides failed because Chromatic STACKS
+// modes — a per-story `modes` object is combined with this project-level set,
+// not substituted for it — so listing a subset added nothing and every story
+// still ran at all 7. The real lever is `{ disable: true }` per inherited mode;
+// see Header.stories.tsx. The shape had nothing to do with it.
 //
 // { base: { viewport: { width: 375, height: 667 } }, sm: {...}, ... }
 export const breakpointModes = Object.fromEntries(
