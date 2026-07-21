@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 
-import { breakpointModes } from "../../.storybook/breakpoint-viewports";
+import {
+  breakpointModes,
+  type ChromaticModes,
+} from "../../.storybook/breakpoint-viewports";
 import { Header } from "./Header";
 
 const meta = {
@@ -32,7 +35,7 @@ const modeNames = Object.keys(breakpointModes);
 const navIndex = modeNames.indexOf("nav");
 
 /** Turns a list of mode names into the `{ name: { disable: true } }` opt-outs. */
-const disableModes = (names: string[]) =>
+const disableModes = (names: string[]): ChromaticModes =>
   Object.fromEntries(names.map((name) => [name, { disable: true }]));
 
 /** Switches OFF everything below `nav` — leaves the desktop link row + pill. */

@@ -49,8 +49,8 @@ const preview: Preview = {
   parameters: {
     controls: {
       matchers: {
-       color: /(background|color)$/i,
-       date: /Date$/i,
+        color: /(background|color)$/i,
+        date: /Date$/i,
       },
     },
 
@@ -92,8 +92,8 @@ const preview: Preview = {
       // lazyMount/unmountOnExit boundary is invisible to axe, so a green run is not "the
       // section is accessible", it is "the mounted parts are". Cover such subtrees with
       // their own story rather than assuming.
-      test: 'error'
-    }
+      test: "error",
+    },
   },
   decorators: [
     (Story) => (

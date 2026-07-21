@@ -1,6 +1,23 @@
 import type { ViewportMap } from "storybook/viewport";
+import type { ChromaticTypes } from "@chromatic-com/storybook"
 
 import { system } from "../src/lib/theme";
+
+/**
+ * The `modes` map Chromatic accepts, unwrapped from the addon's own parameter type.
+ *
+ * Exported so consumers annotate against the VENDOR's contract rather than re-deriving a
+ * local shape — see Header.stories.tsx, which builds `{ disable: true }` opt-outs.
+ *
+ * Checks the MAP, not a mode's CONTENTS: ChromaticMode is
+ * `{ disable?: boolean; [key: string]: unknown }`, so that index signature accepts any
+ * key. Both `{ viewport: "nav" }` and `{ viewport: { width, height } }` typecheck, which
+ * is how two wrong mode shapes shipped green on this branch. Chromatic's own build stays
+ * the only gate that sees a bad mode.
+ */
+export type ChromaticModes = NonNullable<
+  NonNullable<ChromaticTypes["parameters"]["chromatic"]>["modes"]
+>;
 
 // Storybook viewports + Chromatic viewport modes, DERIVED from the Chakra
 // breakpoints rather than hand-copied. "Equal to the breakpoints" is then a
@@ -113,4 +130,4 @@ export const breakpointModes = Object.fromEntries(
     name,
     { viewport: { width, height: heightFor(width) } },
   ]),
-) as Record<string, { viewport: { width: number; height: number } }>;
+) satisfies ChromaticModes;
