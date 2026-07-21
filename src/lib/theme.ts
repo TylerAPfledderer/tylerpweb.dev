@@ -83,7 +83,8 @@ const linkRecipe = defineRecipe({
 // picks up the redesign values. `solidTeal` is the one addition.
 //
 // Two design shapes are intentionally absent because each has a single consumer:
-// the 999px nav pill (Header) and the 11px/14.5px card button (Work). Their
+// the 999px nav pill (Header's DESKTOP contact link only — its mobile-panel CTA
+// uses solidTeal from this recipe) and the 11px/14.5px card button (Work). Their
 // section PRs own them; a shared recipe should have >=2 consumers.
 const buttonRecipe = defineRecipe({
   base: {
@@ -193,12 +194,31 @@ const config = defineConfig({
       // line box, masked only by body's rule below. Pin it explicitly.
       lineHeight: "1.5625rem",
       scrollBehavior: "smooth",
+      // The sticky Header's measured height, consumed by the section[id] rule
+      // below so anchored sections clear the header when scrolled to. Header.tsx
+      // does NOT pin itself to this — its nav row sizes to its tallest child, and
+      // pinning would double-count the 1px border. This records that result in
+      // one place so a header resize cannot silently desync the anchor offsets.
+      //
+      // 73px = 14px padding + 44px row + 14px padding + 1px bottom border. The
+      // row is 44px, not the 40px brand badge: the contact pill and the mobile
+      // toggle both carry the design's 44px a11y touch-target floor, and they
+      // are what actually set the row height. MEASURED in a browser, not derived
+      // — the arithmetic is easy to get wrong by exactly the 4px badge/pill gap.
+      "--header-h": "73px",
       // Nested INSIDE the selector, not wrapped around it: globalCss types an
       // at-rule's value as an element-level style object, so a selector map in
       // there does not compile.
       "@media (prefers-reduced-motion: reduce)": {
         scrollBehavior: "auto",
       },
+    },
+    // Scroll offset lives at the same altitude as scroll BEHAVIOUR (the html rule
+    // above), not sprinkled across the section components. Covers #top and any
+    // future anchored section automatically — a per-component prop had already
+    // missed HeroSection on the PR that introduced it.
+    "section[id]": {
+      scrollMarginTop: "var(--header-h)",
     },
     body: {
       color: "fg",

@@ -1,8 +1,9 @@
 import type { GetStaticProps, InferGetStaticPropsType } from "next";
 import { Trans, useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { AboutMeSection } from "@/components/AboutMeSection";
+import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
 import { ReachOutSection } from "@/components/ReachOutSection";
@@ -14,13 +15,7 @@ export default function Home(
   const { t } = useTranslation();
   return (
     <>
-      <Center as="header">
-        <Box maxW="8xl" w="full" px="8" py="6">
-          <Text as="span" fontFamily="heading" fontSize="xl">
-            TP
-          </Text>
-        </Box>
-      </Center>
+      <Header />
       <Box as="main" textAlign="center">
         <HeroSection />
         <AboutMeSection />

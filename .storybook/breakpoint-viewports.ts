@@ -91,10 +91,26 @@ export const breakpointViewports: ViewportMap = Object.fromEntries(
   ]),
 );
 
-// One Chromatic mode per viewport, each referencing a viewport option by key.
-// Applied globally in preview.tsx so EVERY story (every section) is snapshotted
-// at EVERY viewport — the per-viewport-per-section coverage this adds.
-// { base: { viewport: "base" }, sm: { viewport: "sm" }, ... }
+// One Chromatic mode per viewport. Applied globally in preview.tsx so EVERY
+// story (every section) is snapshotted at EVERY viewport — the
+// per-viewport-per-section coverage this adds.
+//
+// Each mode carries EXPLICIT dimensions rather than a `{ viewport: name }`
+// string reference. Chromatic documents both forms; this one needs no lookup
+// against Storybook's viewport options at capture time, so it has one less
+// moving part. Kept for that reason alone.
+//
+// It is NOT the fix for per-story mode overrides, though an earlier commit
+// (58307a9) claimed it was. Those overrides failed because Chromatic STACKS
+// modes — a per-story `modes` object is combined with this project-level set,
+// not substituted for it — so listing a subset added nothing and every story
+// still ran at all 7. The real lever is `{ disable: true }` per inherited mode;
+// see Header.stories.tsx. The shape had nothing to do with it.
+//
+// { base: { viewport: { width: 375, height: 667 } }, sm: {...}, ... }
 export const breakpointModes = Object.fromEntries(
-  viewports.map(({ name }) => [name, { viewport: name }]),
-) as Record<string, { viewport: string }>;
+  viewports.map(({ name, width }) => [
+    name,
+    { viewport: { width, height: heightFor(width) } },
+  ]),
+) as Record<string, { viewport: { width: number; height: number } }>;
