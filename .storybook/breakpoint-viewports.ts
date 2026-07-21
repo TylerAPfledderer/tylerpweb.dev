@@ -91,10 +91,26 @@ export const breakpointViewports: ViewportMap = Object.fromEntries(
   ]),
 );
 
-// One Chromatic mode per viewport, each referencing a viewport option by key.
-// Applied globally in preview.tsx so EVERY story (every section) is snapshotted
-// at EVERY viewport — the per-viewport-per-section coverage this adds.
-// { base: { viewport: "base" }, sm: { viewport: "sm" }, ... }
+// One Chromatic mode per viewport. Applied globally in preview.tsx so EVERY
+// story (every section) is snapshotted at EVERY viewport — the
+// per-viewport-per-section coverage this adds.
+//
+// Each mode carries EXPLICIT dimensions, not a `{ viewport: name }` string
+// reference. Chromatic documents both forms, and the string form is what this
+// file emitted originally — but the per-story `modes` overrides in
+// Header.stories.tsx did not take effect with it (Tyler observed the snapshots
+// coming back at the wrong widths). The string form requires Chromatic to
+// resolve the name against Storybook's viewport options at capture time;
+// width/height leaves nothing to resolve, so it cannot fail that way.
+//
+// NOTE: the resolution failure is the *suspected* cause, inferred from the fix
+// working — it was never isolated directly. If per-story modes misbehave again,
+// re-check this assumption rather than trusting it.
+//
+// { base: { viewport: { width: 375, height: 667 } }, sm: {...}, ... }
 export const breakpointModes = Object.fromEntries(
-  viewports.map(({ name }) => [name, { viewport: name }]),
-) as Record<string, { viewport: string }>;
+  viewports.map(({ name, width }) => [
+    name,
+    { viewport: { width, height: heightFor(width) } },
+  ]),
+) as Record<string, { viewport: { width: number; height: number } }>;
