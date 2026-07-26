@@ -24,6 +24,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
     "next-i18next.config.js",
     "next.config.js"
   ],
