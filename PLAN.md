@@ -27,28 +27,24 @@ three sequential PRs into an integration branch · `main` protected, branch prot
 
 ---
 
-## Current status
+## Live task tracking — Amazing Marvin
 
-| Phase                                              | Status       |
-| -------------------------------------------------- | ------------ |
-| Step 0 — CI onto `main` (bun, Node 24, dependabot) | ✅ #14        |
-| PR0 — Storybook safety net                         | ✅ #17        |
-| PR1 — Chakra v2 → v3                               | ✅ #19        |
-| PR2 — Redesign (per-section)                       | 🔄 **active** |
-| PR3 — Deps + Next 13 → 16                          | ⬜ last       |
+**Actionable work lives in Marvin, not in this file.** This doc holds decisions and
+rationale; Marvin holds what is open, blocked, and next.
 
-**PR2 progress** (fan-out lands as **one PR per section** into `modernize-updates`):
+- **Project:** `tylerpweb.dev updating` — id `2b07665547615c0bc66b05f67c08439f`
+- **Sub-projects:** A — PR2 Redesign sweep · B — PR2 i18n close-out ·
+  C — PR3 Deps and Next 13→16 · D — Pre-production gate to main ·
+  E — Known issues / deferred
 
-| Section                                                 | Status      |
-| ------------------------------------------------------- | ----------- |
-| Shared scaffolding (token map, JetBrains Mono, tab fix) | ✅ #22 / #24 |
-| Work (`ProjectsSection`)                                | ✅ #25 / #26 |
-| About                                                   | ✅ #28       |
-| Contact (`ReachOutSection`)                             | ✅ #29       |
-| Skills                                                  | ⬜           |
-| Hero                                                    | ⬜           |
-| Header (new `Header.tsx`)                               | ⬜           |
-| Redesign sweep (retire `MainSection`, etc.)             | ⬜           |
+**Sync convention:** work items are created, updated, and completed in Marvin. Add to this
+file only a *decision* or a *lesson* — never a task list. If a task's rationale outgrows a
+Marvin note, write it here and cite it from the task.
+
+**Phase status:** Step 0 (#14), PR0 Storybook (#17), PR1 Chakra v3 (#19) and **all of PR2**
+are merged. PR2 shipped as one PR per section: scaffolding #22/#24 · Work #25/#26 ·
+About #28 · Contact #29 · Skills #30 · Hero #31 · Header #32. Remaining: the redesign
+sweep, then PR3, then the pre-production gate — all tracked in Marvin.
 
 Then **PR2 i18n**: new `en` strings + key extraction land per section (automated,
 in-repo); the **Crowdin re-sync of the 12 non-en locales is a separate approval-gated
@@ -121,12 +117,15 @@ PR with its own Chromatic diff.
 5. Verify: typecheck + `run-story-tests` (play + axe) green, then publish the visual
    review for Tyler's sign-off before commit.
 
-### Remaining sections — build order & decisions
+### Final three sections — build decisions (shipped #30/#31/#32; kept for rationale)
+
+All three have merged. This is the decision record, **not** a to-do list — open work lives
+in Marvin. The `heroWide` offset in item 2 is still open and is tracked as Marvin task E1.
 
 Blueprints were produced by an ultracode fan-out (3 research agents + a completeness
-critic, grep-verified). **Build order is serial: Skills → Hero → Header.** The *research*
-fanned out; the *build* cannot — the sections share mutation points, so parallel worktrees
-would collide:
+critic, grep-verified). **Build order was serial: Skills → Hero → Header.** The *research*
+fanned out; the *build* could not — the sections share mutation points, so parallel
+worktrees would have collided:
 
 - **`src/pages/index.tsx`** — Skills and Hero each remove a different `MainSection` wrapper
   from it (same import/JSX lines). Serialize to avoid a merge conflict.
@@ -171,12 +170,13 @@ would collide:
    `scroll-margin-top`** on section ids (the sticky header creates the occlusion). Hand-built
    hamburger (no react-icons). Keys: `header-brand-name`, `header-nav-*`, `header-menu-toggle-label`.
 
-**Do NOT delete `MainSection.tsx`** in Skills or Hero — it stays until the sweep removes the
-last consumer. All three remaining sections have an **axe contrast blind spot** (Skills SVG
-rail, Hero radial, Header blur): axe goes "incomplete" (silent pass), so flag + hand-verify
-those ratios — see the `gradient-contrast-axe-gap` memory. The two `op:"change"` i18n keys
-leave the 12 non-en locales structurally stale → feeds the approval-gated Crowdin re-sync;
-**do not sync.**
+`MainSection.tsx` was deliberately **kept** through Skills and Hero so no section PR carried
+a deletion; the sweep removes it now that the last consumer is gone (Marvin task A1). All
+three sections have an **axe contrast blind spot** (Skills SVG rail, Hero radial, Header
+blur): axe goes "incomplete" (silent pass), so those ratios need hand-verification — see the
+`gradient-contrast-axe-gap` memory, tracked as Marvin task E4. The two `op:"change"` i18n
+keys leave the 12 non-en locales structurally stale → feeds the approval-gated Crowdin
+re-sync; **do not sync.**
 
 **Irreducibly human at the end — do not automate:**
 - **Chromatic UI Tests accept** — `exitZeroOnChanges: true` keeps the job green, but the
@@ -190,23 +190,21 @@ leave the 12 non-en locales structurally stale → feeds the approval-gated Crow
 
 Pages Router, on the redesigned Chakra-v3 tree. **`/effort` → `medium`.**
 
-1. `npx @next/codemod@canary upgrade latest`.
-2. Bump `next`, `eslint-config-next`, `@types/*`; keep React 18.2. Node 24 + TS 5.1.3
-   already clear Next 16's floors.
-3. Check `next-seo` compat with Next 16.
-4. Re-verify the redesign renders **unchanged** post-upgrade (Storybook visual-diff vs.
-   the PR2 baseline; the codemod touches Next internals, not Chakra).
-5. **Vuln pass — measure with `bun audit`, NOT Dependabot** (see dependencies rule for
-   why Dependabot is structurally blind here). Against the 2026-07-15 baseline of **53
-   rows (2 critical, 21 high, 24 moderate, 6 low)**:
-   - The **26 `next` rows** clear with the Next bump — that is its whole vuln contribution.
-   - **Bump `next-i18next`** to clear `i18next-fs-backend`'s CRITICAL — a real prod runtime
-     vuln Next 16 does not touch and Dependabot cannot see. Highest-priority dep item.
-   - **Fix the `dependencies`/`devDependencies` misclassification** (`eslint`, `typescript`,
-     `eslint-config-next`, `@types/*` sit in `dependencies`) so `bun audit --prod` means
-     something.
-   - **Add `bun audit` to `ci.yml`** — without it there is no vuln gate at all.
-6. `bun run build` + run app. **Gate → final.**
+**Steps are tracked in Marvin sub-project C.** The reasoning that drives them:
+
+- **Vuln measurement uses `bun audit`, NOT Dependabot** (see dependencies rule for why
+  Dependabot is structurally blind here). Against the 2026-07-15 baseline of **53 rows
+  (2 critical, 21 high, 24 moderate, 6 low)**: the **26 `next` rows** clear with the Next
+  bump — that is its whole vuln contribution.
+- **`next-i18next` is the highest-priority dep item**, not `next`. It carries
+  `i18next-fs-backend`'s CRITICAL — a real production runtime vuln that Next 16 does not
+  touch and Dependabot cannot see.
+- **The `dependencies`/`devDependencies` split is currently meaningless** — `eslint`,
+  `typescript`, `eslint-config-next` and `@types/*` sit in `dependencies`, so
+  `bun audit --prod` reports 52 of 53 rows, which is not what ships.
+- **The codemod touches Next internals, not Chakra**, so the redesign must render
+  *unchanged* post-upgrade — that is the pass/fail condition, verified by visual diff
+  against the PR2 baseline.
 
 Then: Vercel preview of `modernize-updates` → multi-agent Workflow cross-cutting review
 (needs `ultracode` opt-in) → Tyler's final visual sign-off → single integration→`main` PR.
@@ -216,7 +214,8 @@ Then: Vercel preview of `modernize-updates` → multi-agent Workflow cross-cutti
 ## Approval checkpoints
 
 The executor runs automated work freely between these, but **stops for Tyler's explicit
-approval at each**:
+approval at each**. In Marvin these are carried by the `needs-approval` and `human-only`
+labels; this list is the authority on *why* each gate exists.
 
 1. ✅ Step 0 yarn→bun switch (done).
 2. **Each dependency add/remove/upgrade** (PR3: `next`, `eslint-config-next`, `@types/*`,
