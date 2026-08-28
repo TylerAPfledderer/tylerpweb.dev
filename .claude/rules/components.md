@@ -7,7 +7,7 @@ paths:
 
 # Components — story-first
 
-**Invoke the `storybook:stories` skill BEFORE touching any frontend component** — before
+**Invoke the `storybook-stories` skill BEFORE touching any frontend component** — before
 writing, editing, or deleting, so the workflow governs how the change is made. This holds
 even if the change looks cosmetic-only, internal, a refactor, a rename, or "no behavior
 change." That judgment is not ours to make.
