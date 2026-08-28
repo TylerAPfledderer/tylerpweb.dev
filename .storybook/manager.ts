@@ -11,9 +11,11 @@ addons.setConfig({
     // a change `build-storybook` reports as "completed successfully". See the long note in
     // main.ts for why react-docgen-typescript is not the value here.
     //
-    // This configures the PANEL only. The headless half takes the same expectation as
-    // `--expected-extractor` in the `oversight` script — the rule is skipped entirely
-    // when no expectation is passed, so omitting it there silently drops the guard.
+    // This configures the PANEL only, and it is the one place the expectation is
+    // duplicated: the headless half reads `expectedExtractor` from oversight.config.json
+    // (which ci.yml and `bun run oversight` share). The rule is skipped entirely when no
+    // expectation is configured, so dropping it from EITHER surface silently removes the
+    // guard there while the other keeps looking healthy. Change both together.
     expectedExtractor: "react-docgen",
   },
 });

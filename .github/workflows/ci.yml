@@ -50,8 +50,9 @@ jobs:
       # Lints the MCP components manifest the previous step emitted — the artifact a coding
       # agent reads this repo through. Rules live in oversight.config.json, NOT in flags
       # here, so this and `bun run oversight` locally can never disagree about what a
-      # finding is. `--format github` is the only CI-specific argument; it turns findings
-      # into inline ::warning annotations on the diff.
+      # finding is. `--format github` is the only CI-specific argument; it emits
+      # ::warning annotations, which carry a file but no line number — so they surface on
+      # the run's Checks tab, NOT inline beside the changed code.
       #
       # Why the config downgrades docgen-missing to a warning and allows exactly one:
       # Header's docgen extraction fails (it is the only file importing a Chakra *hook*,
