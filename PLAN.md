@@ -102,7 +102,7 @@ never self-launched. If declined, fall back to single-agent at `/high`.
 
 **On Next 13 + Chakra v3.** Sections build to `Portfolio.dc.html`; tokens come only from
 `DesignSystem.dc.html` (see design-source rule). Each section is a fresh branch off
-`modernize-updates`, built under the `storybook:stories` workflow, and lands as its own
+`modernize-updates`, built under the `storybook-stories` workflow, and lands as its own
 PR with its own Chromatic diff.
 
 **Per-section shape** (established by the merged Work/About/Contact):
@@ -112,7 +112,7 @@ PR with its own Chromatic diff.
    `px="clamp(20px,5vw,32px)"`, a mono kicker + `h2`, then content. Redesigned sections
    render their **own** `<section>`; **`MainSection` is frozen legacy** — do not extend it.
 3. Re-string copy as `t()` keys in `public/locales/en/*` (in-repo half only).
-4. `storybook:stories` governs every edit; stories-first if the section has lazyMounted/
+4. `storybook-stories` governs every edit; stories-first if the section has lazyMounted/
    uncovered subtrees. Keep each section's `#anchor` guard story.
 5. Verify: typecheck + `run-story-tests` (play + axe) green, then publish the visual
    review for Tyler's sign-off before commit.
@@ -241,7 +241,7 @@ judgment → approve first.**
 | `dependencies.md`  | always                                              | Dep changes need approval; don't reintroduce dropped deps; `bun audit` (not Dependabot) is the vuln gate                                                                                    |
 | `chakra-v3.md`     | `theme.ts`, `src/components/**`, `src/lib/icons/**` | `createSystem`; `<Provider value=>`; `gap` not `spacing`; `as="<html>"` vs `asChild`; colors in `tokens` (fg/border collisions in `semanticTokens`); **typecheck can't catch a dead token** |
 | `i18n.md`          | `src/components/**`, `public/locales/**`            | Every string is a `t()` key; update `en` source; Crowdin re-sync approval-gated                                                                                                             |
-| `components.md`    | `**/*.{tsx,jsx}`                                    | Story-first (`storybook:stories` before any component change); CI gates; a11y blind spots                                                                                                   |
+| `components.md`    | `**/*.{tsx,jsx}`                                    | Story-first (`storybook-stories` before any component change); CI gates; a11y blind spots                                                                                                   |
 | `design-source.md` | (redesign work)                                     | Tokens/layout only from design project ID `3888…`; other design projects out of scope                                                                                                       |
 | `dev-server.md`    | (local runs)                                        | `bun run dev:incognito` is the primary local dev script                                                                                                                                     |
 

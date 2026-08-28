@@ -73,7 +73,7 @@ Crowdin is configured (`crowdin.yml`) to sync translations from `public/locales/
 Storybook (`@storybook/react-vite`) is the primary verification gate — **not** the Next
 framework, which needs Next ≥14.1 and is revisited in PR3 (Marvin task C7).
 
-- The `storybook:stories` skill governs **every** component change, including deletions and
+- The `storybook-stories` skill governs **every** component change, including deletions and
   changes you judge cosmetic. Invoke it before editing a component, not after.
 - **Chromatic** is the only gate that sees visual regression. `exitZeroOnChanges: true`
   keeps the job green, so its "UI Tests" check stays pending until a human accepts.
