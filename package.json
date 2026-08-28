@@ -21,7 +21,7 @@
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build --stats-json",
-    "oversight": "bunx --bun oversight-lint@0.7.1 storybook-static/manifests/components.json",
+    "oversight": "bunx --bun oversight-lint@0.7.1 --expected-extractor react-docgen storybook-static/manifests/components.json",
     "test-storybook": "vitest run --project=storybook"
   },
   "dependencies": {

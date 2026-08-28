@@ -10,6 +10,10 @@ addons.setConfig({
     // rule that catches the extractor being switched to something that extracts nothing —
     // a change `build-storybook` reports as "completed successfully". See the long note in
     // main.ts for why react-docgen-typescript is not the value here.
+    //
+    // This configures the PANEL only. The headless half takes the same expectation as
+    // `--expected-extractor` in the `oversight` script — the rule is skipped entirely
+    // when no expectation is passed, so omitting it there silently drops the guard.
     expectedExtractor: "react-docgen",
   },
 });
