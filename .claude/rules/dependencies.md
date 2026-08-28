@@ -24,6 +24,26 @@ Use `next/image` directly (Next 13.4 has it) instead of `@chakra-ui/next-js`.
 - `@fontsource/jetbrains-mono` — the redesign's mono face
 - `@crowdin/cli` — devDep, makes `crowdin status` a runnable dry-run
 
+## Approved adds — Oversight (2026-08-28)
+
+Both devDeps, both approved by Tyler before the add, recorded here so the approval is not
+only in a PR body.
+
+- `storybook-addon-oversight` (#33) — lints the MCP components manifest in the Storybook
+  panel. Zero transitive deps.
+- `oversight-lint` (#37) — the headless half of the same rules, run by `bun run oversight`
+  and by `ci.yml`. Zero transitive deps.
+
+**Why the CLI is a real dependency rather than a `bunx` call.** It started as
+`bunx --bun oversight-lint@0.7.1`, which needs no dependency (the `wait-on` precedent in
+dev-server.md). That was fine while it was a convenience someone ran by hand. Once #36 made
+it a **required CI gate**, a live registry fetch sat in the path of every run — an outage or
+an unpublished version turns a gate into a build failure with nothing to do with this repo.
+A devDependency resolves it from the frozen lockfile instead.
+
+The rule that generalises: **`bunx` is fine for something optional, not for something CI
+depends on.** Weigh it again if another `bunx` call is ever promoted into a gate.
+
 ## Vulnerability gate: `bun audit`, NOT Dependabot
 
 **Dependabot is structurally blind to this repo.** It has no bun-lockfile support, so it
