@@ -44,8 +44,9 @@ Everything below is detail on how each gate is blind.
 |---|---|---|
 | `bun run typecheck` | Type errors | Dead theme tokens — a token that no longer exists still typechecks and renders as nothing |
 | `bun run lint` | Lint rules | Everything visual |
-| `bun run build-storybook` | Build breakage | Docgen quality; it exits 0 and says "completed successfully" either way |
+| `bun run build-storybook` | Build breakage | Docgen quality; it exits 0 and says "completed successfully" either way — `bun run oversight` is what sees this |
 | `bun run test-storybook` (play + axe) | What a story **renders**, at **one width** | Unmounted subtrees; anything at another breakpoint |
+| `bun run oversight` | The MCP components manifest — whether docgen reached it, per component | Anything a story renders; it lints docs, not pixels. **Not in `ci.yml`**, so it only runs when you run it |
 | Chromatic | Visual diffs, per mode | Nothing, but `exitZeroOnChanges: true` means the job is always green — the "UI Tests" check is the real gate and needs a human |
 
 Two of these deserve their own sections because their failure mode is silence, not red.
@@ -97,8 +98,15 @@ not swapped for it. Listing only the modes you want therefore does nothing.
 
 The only way to drop an inherited mode is `{ disable: true }`. `Header.stories.tsx` is the
 reference implementation: it derives the mode names from `breakpointModes` and slices them
-at `nav` **by position**, so moving or renaming a breakpoint in `theme.ts` carries both
-halves with it. A hand-listed set silently keeps snapshotting a width that no longer exists.
+at `nav` **by position**, so *moving* a breakpoint in `theme.ts` carries both halves with it.
+A hand-listed set silently keeps snapshotting a width that no longer exists.
+
+**Renaming `nav` is the unguarded case, and it fails silently.** The slice point is
+`modeNames.indexOf("nav")`, which returns `-1` when the name is gone — so `slice(0, -1)` and
+`slice(-1)` *invert* the halves: 6 of the 7 modes land in `DISABLE_MOBILE` and only `2xl` in
+`DISABLE_DESKTOP`. That is build 113's failure again, reached by a different route. If you
+rename that breakpoint, update both `theme.ts` and the story, and consider making a missing
+index throw rather than resolve to `-1`.
 
 Build 113 is the cautionary tale: `MobileMenuOpen` listed only mobile modes, inherited the
 desktop ones anyway, and ran its play function at five widths where the hamburger is
@@ -149,7 +157,9 @@ works too, and is what actually caught both bugs above.
 2. For anything uncovered, write the story first — and if you are about to restyle it,
    land that story as its own PR so a baseline exists.
 3. Make the change. Keep the section's anchor-guard story intact.
-4. Run `bun run typecheck`, `bun run lint`, `bun run test-storybook`. Treat a green axe
+4. Run `bun run typecheck`, `bun run lint`, `bun run test-storybook`, and — if you touched
+   a component's docs, props, or JSDoc — `bun run build-storybook && bun run oversight`,
+   since no CI job covers that one. Treat a green axe
    result over a gradient, image, or layered background as unmeasured, and verify those
    ratios by hand.
 5. Check any container-query or flex-direction behavior in a real browser.

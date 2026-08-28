@@ -28,9 +28,14 @@ type Story = StoryObj<typeof meta>;
 // to drop an inherited mode is `{ disable: true }`, which is what this builds.
 //
 // Derived from breakpointModes (which comes from system.breakpoints) and sliced
-// at `nav` by POSITION, not by a hand-listed set of names — move or rename a
-// breakpoint in theme.ts and both halves follow. A literal list would silently
-// keep snapshotting a width that no longer exists.
+// at `nav` by POSITION, not by a hand-listed set of names — MOVE a breakpoint in
+// theme.ts and both halves follow. A literal list would silently keep
+// snapshotting a width that no longer exists.
+//
+// RENAMING `nav` is NOT covered and fails silently: indexOf returns -1, so the
+// two slices invert (6 of 7 modes into DISABLE_MOBILE, only `2xl` into
+// DISABLE_DESKTOP) and build 113's play-function failure returns by another
+// route. Rename the breakpoint here too if you rename it in theme.ts.
 const modeNames = Object.keys(breakpointModes);
 const navIndex = modeNames.indexOf("nav");
 
