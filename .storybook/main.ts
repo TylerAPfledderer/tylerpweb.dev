@@ -16,9 +16,34 @@ const config: StorybookConfig = {
     "@storybook/addon-a11y",
     "@storybook/addon-docs",
     "@storybook/addon-mcp",
+    // Lints the manifest addon-mcp emits (`/manifests/components.json`) — the artifact a
+    // coding agent actually reads this repo through. Without it, a component whose docs
+    // never reach that manifest looks identical to one that has none: the agent sees an
+    // undocumented component and nothing anywhere says so. Same failure class as the a11y
+    // gate that "looks configured" while running nothing. Panel is per-story; the same
+    // rules run headlessly over the built manifest via `bun run oversight`, which is
+    // available to run but deliberately NOT wired into ci.yml yet — it exits 1 on the
+    // findings already present. Gating CI on it is a separate decision.
+    "storybook-addon-oversight",
   ],
   framework: "@storybook/react-vite",
   staticDirs: ["../public"],
+  // Pinned EXPLICITLY, and it is not the value the addon's README recommends.
+  //
+  // Oversight suggests `react-docgen-typescript`, which extracts JSDoc off TS types that
+  // plain `react-docgen` misses. On this stack it does not merely underperform — it fails
+  // outright: every component comes back `Cannot read properties of undefined (reading
+  // 'readFile')` (`ts.sys` is undefined), taking docgen from 5 of 6 components extracting
+  // to 0 of 6. An explicit `tsconfigPath` does not help. Suspected TS 5.1.3 (Jun 2023) vs.
+  // Storybook 10.5's integration; **revisit at PR3** with the TS/Next bump, alongside the
+  // `@storybook/nextjs-vite` framework question components.md already defers there.
+  //
+  // What makes this worth pinning rather than leaving to the default: `build-storybook`
+  // exits 0 and prints "completed successfully" in BOTH states. The extractor can be
+  // switched to something that extracts nothing at all and no gate in this repo says a
+  // word. `expectedExtractor` in manager.ts is set to this same value so `extractor-drift`
+  // fires if the two ever part ways.
+  typescript: { reactDocgen: "react-docgen" },
   async viteFinal(viteConfig) {
     const { mergeConfig } = await import("vite");
     return mergeConfig(viteConfig, {
