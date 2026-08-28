@@ -187,6 +187,20 @@ const MobileChips = () => (
   </Box>
 );
 
+/**
+ * The skills band: a full-bleed `<section id="skills">` on `bg.canvas`, presenting the
+ * skill list as git commit history.
+ *
+ * Two surfaces render the same data and swap on the `skills` container query — a
+ * horizontal commit-rail SVG at wide widths, a commit-chip grid when narrow. The query is
+ * not evaluated under vitest, so **both** surfaces mount in story tests and every skill
+ * appears twice; assertions here count the doubled total deliberately.
+ *
+ * Rail labels sit on the SVG, so axe cannot resolve their backdrop and declines to measure
+ * contrast. Verify those ratios by hand.
+ *
+ * @oversightIgnore props-unrecorded
+ */
 export const SkillsSection = () => {
   const { t } = useTranslation();
   return (

@@ -20,6 +20,19 @@ const InfoCard = chakra("div", {
   },
 });
 
+/**
+ * The "About" band: a full-bleed `<section id="about">` on `bg.band`, holding a mono
+ * kicker, a two-colour `h2` (teal *beautiful* / amber *useable*), and two gradient info
+ * cards.
+ *
+ * Renders its own band — it does not use `MainSection`, which is frozen legacy.
+ *
+ * Accessibility note for anyone changing the cards: their text sits on a gradient, so axe
+ * reports contrast as *incomplete* and passes silently. A green a11y run is not evidence
+ * these ratios are safe; verify them by hand against the solid band beneath.
+ *
+ * @oversightIgnore props-unrecorded
+ */
 export const AboutMeSection = () => {
   const { t } = useTranslation();
 

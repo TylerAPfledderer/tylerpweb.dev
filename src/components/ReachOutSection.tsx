@@ -46,6 +46,16 @@ const socialButtonStyles = {
   _hover: { borderColor: "#fff", bg: "rgba(255,255,255,.08)" },
 } as const;
 
+/**
+ * The contact band: a full-bleed `<section id="contact">` on `bg.canvas` wrapping a teal
+ * gradient CTA card with an amber email button and two white-outline social buttons.
+ *
+ * Unlike the About cards, this card's gradient uses solid hex endpoints, so axe *can*
+ * measure text contrast over it — a11y results here are real measurements rather than
+ * silent "incomplete" passes.
+ *
+ * @oversightIgnore props-unrecorded
+ */
 export const ReachOutSection = () => {
   const { t } = useTranslation();
   return (

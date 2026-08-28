@@ -34,6 +34,18 @@ const triggerStyles = {
   },
 } as const;
 
+/**
+ * The work band: a full-bleed `<section id="work">` on `bg.band`, with a pill toggle
+ * switching between an open-source list and a projects grid.
+ *
+ * **The tabs use `lazyMount` + `unmountOnExit`, so the inactive panel is not in the DOM.**
+ * That subtree is invisible to every gate — axe cannot audit it, Chromatic cannot baseline
+ * it, and a broken import inside it will not fail the build. This is not hypothetical: it
+ * hid a broken `next/image` stub for a year. Cover each panel with its own story that
+ * drives the tab interaction; never infer coverage from a green run on this section.
+ *
+ * @oversightIgnore props-unrecorded
+ */
 export const ProjectsSection = () => {
   const { t } = useTranslation();
   return (
