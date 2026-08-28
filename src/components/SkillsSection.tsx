@@ -191,10 +191,11 @@ const MobileChips = () => (
  * The skills band: a full-bleed `<section id="skills">` on `bg.canvas`, presenting the
  * skill list as git commit history.
  *
- * Two surfaces render the same data and swap on the `skills` container query — a
- * horizontal commit-rail SVG at wide widths, a commit-chip grid when narrow. The query is
- * not evaluated under vitest, so **both** surfaces mount in story tests and every skill
- * appears twice; assertions here count the doubled total deliberately.
+ * Two surfaces render the same data — a horizontal commit-rail SVG at wide widths, a
+ * commit-chip grid when narrow — and the `skills` container query only toggles `display`
+ * between them. Both are therefore **always in the DOM**, in a real browser as much as in
+ * a test, so every skill label and sha appears twice at any width. Assertions here count
+ * the doubled total deliberately; that is a property of the markup, not a jsdom artifact.
  *
  * Rail labels sit on the SVG, so axe cannot resolve their backdrop and declines to measure
  * contrast. Verify those ratios by hand.
