@@ -23,8 +23,9 @@ export const Default: Story = {
 };
 
 // Guards the 11-skill data contract. Both the desktop rail (SVG) and the mobile
-// chip grid render into the DOM at once — the container query that hides one is
-// NOT evaluated under vitest/jsdom — so every skill label and sha appears TWICE.
+// chip grid are in the DOM at once — the `skills` container query only toggles
+// `display`, so neither surface is ever unmounted — so every skill label and sha
+// appears TWICE. That holds in a real browser too; it is not a jsdom artifact.
 // Assert on the doubled count so the play function is deterministic; a dropped or
 // reordered skill fails this gate rather than only Chromatic.
 export const SkillsData: Story = {

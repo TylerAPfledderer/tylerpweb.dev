@@ -35,6 +35,21 @@ const SocialPill = chakra("a", {
   },
 });
 
+/**
+ * The hero band: a full-bleed `<section id="top">` on `bg.canvas` with a two-layer radial
+ * glow, the `h1`, two CTAs, and a row of social pills.
+ *
+ * Layout switches from column to row at the `heroWide` **container** query. The
+ * `containerType`/`containerName` sit on the inner shell and the switch lives on a child —
+ * an element cannot respond to its own container query.
+ *
+ * Known gap: `heroWide` is a container query while the design specifies a viewport
+ * `@media 900px`. The container is the viewport minus horizontal padding, so the switch
+ * fires roughly 64px late. Tracked as a design-fidelity decision, not a bug to silently
+ * "fix".
+ *
+ * @oversightIgnore props-unrecorded
+ */
 export const HeroSection = () => {
   const { t } = useTranslation();
   return (

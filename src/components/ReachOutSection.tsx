@@ -46,6 +46,18 @@ const socialButtonStyles = {
   _hover: { borderColor: "#fff", bg: "rgba(255,255,255,.08)" },
 } as const;
 
+/**
+ * The contact band: a full-bleed `<section id="contact">` on `bg.canvas` wrapping a teal
+ * gradient CTA card with an amber email button and two white-outline social buttons.
+ *
+ * Accessibility note: text on this card is **not** contrast-checked by anything. axe bails
+ * on any element whose computed `background-image` matches `/gradient/` — a bare regex, so
+ * solid hex endpoints do not help — and reports `bgGradient` incomplete, which passes. The
+ * `::before` radial compounds it. Treat a green a11y run here as unmeasured and verify the
+ * ratios by hand; there is no flatten+ratio assertion in the story to compensate yet.
+ *
+ * @oversightIgnore props-unrecorded
+ */
 export const ReachOutSection = () => {
   const { t } = useTranslation();
   return (
