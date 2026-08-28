@@ -21,7 +21,7 @@
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build --stats-json",
-    "oversight": "bunx --bun oversight-lint@0.7.1",
+    "oversight": "oversight",
     "test-storybook": "vitest run --project=storybook"
   },
   "dependencies": {
@@ -58,6 +58,7 @@
     "@zag-js/focus-visible": "^1.41.2",
     "eslint-plugin-storybook": "^10.5.0",
     "husky": "^8.0.0",
+    "oversight-lint": "^0.7.1",
     "playwright": "^1.61.1",
     "storybook": "^10.5.0",
     "storybook-addon-oversight": "^0.7.0",
