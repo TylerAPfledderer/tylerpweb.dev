@@ -12,6 +12,13 @@ writing, editing, or deleting, so the workflow governs how the change is made. T
 even if the change looks cosmetic-only, internal, a refactor, a rename, or "no behavior
 change." That judgment is not ours to make.
 
+It is `.claude/skills/storybook-stories/`, a **project** skill, deliberately — not the
+`storybook:stories` plugin this rule used to name. A project skill is part of the clone, so
+the mandate resolves for every contributor and in every cloud session; plugins are enabled
+in per-account user settings, which do not travel. That gap was live here: four files
+required a workflow no cloud session could invoke, and no gate reported it. Use the plugin
+as well where it is available — the project skill says how the two divide.
+
 Storybook (10.5) is the safety net that makes every section visually diff-able through the
 migration. Stories exist for all sections.
 

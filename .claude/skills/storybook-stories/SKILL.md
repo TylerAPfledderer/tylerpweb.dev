@@ -15,6 +15,22 @@ a stub alias that matched nothing for a year, a tab label at 1.84:1 that a green
 never mentioned, a `69px` header offset that arithmetic said was right. Each was invisible
 because no story drove it.
 
+## Relationship to the `storybook:stories` plugin
+
+If the Storybook team's `storybook:stories` plugin skill is available in your session, use
+it too — it carries the generic mechanics of writing a story (CSF shape, args, play-function
+idiom) across React/Vue/Svelte, and it is better at that than this file.
+
+**This skill is the one the repo mandates, because it is the one that always resolves.**
+It lives in `.claude/skills/`, so it is part of the clone and reaches every contributor and
+every cloud session. That plugin is enabled per-account in user settings, which do not
+travel: a cloud session, a fresh machine, or another contributor sees the mandate but not
+the skill. This repo hit exactly that — four files required a workflow that could not be
+invoked, and nothing reported it.
+
+So: this file owns *what this repo requires and why its gates lie*. The plugin, when
+present, owns *how to write the story*. Neither replaces the other.
+
 ## The core question, asked before you edit
 
 > **After my change, which gate would actually fail if I got this wrong?**
