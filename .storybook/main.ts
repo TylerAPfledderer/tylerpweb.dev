@@ -21,9 +21,10 @@ const config: StorybookConfig = {
     // never reach that manifest looks identical to one that has none: the agent sees an
     // undocumented component and nothing anywhere says so. Same failure class as the a11y
     // gate that "looks configured" while running nothing. Panel is per-story; the same
-    // rules run headlessly over the built manifest via `bun run oversight`, which is
-    // available to run but deliberately NOT wired into ci.yml yet — it exits 1 on the
-    // findings already present. Gating CI on it is a separate decision.
+    // rules run headlessly over the built manifest via `bun run oversight`, which ci.yml
+    // now runs as a step in the `verify` job. Its rules live in oversight.config.json so
+    // the local run and CI cannot disagree; see that step's comment for why
+    // `docgen-missing` is a warning with a threshold of one.
     "storybook-addon-oversight",
   ],
   framework: "@storybook/react-vite",

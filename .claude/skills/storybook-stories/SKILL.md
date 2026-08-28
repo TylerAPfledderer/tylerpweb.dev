@@ -46,7 +46,7 @@ Everything below is detail on how each gate is blind.
 | `bun run lint` | Lint rules | Everything visual |
 | `bun run build-storybook` | Build breakage | Docgen quality; it exits 0 and says "completed successfully" either way — `bun run oversight` is what sees this |
 | `bun run test-storybook` (play + axe) | What a story **renders**, at **one width** | Unmounted subtrees; anything at another breakpoint |
-| `bun run oversight` | The MCP components manifest — whether docgen reached it, per component | Anything a story renders; it lints docs, not pixels. **Not in `ci.yml`**, so it only runs when you run it |
+| `bun run oversight` | The MCP components manifest — whether docgen reached it, per component | Anything a story renders; it lints docs, not pixels. Runs in `ci.yml`'s `verify` job; rules are shared via `oversight.config.json` |
 | Chromatic | Visual diffs, per mode | Nothing, but `exitZeroOnChanges: true` means the job is always green — the "UI Tests" check is the real gate and needs a human |
 
 Two of these deserve their own sections because their failure mode is silence, not red.
@@ -158,8 +158,8 @@ works too, and is what actually caught both bugs above.
    land that story as its own PR so a baseline exists.
 3. Make the change. Keep the section's anchor-guard story intact.
 4. Run `bun run typecheck`, `bun run lint`, `bun run test-storybook`, and — if you touched
-   a component's docs, props, or JSDoc — `bun run build-storybook && bun run oversight`,
-   since no CI job covers that one. Treat a green axe
+   a component's docs, props, or JSDoc — `bun run build-storybook && bun run oversight`.
+   CI runs that last one too, so a local run only tells you sooner. Treat a green axe
    result over a gradient, image, or layered background as unmeasured, and verify those
    ratios by hand.
 5. Check any container-query or flex-direction behavior in a real browser.

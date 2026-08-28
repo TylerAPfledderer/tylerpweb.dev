@@ -47,6 +47,27 @@ jobs:
       - name: Build Storybook
         run: bun run build-storybook
 
+      # Lints the MCP components manifest the previous step emitted — the artifact a coding
+      # agent reads this repo through. Rules live in oversight.config.json, NOT in flags
+      # here, so this and `bun run oversight` locally can never disagree about what a
+      # finding is. `--format github` is the only CI-specific argument; it turns findings
+      # into inline ::warning annotations on the diff.
+      #
+      # Why the config downgrades docgen-missing to a warning and allows exactly one:
+      # Header's docgen extraction fails (it is the only file importing a Chakra *hook*,
+      # which sends react-docgen into Chakra v3's exports map), and it is deliberately
+      # deferred to PR3 — the TS bump may fix it with no app change. It cannot be
+      # suppressed the documented way: `@oversightIgnore` is read from the manifest, and a
+      # component whose extraction failed contributes no JSDoc at all, so the tag never
+      # arrives. The threshold is therefore the only mechanism available.
+      #
+      # Known limit, stated rather than hidden: this is a COUNT, not an identity. It fails
+      # on any second finding, but if Header is fixed and something else breaks in the same
+      # commit the total stays 1 and passes. Tighten `maxWarnings` to 0 the moment Header
+      # extracts.
+      - name: Oversight (MCP manifest)
+        run: bun run oversight -- --format github
+
   # The story tests are what make accessibility an actual gate: addon-a11y only fails a run
   # when parameters.a11y.test === 'error' AND something runs vitest. Until now nothing did,
   # so `test: 'error'` was inert (see .storybook/preview.tsx).
