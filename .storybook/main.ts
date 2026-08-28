@@ -10,6 +10,32 @@ const configDir =
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  // Turns OFF Storybook's *automatic package composition* for Chakra.
+  //
+  // `@chakra-ui/react`'s package.json carries a `storybook` field
+  // (`{ title: "Chakra UI", url: "https://storybook.chakra-ui.com" }`), and Storybook
+  // composes any installed dependency that declares one — loading that library's stories
+  // into our sidebar alongside our own, with no opt-in. It injected this into the build:
+  //
+  //   { "id": "@chakra-ui/react", "url": "https://storybook.chakra-ui.com",
+  //     "title": "Chakra UI", "version": "3.36.0", "type": "server-checked" }
+  //
+  // Two reasons to switch it off. It puts ~all of Chakra's component library in the
+  // sidebar next to six section stories, which buries ours and invites reading Chakra's
+  // v3 defaults as if they were this project's. And `server-checked` means the build
+  // *pings that remote*, so a third party's uptime sits in the path of `build-storybook`.
+  //
+  // Worth knowing when hunting this: a composed ref is fetched from the remote and is
+  // NOT in the local `index.json` — dev and build indexes both report only our 13
+  // entries while Chakra is plainly visible in the UI. Look in `index.html` for the
+  // injected refs payload instead.
+  //
+  // Only the DIRECT dependency composes. `@chakra-ui/provider` declares one too
+  // (chakra-ui.netlify.app) but is transitive here and is not composed — verified, so no
+  // entry for it is added; adding one would be config that does nothing.
+  refs: {
+    "@chakra-ui/react": { disable: true },
+  },
   addons: [
     "@chromatic-com/storybook",
     "@storybook/addon-vitest",
