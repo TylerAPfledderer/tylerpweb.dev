@@ -1,0 +1,5 @@
+{
+  "expectedExtractor": "react-docgen",
+  "rules": { "docgen-missing": "warning" },
+  "maxWarnings": 1
+}
